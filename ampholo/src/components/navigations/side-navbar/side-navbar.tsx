@@ -1,0 +1,228 @@
+import React, { useState } from "react";
+import { FaTimes, FaHome, FaBook } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import { MdDashboard, MdFeaturedPlayList } from "react-icons/md";
+import { IconType } from "react-icons";
+import { MdArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
+
+interface SideNavBarProps {
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+}
+
+interface NavElement {
+  id: number;
+  element: string;
+  path: string;
+  icon?: IconType;
+  children?: NavElement[];
+}
+
+const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
+  const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
+  const location = useLocation();
+
+  const navElements: NavElement[] = [
+    {
+      id: 2,
+      element: "Home",
+      path: "/home",
+      icon: FaHome,
+      children: [
+        {
+          id: 5,
+          element: "Hero",
+          path: "/home/hero",
+        },
+        {
+          id: 6,
+          element: "Key Feature",
+          path: "/home/key-features",
+        },
+        {
+          id: 7,
+          element: "Banner",
+          path: "/home/banner",
+        },
+        {
+          id: 8,
+          element: "Why AMPHLO",
+          path: "/home/why-amphlo", 
+        },
+        {
+          id: 9,
+          element: "Counters",
+          path: "/home/counters",
+        },
+        {
+          id: 10,
+          element: "About",
+          path: "/home/home-about",
+        },
+        {
+          id: 11,
+          element: "Transform",
+          path: "/home/transform",
+        },
+      ],
+    },
+    {
+      id: 3,
+      element: "About",
+      path: "/about",
+      icon: FaBook,
+      children: [
+        {
+          id: 12,
+          element: "For Universities",
+          path: "/about/for-universities",
+        },
+        {
+          id: 13,
+          element: "For Partners",
+          path: "/about/for-partners",
+        },
+      ],
+    },
+    {
+      id: 4,
+      element: "Features",
+      path: "/features",
+      icon: MdFeaturedPlayList,
+    },
+    {
+      id: 5,
+      element: "Countries",
+      path: "/countries", 
+      icon: MdFeaturedPlayList,
+      children: [
+        {
+          id: 14,
+          element: "United States",
+          path: "/countries/united-states",
+        },
+        {
+          id: 15,
+          element: "United Kingdom",
+          path: "/countries/united-kingdom",
+        },
+        {
+          id: 16,
+          element: "Australia",
+          path: "/countries/australia",
+        },
+        {
+          id: 17,
+          element: "Canada",
+          path: "/countries/canada",
+        },
+        {
+          id: 18,
+          element: "Germany",
+          path: "/countries/germany",
+        },
+        {
+          id: 19,
+          element: "France",
+          path: "/countries/france",
+        },
+        {
+          id: 20,
+          element: "Japan",
+          path: "/countries/japan",
+        },
+        {
+          id: 21,
+          element: "Netherlands",
+          path: "/countries/netherlands",
+        },
+      ],
+    },
+  ];
+
+  // Toggle dropdown
+  const toggleDropdown = (id: number) => {
+    setOpenDropdownId((prevId) => (prevId === id ? null : id));
+  };
+
+  // Check if the current path matches the item or any of its children
+  const isActive = (element: NavElement) => {
+    return (
+      location.pathname === element.path ||
+      (element.children &&
+        element.children.some((child) => location.pathname === child.path))
+    );
+  };
+
+  return (
+    <div className="relative h-full p-4">
+      {/* Close Button in small screen */}
+      <button
+        onClick={toggleSidebar}
+        className="text-white text-2xl absolute top-4 right-4 lg:hidden"
+      >
+        <FaTimes />
+      </button>
+
+      <nav>
+        <h1 className="text-2xl font-poppins text-gray-400 px-4 mt-2">Amphlo</h1>
+        <h2 className="text-md lg:text-xl font-poppins text-gray-400 text-left mt-6">
+          Pages
+        </h2>
+        {navElements.map((data) => {
+          const IconComponent = data.icon;
+          const isItemActive = isActive(data);
+          const isDropdownOpen = openDropdownId === data.id;
+
+          return (
+            <div key={data.id}>
+              <ul className="mt-2">
+                <Link
+                  to={data.path}
+                  className={`text-gray-400 font-poppins py-2 px-2 hover:bg-gray-700 rounded flex justify-between items-center ${
+                    isItemActive ? "bg-gray-700" : ""
+                  }`}
+                  onClick={() => toggleDropdown(data.id)}
+                >
+                  <li className="flex flex-row justify-center items-center text-md">
+                    {IconComponent && <IconComponent className="mr-2" />}
+                    {data.element}
+                  </li>
+                  {data.children && (
+                    <span>
+                      {isDropdownOpen ? (
+                        <MdOutlineArrowDropUp />
+                      ) : (
+                        <MdArrowDropDown />
+                      )}
+                    </span>
+                  )}
+                </Link>
+                {data.children && isDropdownOpen && (
+                  <ul className="pl-4">
+                    {data.children.map((child) => {
+                      const isChildActive = location.pathname === child.path;
+                      return (
+                        <Link
+                          key={child.id}
+                          to={child.path}
+                          className={`text-gray-400 text-md font-poppins py-2 px-2 hover:bg-gray-700 rounded flex mt-2 ${
+                            isChildActive ? "bg-gray-700" : ""
+                          }`}
+                        >
+                          <li>{child.element}</li>
+                        </Link>
+                      );
+                    })}
+                  </ul>
+                )}
+              </ul>
+            </div>
+          );
+        })}
+      </nav>
+    </div>
+  );
+};
+
+export default SideNavBar;
