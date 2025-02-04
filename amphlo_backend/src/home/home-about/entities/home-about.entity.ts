@@ -22,4 +22,5 @@ export class HomeAbout {
     @OneToOne(() => FileUpload, fileUpload => fileUpload.homeAbout_image, { nullable: false })
     @JoinColumn({ name: 'imageId' })
     image: FileUpload
+    
 }

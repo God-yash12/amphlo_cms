@@ -11,7 +11,7 @@ interface CustomInputProps extends Omit<InputProps, 'crossOrigin'> {
 
 const InputField = forwardRef<HTMLInputElement, CustomInputProps>(
     ({ label, required, className, placeholder, variant, ...rest }, ref) => {
-        const baseClass = "w-80 lg:w-96 md:lg:96 h-[48px]";
+        const baseClass = "w-auto";
         return (
             <div>
                 <Input

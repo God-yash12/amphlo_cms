@@ -18,9 +18,9 @@ export class HomeAboutController {
     storage: storageConfig,
     fileFilter: fileFilterConfig
   }))
-  async create(@Body() dot: CreateHomeAboutDto,
+  async create(@Body() dto: CreateHomeAboutDto,
     @UploadedFile() file: Express.Multer.File) {
-    return await this.homeAboutService.set(dot);
+    return await this.homeAboutService.set(dto);
   }
 
   @Get()

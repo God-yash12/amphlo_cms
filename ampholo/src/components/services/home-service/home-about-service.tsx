@@ -3,6 +3,8 @@ import { UseAxiosPrivate } from "../../../auth/home_auth";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { HomeAboutValidation } from "../../validations/home-about-validation";
 
 
 interface HomeAboutProps {
@@ -53,6 +55,7 @@ export const UseHomrAboutServices = () => {
     reset,
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(HomeAboutValidation),
     defaultValues: {
       title: "",
       mainTitle: "",

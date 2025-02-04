@@ -16,7 +16,6 @@ export class FileUploadService {
   ) { }
 
   async create(createFileUploadDto: CreateFileUploadDto, file: Express.Multer.File) {
-    console.log(file);
 
     const fileUpload = this.fileUploadRepo.create({
       ...createFileUploadDto,

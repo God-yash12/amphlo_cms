@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaTimes, FaHome, FaBook } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
-import { MdDashboard, MdFeaturedPlayList } from "react-icons/md";
+import { MdFeaturedPlayList } from "react-icons/md";
 import { IconType } from "react-icons";
 import { MdArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
 
@@ -140,6 +140,13 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
     },
   ];
 
+  const formElement: NavElement[] = [
+    {
+      id: 1,
+      element: "Key-features ",
+      path: "/form/key-feature",
+    },
+  ]
   // Toggle dropdown
   const toggleDropdown = (id: number) => {
     setOpenDropdownId((prevId) => (prevId === id ? null : id));
@@ -163,7 +170,7 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
       >
         <FaTimes />
       </button>
-
+    
       <nav>
         <h1 className="text-2xl font-poppins text-gray-400 px-4 mt-2">Amphlo</h1>
         <h2 className="text-md lg:text-xl font-poppins text-gray-400 text-left mt-6">
@@ -220,6 +227,28 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
             </div>
           );
         })}
+
+        <div>
+        <h2 className="text-md lg:text-xl font-poppins text-gray-400 text-left mt-6 mb-2">
+          Contens
+        </h2>
+         <div>
+          {
+            formElement.map((item) => (
+              <ul key={item.id} className="">
+                <Link
+                 to={item.path}
+                 className={`text-gray-400 font-poppins py-2 px-2 hover:bg-gray-700 rounded flex items-center mb-2 ${
+                  isActive(item) ? "bg-gray-700" : ""
+                }`}
+                 >
+                  {item.element}
+                </Link>
+              </ul>
+            ))
+          }
+         </div>
+        </div>
       </nav>
     </div>
   );

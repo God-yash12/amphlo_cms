@@ -33,7 +33,6 @@ export class HomeAboutService {
       listItem: dto.listItem,
       image
     })
-    console.log(newHomeAbout, "hhi")
     return this.homeAboutRepository.save(newHomeAbout)
   }
 

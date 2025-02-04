@@ -1,82 +1,79 @@
-import { Textarea } from "@material-tailwind/react";
 import InputField from "../../../ui/input/input";
-import FileUploadInput from "../../../ui/buttons/file-upload";
-import { handleFileUpload } from "../../helpers/file-upload-helper";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import { UseKeyFeatureService } from "../../services/home-service/key-features-service";
+import { TextEditor } from "../../../ui/editor/text-editor";
+import { useState } from "react";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 
 const KeyFeatures = () => {
+  const { register, handleSubmit, setValue, errors } = UseKeyFeatureService();
+  const [editorContent, setEditorContent] = useState("");
 
-  const { register, handleSubmit, onSubmit, errors, setValue } = UseKeyFeatureService()
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6 flex flex-col items-center">
-      {/* Header Section */}
-      <div className="text-center mb-8">
-        <Header className="text-gray-800">Home Key Features</Header>
-        <Paragraph>Customize Key Features Section</Paragraph>
-      </div>
-
-      {/* Form Section */}
-      <form 
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full bg-white p-6 rounded-lg shadow-md space-y-6">
-        <div className="flex flex-col lg:flex-row justify-between gap-5 ">
-          <InputField
-            label="Enter Main Title"
-            placeholder="Enter Title"
-            className="w-full"
-            size="lg"
-            {...register("title")}
-          />
-          {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
-          
-          <InputField
-            label="Enter Card Title"
-            placeholder="Enter Card Title"
-            className="w-full"          
-            {...register("cardTitle")}
-          />
-          {errors.cardTitle && <ErrorMessage>{errors.cardTitle.message}</ErrorMessage>}
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="container mx-auto px-4 py-12">
+        {/* Header Section */}
+        <div className="max-w-2xl mx-auto text-center mb-12">
+          <Header className="text-3xl font-bold text-gray-900 mb-4">
+            Key Features Management
+          </Header>
+          <Paragraph className="text-gray-600">
+            Customize and manage your website's key features section to highlight your main offerings
+          </Paragraph>
         </div>
 
-        <Textarea
-          label="Enter Key Features Description"
-          variant="outlined"
-          placeholder="Enter Key Features Description"
-          className="w-full"
-          {...register("description")}
-        />
-        {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+        {/* Form Section */}
+        <div className="mx-auto">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white rounded-xl shadow-lg p-8 space-y-8"
+          >
+            {/* Title Input Section */}
+            <div className="space-y-4">
+              <div className="relative">
+                <InputField
+                  label="Showcase Your Feature's Headline"
+                  placeholder="Enter a compelling title for your features section"
+                  className="w-full transition-all duration-200"
+                  size="lg"
+                  {...register("title")}
+                />
+                {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
+              </div>
 
-        <Textarea
-          label="Enter Card Description"
-          variant="outlined"
-          placeholder="Enter Card Description"
-          className="w-full"
-          {...register("cardDescription")}
-        />
-        {errors.cardDescription && <ErrorMessage>{errors.cardDescription.message}</ErrorMessage>}
+              {/* Description Editor Section */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Feature Description
+                </label>
+                <TextEditor
+                  placeholder="Describe your key features in detail..."
+                  value={editorContent}
+                  onChange={(content) => {
+                    setEditorContent(content);
+                    setValue("description", content);
+                  }}
+                />
+                {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
 
-        {/* File Upload */}
-        <FileUploadInput
-          accept="image/*"
-          onChange={(e) => handleFileUpload(e, setValue, 'image')}
-          className="w-full"
-          
-        >
-          Upload Card Icons
-        </FileUploadInput >
-        {errors.image && <ErrorMessage>{errors.image.message}</ErrorMessage>}
+              </div>
+            </div>
 
-        {/* Submit Button */}
-        <PrimaryButton type="submit" className="w-full flex justify-center">
-          Submit
-        </PrimaryButton>
-      </form>
+            {/* Submit Button */}
+            <div className="pt-6">
+              <PrimaryButton
+                type="submit"
+                className="w-full py-3 transition-all duration-200 hover:transform hover:scale-[1.02]"
+              >
+                Save Changes
+              </PrimaryButton>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

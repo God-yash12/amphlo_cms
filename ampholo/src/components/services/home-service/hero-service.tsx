@@ -4,10 +4,10 @@ import { UseAxiosPrivate } from "../../../auth/home_auth";
 import { toast } from "react-toastify";
 
 interface HeroFormData {
-  title: string;
-  image?: File;
-  description: string;
-  buttons: [];
+  title?: string;
+  image?: number;
+  description?: string;
+  buttons?: [];
 }
 
 export const HeroService = () => {
@@ -28,17 +28,16 @@ export const HeroService = () => {
     },
   });
 
-  const { mutateAsync } = useMutation({
-    mutationFn: async (formData: FormData) => {
-      const response = await axiosPrivate.post("home/hero", formData);
+  const { mutateAsync } = useMutation<HeroFormData, Error, HeroFormData>({
+    mutationFn: async (data) => {
+      const response = await axiosPrivate.patch("hero", data);
       return response.data;
     },
     onSuccess: () => {
       reset();
-      toast.success("Hero section customized success!", {
-        position: 'top-right'
-      }
-      );
+      toast.success("Hero section customized successfully!", {
+        position: "top-right",
+      });
     },
     onError: (error) => {
       console.error("Error submitting form:", error);
@@ -46,24 +45,14 @@ export const HeroService = () => {
   });
 
   const onSubmit = async (data: HeroFormData) => {
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-
-    if (data.image) {
-      formData.append("image", data.image);
-    }
-    formData.append("buttons", JSON.stringify(data.buttons));
-
-    await mutateAsync(formData);
+    await mutateAsync(data);
   };
 
   return {
     register,
-    handleSubmit,
+    handleSubmit: handleSubmit(onSubmit),
     setValue,
     errors,
     reset,
-    onSubmit,
   };
 };

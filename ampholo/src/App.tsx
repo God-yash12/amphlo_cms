@@ -16,6 +16,8 @@ import Hero from "./components/page/home/hero";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'; 
 import HomeAbout from "./components/page/home/home-about";
+import KeyFeaturesForm from "./components/forms/home/key-feature";
+import WhyAmphloForm from "./components/forms/home/why-amphlo";
 
 
 
@@ -46,6 +48,12 @@ function App() {
             <Route path="features" element={<Features />} />
             {/* Country Route */}
             <Route path="countries" element={<Countries />} />
+            
+            {/* form route */}
+            <Route path="form">
+              <Route path="key-feature" element={<KeyFeaturesForm />} />
+              <Route path="why-amphlo" element={<WhyAmphloForm />} />
+            </Route>
           </Route>
         </Routes>
 

@@ -64,6 +64,7 @@ const HomeAbout = () => {
             }}
             placeholder="Write about AMPHLO"
           />
+          {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
         </div>
 
         <FileUploadInputField
@@ -71,7 +72,7 @@ const HomeAbout = () => {
         />
 
         {/* Title of List and Add Lists Button */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <InputField
             label="Title of List"
             placeholder="Enter list title"

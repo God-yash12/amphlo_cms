@@ -1,19 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import InputField from "../../../ui/input/input";
-import FileUploadInput from "../../../ui/buttons/file-upload";
 import { TextEditor } from "../../../ui/editor/text-editor";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import { HeroService } from "../../services/home-service/hero-service";
-import { updateEditorContent } from "../../helpers/text-editor-helper";
-import { handleFileUpload } from "../../helpers/file-upload-helper";
+import FileUploadInputField from "../../../ui/input/file-upload-input";
 
 type Button = { name: string; route: string };
 
 const Hero = () => {
-  const { register, handleSubmit, setValue, reset, onSubmit } = HeroService();
+  const { register, handleSubmit, setValue } = HeroService();
   const [editorContent, setEditorContent] = useState("");
 
   const [buttons, setButtons] = useState<Button[]>([
@@ -30,47 +27,6 @@ const Hero = () => {
     setButtons(updatedButtons);
   };
 
-  // Handle editor content changes
-  const handleEditorChange = (content: string) => {
-    updateEditorContent(content, setEditorContent, setValue )
-  };
-
-  // Custom submit handler to ensure all data is included
-  const handleFormSubmit = async (data: any) => {
-    const formData = {
-      ...data,
-      description: editorContent,
-      buttons: buttons
-    };
-    await onSubmit(formData);
-
-    // Reset the form after submission
-    resetForm();
-  };
-
-  // Function to reset the form
-  const resetForm = () => {
-    // Reset react-hook-form state
-    reset({
-      title: "",
-      description: "",
-      image: null,
-      buttons: [{ name: "", route: "" }, { name: "", route: "" }],
-    });
-
-    // Reset local state
-    setEditorContent("");
-    setButtons([
-      { name: "", route: "" },
-      { name: "", route: "" },
-    ]);
-
-    // Reset file input 
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.value = ""; 
-    }
-  };
 
   return (
     <div id="hero" className="flex flex-col gap-10">
@@ -81,9 +37,9 @@ const Hero = () => {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col items-center gap-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         {/* Title Input */}
-        <div className="flex flex-col lg:flex-row gap-5 lg:gap-10">
+        <div>
           <InputField
             label="Title"
             variant="outlined"
@@ -91,11 +47,7 @@ const Hero = () => {
             placeholder="Title"
             {...register("title", { required: "Title is required" })}
           />
-          <FileUploadInput
-            accept="image/*"
-            onChange={(event) => handleFileUpload(event, setValue, "image")}
-            children={"Upload Hero Image"}
-          />
+
         </div>
 
         {/* Description Editor */}
@@ -103,14 +55,15 @@ const Hero = () => {
           <TextEditor
             placeholder="Write Hero Description"
             value={editorContent}
-            onChange={handleEditorChange}
-            onBlur={() => {
-              setValue("description", editorContent, {
-                shouldValidate: true
-              });
+            onChange={(content) => {
+              setEditorContent(content)
+              setValue("description", content);
             }}
           />
         </div>
+        <FileUploadInputField
+          onUploadSuccess={(fileId) => setValue('image', fileId)}
+        />
 
         {/* Button Configuration */}
         <div className="flex flex-col gap-4 w-full max-w-md">
@@ -147,7 +100,7 @@ const Hero = () => {
         </div>
 
         {/* Submit Button */}
-        <PrimaryButton type="submit">Submit</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full text-center">Submit</PrimaryButton>
       </form>
     </div>
   );
