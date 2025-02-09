@@ -14,6 +14,7 @@ const InputField = forwardRef<HTMLInputElement, CustomInputProps>(
         const baseClass = "w-auto";
         return (
             <div>
+                {/* @ts-ignore */}
                 <Input
                     ref={ref}
                     label={label}

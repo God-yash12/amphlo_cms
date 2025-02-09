@@ -28,6 +28,7 @@ export class WhyAmphloService {
       title: dto.title,
       mainTitle: dto.mainTitle,
       description: dto.description,
+      lists: dto.lists,
       image
     })
     return await this.whyAmplhoRepository.save(newWhyAmphlo)

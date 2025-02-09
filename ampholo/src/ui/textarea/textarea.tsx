@@ -13,6 +13,7 @@ export const TextareaField = forwardRef<HTMLDivElement, CustomTextareaProps>(
   ({ label, required = false, placeholder = "Enter text...", className, errorMessage, onChange, ...rest }, ref) => {
     return (
       <div>
+        {/* @ts-ignore */}
         <Textarea
           label={label}
           required={required}
@@ -22,8 +23,8 @@ export const TextareaField = forwardRef<HTMLDivElement, CustomTextareaProps>(
             errorMessage ? "border-red-500 focus:border-red-500" : "",
             className
           )}
-          size="md"
-          containerProps={{ ref }} // Pass the ref to the container
+          size="lg"
+          containerProps={{ ref }}
           {...rest}
         />
 

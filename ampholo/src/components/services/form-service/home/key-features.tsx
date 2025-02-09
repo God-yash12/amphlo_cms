@@ -28,7 +28,7 @@ export const KeyFeaturesFormService = () => {
 
     const { mutateAsync } = useMutation({
         mutationFn: async (data: FormDataProps) => {
-            const response = await axiosPrivate.patch('key-feature-card', data);
+            const response = await axiosPrivate.post('key-feature-card', data);
             return response;
         },
         onSuccess: () => {

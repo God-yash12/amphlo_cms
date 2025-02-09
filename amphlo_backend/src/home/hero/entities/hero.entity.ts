@@ -1,4 +1,3 @@
-import { json } from "body-parser";
 import { FileUpload } from "src/file-upload/entities/file-upload.entity";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 

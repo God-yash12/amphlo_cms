@@ -5,11 +5,11 @@ import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import FileUploadInputField from "../../../ui/input/file-upload-input";
 import PrimaryButton from "../../../ui/buttons/primary-button";
-import { TransformService } from "../../services/home-service/transform-service";
+import { TransformService } from "../../services/home/transform-service";
 
 type Button = { name: string; route: string };
 
-const Banner = () => {
+const Transform = () => {
   const { register, handleSubmit, errors, setValue } = TransformService();
   const [editorContent, setEditorContent] = useState("");
   const [buttons, setButtons] = useState<Button[]>([
@@ -127,4 +127,4 @@ const Banner = () => {
   );
 };
 
-export default Banner;
+export default Transform;

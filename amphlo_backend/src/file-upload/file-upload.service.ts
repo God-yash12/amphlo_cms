@@ -17,11 +17,14 @@ export class FileUploadService {
 
   async create(createFileUploadDto: CreateFileUploadDto, file: Express.Multer.File) {
 
+    const backendUrl = this.configService.get('BACKEND_URL') || 'http://localhost:5000';
+    const fileUrl = new URL(`uploads/${file.filename}`, backendUrl).toString();
+
     const fileUpload = this.fileUploadRepo.create({
       ...createFileUploadDto,
       filename: file.originalname,
       mimetype: file.mimetype,
-    url: path.join(this.configService.getOrThrow("BACKEND_URL"), 'uploads', file.filename)
+    url: fileUrl
     });
 
     return await this.fileUploadRepo.save(fileUpload)

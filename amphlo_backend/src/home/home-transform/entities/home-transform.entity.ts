@@ -21,5 +21,4 @@ export class HomeTransform {
     @JoinColumn({name: 'transformImageId'})
     image: FileUpload
     
-
 }

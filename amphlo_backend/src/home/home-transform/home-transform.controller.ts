@@ -7,8 +7,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { storageConfig } from 'src/config/storage.config';
 import { fileFilterConfig } from 'src/config/file-filter.config';
 
-@ApiTags('home-transform')
-@Controller('home-transform')
+@ApiTags('transform')
+@Controller('transform')
 export class HomeTransformController {
   constructor(private readonly homeTransformService: HomeTransformService) {}
 

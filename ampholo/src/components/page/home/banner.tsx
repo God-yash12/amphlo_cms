@@ -5,7 +5,7 @@ import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import FileUploadInputField from "../../../ui/input/file-upload-input";
 import PrimaryButton from "../../../ui/buttons/primary-button";
-import { BannerService } from "../../services/home-service/banner-service";
+import { BannerService } from "../../services/home/banner-service";
 
 type Button = { name: string; route: string };
 

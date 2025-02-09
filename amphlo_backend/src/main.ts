@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from "path";
+import { ValidationPipe } from "@nestjs/common/pipes/validation.pipe";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +22,10 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  // app.setGlobalPrefix('api')
+
+  // app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const configService = app.get(ConfigService);
   const PORT = configService.get<number>('PORT');

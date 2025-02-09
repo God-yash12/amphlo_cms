@@ -1,25 +1,45 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState, useEffect } from 'react';
 import { Upload, X } from 'lucide-react';
-import { UseFileSubmit } from '../../components/services/file-upload-service/file-upload-service';
+import { UseFileSubmit } from '../../components/services/file-upload/file-upload-service';
+
+interface FileEntry {
+  file: File;
+  id?: number;
+  url?: string;
+  previewUrl: string;
+  status: 'pending' | 'success' | 'error';
+}
 
 interface FileUploadProps {
   accept?: string;
   maxFiles?: number;
   maxFileSize?: number;
   onFileChange?: (files: File[]) => void;
-  onUploadSuccess?: (fileId: number) => void; 
+  onUploadSuccess?: (fileId: number) => void;
+  onUploadedFiles?: (files: FileEntry[]) => void;
   className?: string;
   multiple?: boolean;
 }
 
-const getFileIcon = (file: File) => {
+const getFileIcon = (fileEntry: FileEntry) => {
+  const { file, url, previewUrl } = fileEntry;
   const type = file.type;
+
+  if (url) {
+    return (
+      <img
+        src={url}
+        alt="Uploaded preview"
+        className="h-12 w-12 object-cover rounded-md"
+      />
+    );
+  }
 
   if (type.startsWith('image/')) {
     return (
       <img
-        src={URL.createObjectURL(file)}
-        alt="Preview"
+        src={previewUrl}
+        alt="Local preview"
         className="h-12 w-12 object-cover rounded-md"
       />
     );
@@ -47,66 +67,112 @@ const FileUploadInputField: React.FC<FileUploadProps> = ({
   accept = '*',
   maxFiles = 5,
   multiple,
-  maxFileSize = 10 * 1024 * 1024, 
+  maxFileSize = 10 * 1024 * 1024,
   onFileChange,
   onUploadSuccess,
+  onUploadedFiles,
   className = '',
 }) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<FileEntry[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { mutateAsync: uploadFile, isPending } = UseFileSubmit();
+  const resolvedMaxFiles = multiple ? maxFiles : 1;
+
+  useEffect(() => {
+    return () => {
+      // Cleanup object URLs
+      files.forEach((fileEntry) => {
+        if (fileEntry.previewUrl) {
+          URL.revokeObjectURL(fileEntry.previewUrl);
+        }
+      });
+    };
+  }, [files]);
 
   const handleFileSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     setUploadError(null);
-
     if (!event.target.files?.[0]) return;
 
     const selectedFiles = Array.from(event.target.files);
-
-    // Validate file size and limit
     const validFiles = selectedFiles
       .filter((file) => file.size <= maxFileSize)
-      .slice(0, maxFiles - files.length);
+      .slice(0, resolvedMaxFiles - files.length);
 
     if (validFiles.length !== selectedFiles.length) {
       setUploadError(
-        `Some files were filtered due to size or max file limit.`
+        `Some files were filtered due to size or max file limit (max ${resolvedMaxFiles} files).`
       );
-      
     }
 
-    const newFiles = [...files, ...validFiles];
-    setFiles(newFiles);
-    onFileChange?.(newFiles);
+    const newFiles: FileEntry[] = validFiles.map((file) => ({
+      file,
+      previewUrl: file.type.startsWith('image/')
+        ? URL.createObjectURL(file)
+        : '',
+      status: 'pending',
+    }));
 
-    if (validFiles.length > 0) {
-      try {
-        const response = await uploadFile(validFiles[0]);
-        onUploadSuccess?.(response.id); 
-      } catch (error) {
-        setUploadError('Failed to upload file. Please try again.');
-      }
+    setFiles((prev) => {
+      const updatedFiles = [...prev, ...newFiles];
+      onFileChange?.(updatedFiles.map((f) => f.file));
+      onUploadedFiles?.(updatedFiles);
+      return updatedFiles;
+    });
+
+    try {
+      await Promise.all(
+        newFiles.map(async (fileEntry) => {
+          try {
+            const response = await uploadFile(fileEntry.file);
+            setFiles((prevFiles) =>
+              prevFiles.map((f) =>
+                f.file === fileEntry.file
+                  ? {
+                      ...f,
+                      id: response.id,
+                      url: response.url,
+                      status: 'success',
+                    }
+                  : f
+              )
+            );
+            onUploadSuccess?.(response.id);
+          } catch (error) {
+            setFiles((prevFiles) =>
+              prevFiles.map((f) =>
+                f.file === fileEntry.file ? { ...f, status: 'error' } : f
+              )
+            );
+            throw error;
+          }
+        })
+      );
+    } catch (error) {
+      setUploadError('Failed to upload some files. Please try again.');
     }
   };
 
   const removeFile = (index: number) => {
+    const fileToRemove = files[index];
+    if (fileToRemove.previewUrl) {
+      URL.revokeObjectURL(fileToRemove.previewUrl);
+    }
     const updatedFiles = files.filter((_, i) => i !== index);
     setFiles(updatedFiles);
-    onFileChange?.(updatedFiles);
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    onFileChange?.(updatedFiles.map((f) => f.file));
+    onUploadedFiles?.(updatedFiles);
   };
 
   const clearAllFiles = () => {
+    files.forEach((fileEntry) => {
+      if (fileEntry.previewUrl) {
+        URL.revokeObjectURL(fileEntry.previewUrl);
+      }
+    });
     setFiles([]);
     onFileChange?.([]);
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    onUploadedFiles?.([]);
   };
 
   const triggerFileInput = () => {
@@ -142,7 +208,8 @@ const FileUploadInputField: React.FC<FileUploadProps> = ({
             Click to upload
           </p>
           <span className="text-xs text-gray-500">
-            Max size: {maxFileSize / 1024 / 1024}MB
+            Max {resolvedMaxFiles} file{resolvedMaxFiles > 1 ? 's' : ''} •{' '}
+            {maxFileSize / 1024 / 1024}MB per file
           </span>
         </div>
       </div>
@@ -167,19 +234,23 @@ const FileUploadInputField: React.FC<FileUploadProps> = ({
             </button>
           </div>
           <ul className="space-y-2">
-            {files.map((file, index) => (
+            {files.map((fileEntry, index) => (
               <li
-                key={file.name}
+                key={`${fileEntry.file.name}-${index}`}
                 className="flex items-center justify-between bg-white shadow-sm rounded-md p-3 hover:bg-gray-100 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  {getFileIcon(file)}
+                  {getFileIcon(fileEntry)}
                   <div>
                     <p className="text-sm font-medium truncate max-w-[200px]">
-                      {file.name}
+                      {fileEntry.file.name}
+                      {fileEntry.status === 'error' && (
+                        <span className="text-red-500 ml-2">(Failed)</span>
+                      )}
                     </p>
                     <p className="text-xs text-gray-500">
-                      {(file.size / 1024).toFixed(1)} KB
+                      {(fileEntry.file.size / 1024).toFixed(1)} KB •{' '}
+                      {fileEntry.status}
                     </p>
                   </div>
                 </div>

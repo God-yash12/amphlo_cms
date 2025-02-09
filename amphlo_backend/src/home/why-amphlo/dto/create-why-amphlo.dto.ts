@@ -1,4 +1,12 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
+
+export class listDto{
+    @IsString()
+    listTitle: string;
+
+    @IsString()
+    listDescription: string;
+}
 
 export class CreateWhyAmphloDto {
     @IsString()
@@ -12,4 +20,9 @@ export class CreateWhyAmphloDto {
 
     @IsNumber()
     image: number;
+
+    @IsArray()
+    @ValidateNested({each: true})
+    lists: listDto[];
+
 }

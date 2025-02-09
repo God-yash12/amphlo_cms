@@ -2,7 +2,7 @@ import InputField from "../../../ui/input/input";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
-import { UseKeyFeatureService } from "../../services/home-service/key-features-service";
+import { UseKeyFeatureService } from "../../services/home/key-features-service";
 import { TextEditor } from "../../../ui/editor/text-editor";
 import { useState } from "react";
 import { ErrorMessage } from "../../../ui/typographs/error-message";

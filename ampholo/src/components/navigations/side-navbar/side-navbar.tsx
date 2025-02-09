@@ -64,6 +64,11 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
           element: "Transform",
           path: "/home/transform",
         },
+        {
+          id: 12,
+          element: "Testimonials",
+          path: "/home/testimonials",
+        },
       ],
     },
     {
@@ -89,6 +94,33 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
       element: "Features",
       path: "/features",
       icon: MdFeaturedPlayList,
+      children: [
+        {
+          id: 22,
+          element: "Hero",
+          path: "/features/hero",
+        },
+        {
+          id: 23,
+          element: "Core Feature",
+          path: "/features/core-features",
+        },
+        {
+          id: 24,
+          element: "Agent",
+          path: "/features/agent",
+        },
+        {
+          id: 25,
+          element: "Overview",
+          path: "/features/overview", 
+        },
+        {
+          id: 26,
+          element: "FAQs",
+          path: "/features/faqs",
+        },
+      ]
     },
     {
       id: 5,
@@ -143,8 +175,23 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
   const formElement: NavElement[] = [
     {
       id: 1,
-      element: "Key-features ",
-      path: "/form/key-feature",
+      element: "Key features ",
+      path: "/contents/key-feature",
+    },
+    {
+      id: 2,
+      element: "Core Features ",
+      path: "/contents/core-feature",
+    },
+    {
+      id: 3,
+      element: "Uni-Why Amphlo",
+      path: "/contents/uni-why-amphlo-card",
+    },
+    {
+      id: 4,
+      element: "About Uni-Feature",
+      path: "/contents/about-feature-card",
     },
   ]
   // Toggle dropdown
@@ -162,7 +209,7 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
   };
 
   return (
-    <div className="relative h-full p-4">
+    <div className="relative h-screen p-4">
       {/* Close Button in small screen */}
       <button
         onClick={toggleSidebar}

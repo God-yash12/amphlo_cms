@@ -1,9 +1,11 @@
+import { Outlet } from "react-router-dom"
 
 
 const Features = () => {
   return (
     <div>
-      feature  page
+      
+      <Outlet />
     </div>
   )
 }

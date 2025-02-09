@@ -7,20 +7,23 @@ export class HomeAbout {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({nullable: false})
-    title: string
+    @Column({ nullable: false })
+    title: string;
 
-    @Column({nullable: false})
+    @Column({ nullable: true })
+    mainTitle: string;
+
+    @Column({ type:'longtext', nullable: false })
     description: string
 
-    @Column({nullable: false})
+    @Column({ nullable: false })
     listTitle: string
 
-    @Column({nullable: false})
-    listItem: string
+    @Column({ type: 'json', nullable: false })
+    listItem: { list: string }[];
 
     @OneToOne(() => FileUpload, fileUpload => fileUpload.homeAbout_image, { nullable: false })
     @JoinColumn({ name: 'imageId' })
     image: FileUpload
-    
+
 }

@@ -1,8 +1,7 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateKeyFeatureDto {
-    
     @ApiProperty({
         description: 'The title of the key feature',
         example: 'Feature Title'

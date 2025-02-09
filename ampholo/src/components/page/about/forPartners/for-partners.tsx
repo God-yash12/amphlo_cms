@@ -1,9 +1,16 @@
+import { JoinNowPartnerSection } from "./join-partner"
+import { PartnerBenefitSection } from "./partner-benefit"
+import { PartnerFeatureSection } from "./partner-feature"
+import { PartnersHeroSection } from "./partner-hero"
 
 
 const ForPertners = () => {
   return (
     <div>
-      for partner
+      <PartnersHeroSection />
+      <PartnerBenefitSection />
+      <JoinNowPartnerSection />
+      <PartnerFeatureSection />
     </div>
   )
 }

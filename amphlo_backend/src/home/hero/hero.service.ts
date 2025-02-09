@@ -34,7 +34,7 @@ export class HeroService {
   }
 
   async update(existing:Hero, dto: CreateHeroDto, image:FileUpload){
-    Object.assign(existing, {
+    Object.assign(existing, {       
       ...dto,
       image,
     })

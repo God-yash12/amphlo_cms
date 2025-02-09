@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminLayout from "./layouts/layout";
 import Home from "./components/page/home/home";
 import About from "./components/page/about/about";
-import Features from "./components/page/features/feature";
 import Countries from "./components/page/countries/countries";
 import KeyFeatures from "./components/page/home/key-feature";
 import Banner from "./components/page/home/banner";
@@ -17,8 +16,15 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'; 
 import HomeAbout from "./components/page/home/home-about";
 import KeyFeaturesForm from "./components/forms/home/key-feature";
-import WhyAmphloForm from "./components/forms/home/why-amphlo";
-
+import FeatureHero from "./components/page/features/hero";
+import { CoreFeature } from "./components/page/features/core-feature";
+import { Agent } from "./components/page/features/agent";
+import { FeatureOverview } from "./components/page/features/overview";
+import { FeatureFAQs } from "./components/page/features/faqs";
+import { CorefeatureCards } from "./components/forms/feature/core-feature-card";
+import { Testimonials } from "./components/page/home/testimonial";
+import { UniAboutFeatureCard } from "./components/forms/about/for-university/uni-feature-card";
+import { UniAboutWhyAmphloCard } from "./components/forms/about/for-university/uni-why-amphlo-card";
 
 
 function App() {
@@ -34,10 +40,11 @@ function App() {
               <Route path="hero" element={<Hero />} />
               <Route path="key-features" element={<KeyFeatures />} />
               <Route path="banner" element={<Banner />} />
-              <Route path="why-amphlo" element={<WhyAmphlo />} />
+\              <Route path="why-amphlo" element={<WhyAmphlo />} />
               <Route path="counters" element={<Counters />} />
               <Route path="home-about" element={<HomeAbout />} />
               <Route path="transform" element={<Transform />} />
+              <Route path="testimonials" element={<Testimonials />} />
             </Route>
             {/* About route  */}
             <Route path="about" element={<About />}> 
@@ -45,14 +52,22 @@ function App() {
             <Route path="for-partners" element={<ForPertners />} />
             </Route>
             {/* Feature Route */}
-            <Route path="features" element={<Features />} />
+            <Route path="features" >
+              <Route path="hero"  element={<FeatureHero />}/>
+              <Route path="core-features"  element={<CoreFeature />}/>
+              <Route path="agent"  element={<Agent />}/>
+              <Route path="overview"  element={<FeatureOverview />}/>
+              <Route path="faqs"  element={<FeatureFAQs />}/>
+            </Route>
             {/* Country Route */}
             <Route path="countries" element={<Countries />} />
             
             {/* form route */}
-            <Route path="form">
+            <Route path="contents">
               <Route path="key-feature" element={<KeyFeaturesForm />} />
-              <Route path="why-amphlo" element={<WhyAmphloForm />} />
+              <Route path="core-feature" element={<CorefeatureCards  />} />
+              <Route path="uni-why-amphlo-card" element={<UniAboutWhyAmphloCard  />} />
+              <Route path="about-feature-card" element={<UniAboutFeatureCard  />} />
             </Route>
           </Route>
         </Routes>

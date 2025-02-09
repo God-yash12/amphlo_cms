@@ -10,18 +10,18 @@ import { fileFilterConfig } from 'src/config/file-filter.config';
 export class KeyFeatureCardController {
   constructor(private readonly keyFeatureCardService: KeyFeatureCardService) {}
 
-  @Patch()
+  @Post()
   @UseInterceptors(FileInterceptor('image', {
     storage: storageConfig,
     fileFilter: fileFilterConfig,
   }))
   async create(@Body() dto: CreateKeyFeatureCardDto, @UploadedFile() file: Express.Multer.File) {
-    return await this.keyFeatureCardService.set(dto);
+    return await this.keyFeatureCardService.create(dto);
   }
 
   @Get()
   findAll() {
-    return this.keyFeatureCardService.get();
+    return this.keyFeatureCardService.findAll();
   }
 
   // @Get(':id')

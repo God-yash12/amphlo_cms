@@ -14,6 +14,25 @@ import { CountersModule } from './home/counters/counters.module';
 import { BannerModule } from './home/banner/banner.module';
 import { HomeTransformModule } from './home/home-transform/home-transform.module';
 import { KeyFeatureCardModule } from './forms/key-feature-card/key-feature-card.module';
+import { FeatureHeroModule } from './features/hero/hero.module';
+import { CoreFeatureModule } from './features/core-feature/core-feature.module';
+import { AgentModule } from './features/agent/agent.module';
+import { FeatureCardsModule } from './features/feature-cards/feature-cards.module';
+import { OverviewModule } from './features/overview/overview.module';
+import { FaqModule } from './features/faq/faq.module';
+import { TestimonialsModule } from './home/testimonials/testimonials.module';
+import { UniversityHeroModule } from './about/for-university/hero/hero.module';
+import { UniWhyamphloModule } from './about/for-university/uni-whyamphlo/uni-whyamphlo.module';
+import { JourneyModule } from './about/for-university/journey/journey.module';
+import { UniFeatureModule } from './about/for-university/uni-feature/uni-feature.module';
+import { WhyamphloCardModule } from './forms/for-university/whyamphlo-card/whyamphlo-card.module';
+import { FeatureCardModule } from './forms/for-university/feature-card/feature-card.module';
+import { JoinNowModule } from './about/for-university/join-now/join-now.module';
+import { PartnerHeroModule } from './about/for-partners/partner-hero/partner-hero.module';
+import { PartnerBenefitsModule } from './about/for-partners/partner-benefits/partner-benefits.module';
+import { PartnerJoinnowModule } from './about/for-partners/partner-joinnow/partner-joinnow.module';
+import { PartnerFeaturesModule } from './about/for-partners/partner-features/partner-features.module';
+
 
 @Module({
   imports: [
@@ -43,8 +62,27 @@ import { KeyFeatureCardModule } from './forms/key-feature-card/key-feature-card.
     BannerModule,
     HomeTransformModule,
     KeyFeatureCardModule,
+    CoreFeatureModule,
+    AgentModule,
+    FeatureHeroModule,
+    FeatureCardsModule,
+    OverviewModule,
+    FaqModule,
+    TestimonialsModule,
+    UniversityHeroModule,
+    UniWhyamphloModule,
+    JourneyModule,
+    UniFeatureModule,
+    WhyamphloCardModule,
+    FeatureCardModule,
+    JoinNowModule,
+    PartnerHeroModule,
+    PartnerBenefitsModule,
+    PartnerJoinnowModule,
+    PartnerFeaturesModule
   ],
 })
+
 export class AppModule implements OnModuleInit {
   constructor(private configService: ConfigService){}
   async onModuleInit() {

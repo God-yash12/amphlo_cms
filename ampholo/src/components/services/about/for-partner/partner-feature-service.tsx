@@ -1,0 +1,54 @@
+import { useMutation } from "@tanstack/react-query";
+import { useFieldArray, useForm } from "react-hook-form";
+import { UseAxiosPrivate } from "../../../../auth/home_auth";
+import { toast } from "react-toastify";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PartnerFeatureValidation, PartnerFeatureValidationData } from "../../../validations/about/for-partner/partner-feauture";
+
+export const PartnerFeatureService = () => {
+  const axiosPrivate = UseAxiosPrivate();
+
+  const form = useForm<PartnerFeatureValidationData>({
+    resolver: zodResolver(PartnerFeatureValidation),
+    defaultValues: {
+      featureTitle: "",
+      featureDescription: "",
+      image: 0,
+      feature: [{title: "", description: ""}]
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+      control: form.control,
+      name: "feature"
+    }); 
+
+  const { mutateAsync } = useMutation<any, Error, PartnerFeatureValidationData>({
+    mutationFn: async (data) => {
+      const response = await axiosPrivate.patch("partner-features", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      form.reset();
+      toast.success("Partner Feature Card Customized Successfully!", {
+        position: "top-right",
+      });
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to Update the Partner Feature Card ${error.message}`)
+    },
+
+  });
+
+  const onSubmit = async (data: PartnerFeatureValidationData) => {
+    await mutateAsync(data);
+  };
+
+  return {
+    form,
+    onSubmit,
+    fields,
+    append,
+    remove,
+  };
+};

@@ -4,7 +4,7 @@ import InputField from "../../../ui/input/input";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import PrimaryButton from "../../../ui/buttons/primary-button";
-import { CounterService } from "../../services/home-service/counter-service";
+import { CounterService } from "../../services/home/counter-service";
 
 const Counters = () => {
   const [editorContent, setEditorContent] = useState("");

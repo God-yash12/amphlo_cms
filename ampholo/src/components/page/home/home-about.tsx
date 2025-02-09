@@ -6,24 +6,17 @@ import Paragraph from "../../../ui/typographs/paragraph";
 import { TextEditor } from "../../../ui/editor/text-editor";
 import FileUploadInputField from "../../../ui/input/file-upload-input";
 import PrimaryButton from "../../../ui/buttons/primary-button";
-import { UseHomrAboutServices } from "../../services/home-service/home-about-service";
+import { UseHomrAboutServices } from "../../services/home/home-about-service";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
+import { useFieldArray } from "react-hook-form";
 
 const HomeAbout = () => {
-  const {
-    register,
-    onSubmit,
-    handleSubmit,
-    setValue,
-    errors,
-    deleteListInputs,
-    deleteListInput,
-    showInputOnClick,
-    setEditorContent,
-    editorContent,
-    showInput,
-    handleInputChange,
-  } = UseHomrAboutServices();
+  const { form, onSubmit } = UseHomrAboutServices();
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "listItem",
+  });
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
@@ -37,83 +30,74 @@ const HomeAbout = () => {
         </Paragraph>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* About Amphlo and Main Title */}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Title and Main Title */}
           <InputField
             label="About Amphlo"
             placeholder="Enter about Amphlo"
-            {...register("title")}
+            {...form.register("title")}
           />
-          {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
+          {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
+
           <InputField
             label="Main Title"
             placeholder="Enter main title"
-            {...register("mainTitle")}
+            {...form.register("mainTitle")}
           />
-          {errors.mainTitle && <ErrorMessage>{errors.mainTitle.message}</ErrorMessage>}
+          {form.formState.errors.mainTitle && <ErrorMessage>{form.formState.errors.mainTitle.message}</ErrorMessage>}
         </div>
 
-        {/* Text Editor */}
+        {/* Description */}
         <div className="w-full">
           <TextEditor
-            value={editorContent}
+            value={form.watch("description") ?? ""}
             onChange={(content: string) => {
-              setEditorContent(content);
-              setValue("description", content);
+              form.setValue("description", content);
             }}
             placeholder="Write about AMPHLO"
           />
-          {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+          {form.formState.errors.description && <ErrorMessage>{form.formState.errors.description.message}</ErrorMessage>}
         </div>
 
-        <FileUploadInputField
-          onUploadSuccess={(fileId) => setValue("image", fileId)}
-        />
+        {/* File Upload */}
+        <FileUploadInputField onUploadSuccess={(fileId) => form.setValue("image", fileId)} />
 
-        {/* Title of List and Add Lists Button */}
+        {/* List Title and List Items */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <InputField
             label="Title of List"
             placeholder="Enter list title"
-            className="flex-1"
-            {...register("listTitle")}
+            {...form.register("listTitle")}
           />
-          {errors.listTitle && <ErrorMessage>{errors.listTitle.message}</ErrorMessage>}
+          {form.formState.errors.listTitle && <ErrorMessage>{form.formState.errors.listTitle.message}</ErrorMessage>}
 
-          <SecondaryButton onClick={showInputOnClick} className="w-full md:w-auto">
-            Add Lists
+          <SecondaryButton
+            onClick={(e) => {
+              e.preventDefault();
+              append({ list: "" });
+            }}
+            className="w-full md:w-auto"
+          >
+            Add List
           </SecondaryButton>
         </div>
 
-        {showInput.map((input, index) => (
-          <div key={index} className="flex flex-col md:flex-row gap-4 items-center">
+        {fields.map((input, index) => (
+          <div key={input.id} className="flex flex-col md:flex-row gap-4 items-center">
             <InputField
               label={`List ${index + 1}`}
-              value={input}
               placeholder="Enter list item"
-              className="flex-1"
-              {...register('listItems')}
-              onChange={(e) => handleInputChange(index, e.target.value)}
+              {...form.register(`listItem.${index}.list`)}
             />
             <MdDelete
-              onClick={() => deleteListInput(index)}
+              onClick={() => remove(index)}
               className="cursor-pointer text-2xl text-red-500 hover:text-red-700"
             />
           </div>
         ))}
 
-        {/* Button to delete all input fields */}
-        {showInput.length > 0 && (
-          <div>
-            <SecondaryButton onClick={deleteListInputs} className="mt-4 hover:bg-red-200">
-              Delete All Lists
-            </SecondaryButton>
-          </div>
-        )}
-
-        <PrimaryButton type="submit" className="w-full"
-        >
+        <PrimaryButton type="submit" className="w-full">
           Submit
         </PrimaryButton>
       </form>

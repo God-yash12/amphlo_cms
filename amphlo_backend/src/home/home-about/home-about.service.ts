@@ -26,14 +26,16 @@ export class HomeAboutService {
   }
 
   async createNew(dto: CreateHomeAboutDto, image: FileUpload) {
-      const newHomeAbout = this.homeAboutRepository.create({
+    const newHomeAbout = this.homeAboutRepository.create({
       title: dto.title,
       description: dto.description,
-      listTitle: dto.listItem,
+      listTitle: dto.listTitle,
       listItem: dto.listItem,
       image
     })
-    return this.homeAboutRepository.save(newHomeAbout)
+    await this.homeAboutRepository.save(newHomeAbout)
+
+    return { message: "Home About Updated successfully" }
   }
 
   async update(existing: HomeAbout, dto: CreateHomeAboutDto, image: FileUpload) {

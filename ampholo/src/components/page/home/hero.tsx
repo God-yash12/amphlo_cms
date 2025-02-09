@@ -1,32 +1,26 @@
-import { useState } from "react";
 import InputField from "../../../ui/input/input";
 import { TextEditor } from "../../../ui/editor/text-editor";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
-import { HeroService } from "../../services/home-service/hero-service";
+import { HeroService } from "../../services/home/hero-service";
 import FileUploadInputField from "../../../ui/input/file-upload-input";
+import { useFieldArray } from "react-hook-form";
+import SecondaryButton from "../../../ui/buttons/secondary-button";
 
-type Button = { name: string; route: string };
+const routes = ["/about", "/countries", "/features", "/contact"] as const;
 
 const Hero = () => {
-  const { register, handleSubmit, setValue } = HeroService();
-  const [editorContent, setEditorContent] = useState("");
+  const { form, onSubmit } = HeroService();
 
-  const [buttons, setButtons] = useState<Button[]>([
-    { name: "", route: "" },
-    { name: "", route: "" },
-  ]);
-
-  const routes = ["/about", "/countries", "/features", "/contact"];
-
-  // Update button name or route
-  const handleButtonChange = (index: number, field: "name" | "route", value: string) => {
-    const updatedButtons = [...buttons];
-    updatedButtons[index][field] = value;
-    setButtons(updatedButtons);
-  };
-
+  const {
+    fields,
+    append,
+    remove,
+  } = useFieldArray({
+    control: form.control,
+    name: "buttons"
+  });
 
   return (
     <div id="hero" className="flex flex-col gap-10">
@@ -37,7 +31,7 @@ const Hero = () => {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
         {/* Title Input */}
         <div>
           <InputField
@@ -45,7 +39,7 @@ const Hero = () => {
             variant="outlined"
             size="lg"
             placeholder="Title"
-            {...register("title", { required: "Title is required" })}
+            {...form.register("title", { required: "Title is required" })}
           />
 
         </div>
@@ -54,53 +48,63 @@ const Hero = () => {
         <div className="w-auto">
           <TextEditor
             placeholder="Write Hero Description"
-            value={editorContent}
+            value={form.watch("description") ?? ""}
             onChange={(content) => {
-              setEditorContent(content)
-              setValue("description", content);
+              form.setValue("description", content);
             }}
           />
         </div>
         <FileUploadInputField
-          onUploadSuccess={(fileId) => setValue('image', fileId)}
+          onUploadSuccess={(fileId) => form.setValue('image', fileId)}
         />
 
         {/* Button Configuration */}
-        <div className="flex flex-col gap-4 w-full max-w-md">
-          {buttons.map((button, index) => (
-            <div key={index} className="flex flex-col gap-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Button {index + 1}
-              </label>
-              <div className="flex gap-2">
-                <InputField
-                  label="Button Name"
-                  variant="outlined"
-                  size="lg"
-                  placeholder="Enter button name"
-                  value={button.name}
-                  onChange={(e) => handleButtonChange(index, "name", e.target.value)}
-                  className="flex-1"
-                />
-                <select
-                  value={button.route}
-                  onChange={(e) => handleButtonChange(index, "route", e.target.value)}
-                  className="block p-2 border border-gray-300 rounded-md flex-1"
-                >
-                  <option value="">Select a route</option>
-                  {routes.map((route) => (
-                    <option key={route} value={route}>
-                      {route}
-                    </option>
-                  ))}
-                </select>
+        <div className="flex flex-col gap-4 ">
+          {fields.map((field, index) => (
+            <section key={field.id}  className="space-x-5">
+              <div className="flex flex-col gap-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Button {index + 1}
+                </label>
+                <div className="flex gap-2">
+                  <InputField
+                    label="Button Name"
+                    variant="outlined"
+                    size="lg"
+                    placeholder="Enter button name"
+                    className="flex-1 w-full"
+                    {...form.register(`buttons.${index}.name`)}
+                  />
+                  <select
+                    value={form.watch(`buttons.${index}.route`)}
+                    onChange={(e) => form.setValue(`buttons.${index}.route`, e.target.value)}
+                    className=" p-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="">Select a route</option>
+                    {routes.map((route) => (
+                      <option key={route} value={route}>
+                        {route}
+                      </option>
+                    ))}
+                  </select>
+              {
+                fields.length > 1 && (
+                  <SecondaryButton onClick={() => remove(index)}>Delete</SecondaryButton>
+                )
+              }
+                </div>
               </div>
-            </div>
+            </section>
           ))}
         </div>
 
+        {
+          fields.length < 2 && (
+            <SecondaryButton onClick={() => append({ name: '', route: '' })}>Add Button</SecondaryButton>
+          )
+        }
         {/* Submit Button */}
-        <PrimaryButton type="submit" className="w-full text-center">Submit</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full text-center">Update</PrimaryButton>
       </form>
     </div>
   );

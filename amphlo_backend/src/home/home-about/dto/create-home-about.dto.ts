@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsString } from "class-validator";
+import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
 
 export class CreateHomeAboutDto {
     @ApiProperty({
@@ -8,6 +8,13 @@ export class CreateHomeAboutDto {
     })
     @IsString()
     title: string;
+
+    @ApiProperty({
+        description: "Main title of the Home about section",
+        example: "Empowering Global Education Management"
+    })
+    @IsString()
+    mainTitle: string;
 
     @ApiProperty({
         description: "description of the page",
@@ -24,7 +31,9 @@ export class CreateHomeAboutDto {
     @ApiProperty({
         description: "Lists of the About AMPHLO"
     })
-    listItem: string
+    @IsArray()
+    @ValidateNested({ each: true })
+    listItem: { list: string }[];
 
     @ApiProperty({
         description: "Image of the page"

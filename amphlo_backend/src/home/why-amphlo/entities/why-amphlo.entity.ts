@@ -6,16 +6,19 @@ export class WhyAmphlo {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     title: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     mainTitle: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     description: string;
 
-    @OneToOne(() => FileUpload, imageUpload => imageUpload.whyAmphloImage, {nullable: true})
-    @JoinColumn({name: "whyAmphloImageId"})
+    @OneToOne(() => FileUpload, imageUpload => imageUpload.whyAmphloImage, { nullable: true })
+    @JoinColumn({ name: "whyAmphloImageId" })
     image: FileUpload
+
+    @Column({ type: 'json', nullable: true })
+    lists: { listTitle: string, listDescription: string }[];
 }
