@@ -53,7 +53,7 @@ export const UseFAQService = () => {
         },
         onSuccess: () => {
             toast.success("FAQ Deleted Successfully");
-            queryClient.invalidateQueries(["faqs"]);
+            queryClient.invalidateQueries({ queryKey: ["faqs"] });
         },
         onError: (error) => {
             toast.error(`Failed to Delete FAQ ${error.message}`);
@@ -70,7 +70,7 @@ export const UseFAQService = () => {
         },
         onSuccess: () => {
             toast.success("FAQ Updated Successfully");
-            queryClient.invalidateQueries(["faqs"]);
+            queryClient.invalidateQueries({ queryKey: ["faqs"] });
         },
         onError: (error) => {
             toast.error(`Failed to Update FAQ ${error.message}`);

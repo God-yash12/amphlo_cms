@@ -39,19 +39,19 @@ export class PartnerJoinnowService {
     return this.joinNowRepo.findOne({ where: { id: Not(IsNull()) } })
   }
 
-  findAll() {
-    return `This action returns all partnerJoinnow`;
-  }
+  // findAll() {
+  //   return `This action returns all partnerJoinnow`;
+  // }
 
-  findOne(id: number) {
-    return `This action returns a #${id} partnerJoinnow`;
-  }
+  // findOne(id: number) {
+  //   return `This action returns a #${id} partnerJoinnow`;
+  // }
 
-  update(id: number, updatePartnerJoinnowDto: UpdatePartnerJoinnowDto) {
-    return `This action updates a #${id} partnerJoinnow`;
-  }
+  // update(id: number, updatePartnerJoinnowDto: UpdatePartnerJoinnowDto) {
+  //   return `This action updates a #${id} partnerJoinnow`;
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} partnerJoinnow`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} partnerJoinnow`;
+  // }
 }

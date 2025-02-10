@@ -1,5 +1,4 @@
 import InputField from "../../../ui/input/input";
-import { TextEditor } from "../../../ui/editor/text-editor";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
@@ -7,11 +6,13 @@ import FileUploadInputField from "../../../ui/input/file-upload-input";
 import { useFieldArray } from "react-hook-form";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { UseHeroService } from "../../services/feature/hero-service";
+import { ErrorMessage } from "../../../ui/typographs/error-message";
 
 const routes = ["/about", "/countries", "/features", "/contact"] as const;
 
 const Hero = () => {
   const { form, onSubmit } = UseHeroService();
+  const errorMessage  = form.formState.errors
 
   const {
     fields,
@@ -39,24 +40,27 @@ const Hero = () => {
             variant="outlined"
             size="lg"
             placeholder="Title"
-            {...form.register("title", { required: "Title is required" })}
+            {...form.register("title")}
           />
-
+          {errorMessage.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}
+          
         </div>
 
         {/* Description Editor */}
         <div className="w-auto">
-          <TextEditor
-            placeholder="Write Hero Description"
-            value={form.watch("description") ?? ""}
-            onChange={(content) => {
-              form.setValue("description", content);
-            }}
+        <InputField
+            label="SubTitle"
+            variant="outlined"
+            size="lg" 
+            placeholder="Subtitle"
+            {...form.register("description")}
           />
         </div>
+        {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
         <FileUploadInputField
           onUploadSuccess={(fileId) => form.setValue('image', fileId)}
         />
+        {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
 
         {/* Button Configuration */}
         <div className="flex flex-col gap-4 ">

@@ -11,10 +11,19 @@ interface FileUploadResponse {
 export const UseFileSubmit = () => {
   const axiosPrivate = UseAxiosPrivate();
 
-  return useMutation<FileUploadResponse, AxiosError, File>({
-    mutationFn: async (file: File) => {
+  return useMutation<FileUploadResponse, AxiosError, File | File[]>({
+    mutationFn: async (input: File | File[]) => {
       const formData = new FormData();
-      formData.append("image", file); 
+
+      if (Array.isArray(input)) {
+        // Handle multiple files
+        input.forEach((file, index) => {
+          formData.append(`images[${index}]`, file);
+        });
+      } else {
+        // Handle single file
+        formData.append("image", input);
+      }
 
       const response = await axiosPrivate.post<FileUploadResponse>(
         "/file-upload",
@@ -28,8 +37,9 @@ export const UseFileSubmit = () => {
       return response.data;
     },
     onError: (error) => {
-      const message = error.response?.data?.message || error.message;
+      const message = (error.response?.data as { message?: string })?.message || error.message;
       toast.error(`File upload failed: ${message}`);
     }
+
   });
 };

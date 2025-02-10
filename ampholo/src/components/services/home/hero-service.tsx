@@ -28,8 +28,8 @@ export const HeroService = () => {
       const response = await axiosPrivate.patch("hero", data);
       return response.data;
     },
-    onSuccess: () => {
-      form.reset();
+    onSuccess: (data) => {
+      form.reset(data);
       toast.success("Hero section customized successfully!", {
         position: "top-right",
       });
@@ -42,6 +42,7 @@ export const HeroService = () => {
   const onSubmit = async (data: THeroSectionValidation) => {
     await mutateAsync(data);
   };
+
 
   return {
     form,

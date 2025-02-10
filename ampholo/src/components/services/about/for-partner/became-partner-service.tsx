@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { JoinNowValidationData, JoinNowValidation } from "../../../validations/about/for-university/uni-join-now";
 
-export const BecamePartnerSection = () => {
+export const BecamePartnerService = () => {
   const axiosPrivate = UseAxiosPrivate();
 
   const form = useForm<JoinNowValidationData>({
@@ -19,7 +19,7 @@ export const BecamePartnerSection = () => {
 
   const { mutateAsync } = useMutation<any, Error, JoinNowValidationData>({
     mutationFn: async (data) => {
-      const response = await axiosPrivate.patch("joinnow-partner", data);
+      const response = await axiosPrivate.patch("partner-joinnow", data);
       return response.data;
     },
     onSuccess: () => {

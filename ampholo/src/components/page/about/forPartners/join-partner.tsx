@@ -5,13 +5,13 @@ import Header from "../../../../ui/typographs/header/header";
 import Paragraph from "../../../../ui/typographs/paragraph";
 import { useFieldArray } from "react-hook-form";
 import SecondaryButton from "../../../../ui/buttons/secondary-button";
-import { UseJoinNowService } from "../../../services/about/for-university/uni-join-now-service";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
+import { BecamePartnerService } from "../../../services/about/for-partner/became-partner-service";
 
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 export const JoinNowPartnerSection = () => {
-  const { form, onSubmit } = UseJoinNowService();
+  const { form, onSubmit } = BecamePartnerService();
   const errorMessage = form.formState.errors;
 
   const { fields, append, remove } = useFieldArray({

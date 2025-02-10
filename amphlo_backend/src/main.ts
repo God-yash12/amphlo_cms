@@ -3,14 +3,25 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { join } from "path";
-import { ValidationPipe } from "@nestjs/common/pipes/validation.pipe";
+import { ForbiddenException } from "@nestjs/common";
+import { log } from "console";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    // origin: 'http://localhost:3000',
+    origin: function (origin: undefined | string, callback: (e: Error, b: boolean) => {}) {
+      if (origin === undefined && configService.get("NODE_ENV") === 'production') throw new ForbiddenException("Not Allowed By CORs")
+
+      if (origin === configService.get(`CLIENT_URL`) || configService.get("NODE_ENV") === 'development') {
+        return callback(null, true)
+      } else {
+        return callback(new ForbiddenException("Error"), false)
+      }
+    },
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
   });
 
@@ -27,7 +38,6 @@ async function bootstrap() {
 
   // app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  const configService = app.get(ConfigService);
   const PORT = configService.get<number>('PORT');
   app.listen(process.env.PORT ?? 5001);
   console.log(`server is running on http://localhost:${PORT}`);

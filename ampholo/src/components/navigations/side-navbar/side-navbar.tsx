@@ -87,6 +87,11 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
           element: "For Partners",
           path: "/about/for-partners",
         },
+        {
+          id: 14,
+          element: "Our Journey",
+          path: "/about/our-journey",
+        },
       ],
     },
     {
@@ -125,52 +130,62 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
     {
       id: 5,
       element: "Countries",
-      path: "/countries", 
+      path: "/destination", 
       icon: MdFeaturedPlayList,
-      children: [
-        {
-          id: 14,
-          element: "United States",
-          path: "/countries/united-states",
-        },
-        {
-          id: 15,
-          element: "United Kingdom",
-          path: "/countries/united-kingdom",
-        },
-        {
-          id: 16,
-          element: "Australia",
-          path: "/countries/australia",
-        },
-        {
-          id: 17,
-          element: "Canada",
-          path: "/countries/canada",
-        },
-        {
-          id: 18,
-          element: "Germany",
-          path: "/countries/germany",
-        },
-        {
-          id: 19,
-          element: "France",
-          path: "/countries/france",
-        },
-        {
-          id: 20,
-          element: "Japan",
-          path: "/countries/japan",
-        },
-        {
-          id: 21,
-          element: "Netherlands",
-          path: "/countries/netherlands",
-        },
-      ],
+      // children: [
+      //   {
+      //     id: 27,
+      //     element: "Australia",
+      //     path: "/destination/australia",
+      //   },
+      //   {
+      //     id: 28,
+      //     element: "New Zealand",
+      //     path: "/destination/new-zealand",
+      //   },
+      //   {
+      //     id: 29,
+      //     element: "Canada",
+      //     path: "/destination/canada",
+      //   },
+      //   {
+      //     id: 30,
+      //     element: "United States",
+      //     path: "/destination/united-states",
+      //   },
+      //   {
+      //     id: 31,
+      //     element: "United Kingdom",
+      //     path: "/destination/united-kingdom",
+      //   },
+      //   {
+      //     id: 32,
+      //     element: "France",
+      //     path: "/destination/france",
+
+      //   },
+      //   {
+      //     id: 33,
+      //     element: "Germany",
+      //     path: "/destination/germany",
+      //   },
+      //   {
+      //     id: 34,
+      //     element: "United States",
+      //     path: "/destination/united-states",
+      //   },
+          
+      // ],
+
     },
+    {
+      id: 6,
+      element: "Portal",
+      path: "/portal",
+      icon: MdFeaturedPlayList,
+    }
   ];
+
 
   const formElement: NavElement[] = [
     {

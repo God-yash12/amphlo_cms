@@ -18,8 +18,8 @@ export const UseHomrAboutServices = () => {
       const response = await axiosPrivate.patch('home-about', data)
       return response.data;
     },
-    onSuccess: () => {
-      form.reset()
+    onSuccess: (data: HomeAboutValidationData) => {
+      form.reset(data)
       toast.success('About customized successful')
     },
     onError: (error: any) => {

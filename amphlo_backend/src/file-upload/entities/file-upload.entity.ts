@@ -3,9 +3,18 @@ import { PartnerBenefit } from 'src/about/for-partners/partner-benefits/entities
 import { PartnerFeature } from 'src/about/for-partners/partner-features/entities/partner-feature.entity';
 import { PartnerHero } from 'src/about/for-partners/partner-hero/entities/partner-hero.entity';
 import { AboutHero } from 'src/about/for-university/hero/entities/hero.entity';
+import { Australia } from 'src/countries/australia/entities/australia.entity';
+import { Canada } from 'src/countries/canada/entities/canada.entity';
+import { France } from 'src/countries/france/entities/france.entity';
+import { Germany } from 'src/countries/germany/entities/germany.entity';
+import { Japan } from 'src/countries/japan/entities/japan.entity';
+import { Netherlands } from 'src/countries/netherlands/entities/netherland.entity';
+import { UK } from 'src/countries/uk/entities/uk.entity';
+import { USA } from 'src/countries/usa/entities/usa.entity';
 import { FeatureCard } from 'src/features/feature-cards/entities/feature-card.entity';
 import { FeatureHero } from 'src/features/hero/entities/hero.entity';
 import { Overview } from 'src/features/overview/entities/overview.entity';
+
 import { WhyamphloCard } from 'src/forms/for-university/whyamphlo-card/entities/whyamphlo-card.entity';
 import { KeyFeatureCard } from 'src/forms/key-feature-card/entities/key-feature-card.entity';
 import { Banner } from 'src/home/banner/entities/banner.entity';
@@ -15,6 +24,12 @@ import { HomeTransform } from 'src/home/home-transform/entities/home-transform.e
 import { Testimonial } from 'src/home/testimonials/entities/testimonial.entity';
 import { WhyAmphlo } from 'src/home/why-amphlo/entities/why-amphlo.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { AboutMore } from 'src/about-more/about-more/entities/about-more.entity';
+import { PortalHero } from 'src/portal/portal-hero/entities/portal-hero.entity';
+import { PortalFeature } from 'src/portal/portal-feature/entities/portal-feature.entity';
+
+
+
 
 @Entity('image')
 export class FileUpload {
@@ -97,5 +112,51 @@ export class FileUpload {
   // relation with partner feature
   @OneToOne(()=> PartnerFeature, partnerFeature => partnerFeature.image, {onDelete: "CASCADE"})
   partnerFeatureImage: PartnerFeature;
+
+  // relation with australia
+  @OneToOne(() => Australia, australia => australia.image, {onDelete: 'CASCADE'})
+  australiaImage: Australia;
+
+  // relation with canada
+  @OneToOne(() => Canada, canada => canada.image, {onDelete: 'CASCADE'})
+  canadaImage: Canada;
+
+  // relation with france
+  @OneToOne(() => France, france => france.image, {onDelete: 'CASCADE'})
+  franceImage: France;
+
+  // relation with germany
+  @OneToOne(() => Germany, germany => germany.image, {onDelete: 'CASCADE'})
+  germanyImage: Germany;
+
+  // relation with japan
+  @OneToOne(() => Japan, japan => japan.image, {onDelete: 'CASCADE'})
+  japanImage: Japan;
+
+  // relation with netherlands
+  @OneToOne(() => Netherlands, netherlands => netherlands.image, {onDelete: 'CASCADE'})
+  netherlandsImage: Netherlands;
+
+  // relation with uk
+  @OneToOne(() => UK, uk => uk.image, {onDelete: 'CASCADE'})
+  ukImage: UK;
+  
+  // relation with usa
+  @OneToOne(() => USA, usa => usa.image, {onDelete: 'CASCADE'})
+  usaImage: USA;
+
+  // relation with about more
+  @OneToOne(() => AboutMore, aboutMore => aboutMore.image, { onDelete: 'CASCADE' })
+  aboutMoreImage: AboutMore;
+
+  //relation with portal
+
+  //relation with portal hero section
+  @OneToOne(() => PortalHero, portalHero => portalHero.image, {onDelete: "CASCADE"})
+  portalHeroImage: PortalHero;
+
+  // relation with portal feature section
+  @OneToOne(() => PortalFeature, portalFeature => portalFeature.image, {onDelete: "CASCADE"})
+  PortalFeatureImage: PortalFeature;
 
 }
