@@ -24,10 +24,10 @@ import { CorefeatureCards } from "./components/forms/feature/core-feature-card";
 import { Testimonials } from "./components/page/home/testimonial";
 import { UniAboutFeatureCard } from "./components/forms/about/for-university/uni-feature-card";
 import { UniAboutWhyAmphloCard } from "./components/forms/about/for-university/uni-why-amphlo-card";
-import { AustraliaHero } from "./components/page/countries/australia/Australia";
-import CountriesList from "./components/page/countries/countries";
+import { CountryHero } from "./components/page/countries/country-hero/country-hero";
 import { OurJourney } from "./components/page/our-journey/our-journey";
 import { Portal } from "./components/page/portal/portal";
+// import CountryList from "./components/page/countries/countries";
 
 function App() {
 
@@ -63,8 +63,8 @@ function App() {
               <Route path="faqs" element={<FeatureFAQs />} />
             </Route>
             {/* Country Route */}
-            <Route path="destination" element={<CountriesList />}>
-              <Route path="australia" element={<AustraliaHero />} />
+            <Route path="destination">
+              <Route path=":countryName" element={<CountryHero />} />
             </Route>
 
             {/* form route */}

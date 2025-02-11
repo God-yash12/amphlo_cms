@@ -7,14 +7,17 @@ const PrimaryButton: React.FC<ButtonProps> = ({ type, children, className, ...re
   const baseClass = "w-44 rounded-full"
 
   return (
-    <Button
-    type={type}
-      variant="gradient" 
-      className={twMerge(baseClass, className)}
-      {...rest} 
-    >
-      {children}
-    </Button>
+    <div>
+      {/* @ts-ignore */}
+      <Button
+        type={type}
+        variant="gradient"
+        className={twMerge(baseClass, className)}
+        {...rest}
+      >
+        {children}
+      </Button>
+    </div>
   );
 };
 

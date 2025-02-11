@@ -88,15 +88,6 @@ export const Testimonials = () => {
                                 onUploadSuccess={(imageId) => form.setValue("image", imageId)}
                             />
                         </div>
-                        {form.watch("image") && (
-                            <div className="mt-4">
-                                <img
-                                    src={form.watch("image")?.url}
-                                    alt="Selected Testimonial"
-                                    className="w-24 h-24 object-cover rounded-full mx-auto"
-                                />
-                            </div>
-                        )}
                         {errorMessage.image && (
                             <ErrorMessage className="text-red-500 text-sm">
                                 {errorMessage.image.message}

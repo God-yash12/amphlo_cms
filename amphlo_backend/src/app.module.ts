@@ -33,17 +33,11 @@ import { PartnerBenefitsModule } from './about/for-partners/partner-benefits/par
 import { PartnerJoinnowModule } from './about/for-partners/partner-joinnow/partner-joinnow.module';
 import { PartnerFeaturesModule } from './about/for-partners/partner-features/partner-features.module';
 import { GalleryModule } from './about/for-partners/gallery/gallery.module';
-import { AustraliaModule } from './countries/australia/australia.module';
-import { CanadaModule } from './countries/canada/canada.module';
-import { UkModule } from './countries/uk/uk.module';
-import { UsaModule } from './countries/usa/usa.module';
-import { JapanModule } from './countries/japan/japan.module';
-import { FranceModule } from './countries/france/france.module';
-import { GermanyModule } from './countries/germany/germany.module';
-import { NetherlandsModule } from './countries/netherlands/netherlands.module';
+import { CountryModule } from './countries/australia/country.module';
 import { AboutMoreModule } from './about-more/about-more/about-more.module';
 import { ContactModule } from './contact/contact.module';
 import { PortalHeroModule } from './portal/portal-hero/portal-hero.module';
+
 import { PortalAccessModule } from './portal/portal-access/portal-access.module';
 import { PortalFeatureModule } from './portal/portal-feature/portal-feature.module';
 
@@ -95,19 +89,13 @@ import { PortalFeatureModule } from './portal/portal-feature/portal-feature.modu
     PartnerJoinnowModule,
     PartnerFeaturesModule,
     GalleryModule,
-    AustraliaModule,
-    CanadaModule,
-    UkModule,
-    UsaModule,
-    JapanModule,
-    FranceModule,
-    GermanyModule,
-    NetherlandsModule,
+    CountryModule,
     AboutMoreModule,
     ContactModule,
     PortalHeroModule,
     PortalAccessModule,
     PortalFeatureModule
+
   ],
 })
 

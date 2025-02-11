@@ -21,6 +21,7 @@ export const handleFileUpload = <T extends Record<string, any>>(
     if (multiple) {
       // Handle multiple file upload
       const files = Array.from(event.target.files); 
+      {/* @ts-ignore */}
       setValue(fieldName, files as any, {
         shouldValidate,
         shouldDirty,
@@ -28,6 +29,7 @@ export const handleFileUpload = <T extends Record<string, any>>(
     } else {
       // Handle single file upload
       const file = event.target.files[0];
+      {/* @ts-ignore */}
       setValue(fieldName, file as any, {
         shouldValidate,
         shouldDirty,

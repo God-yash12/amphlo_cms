@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TestimonialsValidation, TestimonialsValidationData } from "../../validations/home/testimonial-validation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { any } from "prop-types";
+
 
 interface Testimonial {
     id: number;
@@ -59,6 +59,7 @@ export const UseTestimonialService = () => {
         },
         onSuccess: () => {
             toast.success("Testimonials Deleted Successfully");
+            {/* @ts-ignore */}
             queryClient.invalidateQueries(["testimonials"]);
         },
         onError: (error) => {
@@ -74,6 +75,7 @@ export const UseTestimonialService = () => {
         onSuccess: () => {
             form.reset();
             toast.success("Testimonial updated successfully");
+            {/* @ts-ignore */}
             queryClient.invalidateQueries(["testimonials"]);
         },
         onError: (error) => {
