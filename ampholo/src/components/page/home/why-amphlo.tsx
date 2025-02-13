@@ -2,24 +2,22 @@ import InputField from "../../../ui/input/input"
 import { TextEditor } from "../../../ui/editor/text-editor"
 import Header from "../../../ui/typographs/header/header"
 import Paragraph from "../../../ui/typographs/paragraph"
-import FileUploadInputField from "../../../ui/input/file-upload-input"
 import { WhyAmphloService } from "../../services/home/why-amphlo-service"
 import { ErrorMessage } from "../../../ui/typographs/error-message"
 import PrimaryButton from "../../../ui/buttons/primary-button"
-import { useFieldArray } from "react-hook-form"
 import SecondaryButton from "../../../ui/buttons/secondary-button"
 import { Textarea } from "@material-tailwind/react"
-
+import { FileUploadInput } from "../../../ui/input/file-upload-input copy"
 
 const WhyAmphlo = () => {
-  const { form, onSubmit } = WhyAmphloService()
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: 'lists',
-  })
+  const { form, onSubmit, fields, append, remove, image, isLoading } = WhyAmphloService()
 
+  if(isLoading) return <div>
+    Loading...
+  </div>
+  
   return (
-    <div className="container mx-auto p-6">
+    <div className="flex flex-col gap-12">
       <div className="text-center mb-6">
         <Header className="text-2xl font-bold text-gray-800">Why Choose AMPHLO</Header>
         <Paragraph className="text-gray-600">Customize the reasons for choosing AMPHLO in this section.</Paragraph>
@@ -31,7 +29,7 @@ const WhyAmphlo = () => {
             placeholder="Enter reasons for choosing AMPHLO"
             size="lg"
             {...form.register("title")}
-            aria-invalid={form.formState.errors.title ? "true" : "false"}
+            // aria-invalid={form.formState.errors.title ? "true" : "false"}
           />
           {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
 
@@ -40,7 +38,7 @@ const WhyAmphlo = () => {
             placeholder="Enter the main title"
             size="lg"
             {...form.register("mainTitle")}
-            aria-invalid={form.formState.errors.mainTitle ? "true" : "false"}
+            // aria-invalid={form.formState.errors.mainTitle ? "true" : "false"}
           />
           {form.formState.errors.mainTitle && <ErrorMessage>{form.formState.errors.mainTitle.message}</ErrorMessage>}
         </div>
@@ -54,10 +52,15 @@ const WhyAmphlo = () => {
           {form.formState.errors.description && <ErrorMessage>{form.formState.errors.description.message}</ErrorMessage>}
         </div>
 
-        <FileUploadInputField
-          onUploadSuccess={(fileId) => form.setValue("image", fileId)}
+        <FileUploadInput
+          onChange={(files) => form.setValue("imageId", files[0].id)}
+          initialFiles={image ? [{
+            id: image.id,
+            url: image.url,
+            originalName: image.filename
+          }] : []}
         />
-
+        
         {/* List Item Process */}
         <section className="space-y-5">
           <Header>Add Lists</Header>
@@ -89,7 +92,7 @@ const WhyAmphlo = () => {
                     append({ listTitle: '', listDescription: '' });
                   }}
                 >
-                  Add List
+                  + Add List
                 </SecondaryButton>
               </div>
             )

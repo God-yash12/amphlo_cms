@@ -1,52 +1,37 @@
-import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { UseAxiosPrivate } from "../../../auth/home_auth";
 import { toast } from "react-toastify";
+import { BannerValidation, BannerValidationType } from "../../validations/home/banner-validation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-interface BannerFormData{
-    title?: string;
-    description?: string;
-    buttons?: {
-        name?: string;
-        route?: string;
-    }[];
-    image?: number;
-}
 
 export const BannerService = () => {
 
     const  axiosPrivate  = UseAxiosPrivate();
-
-    const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        formState: { errors },
-    } = useForm<BannerFormData>({
-        defaultValues: {
-            title: "",
-            description: "",
-            buttons:[{
-                name: "",
-                route: "",
-            },
-            {
-                name: "",
-                route: "",
-            }],
-            image: 0,
-
-        },
+    
+    const form = useForm<BannerValidationType>({
+        resolver: zodResolver(BannerValidation),
+        mode: "onChange",
     });
 
+    const {
+        fields,
+        append,
+        remove,
+      } = useFieldArray({
+        control: form.control,
+        name: "buttons"
+      });
+
     const { mutateAsync} =  useMutation({
-        mutationFn: async (data: BannerFormData) => {
+        mutationFn: async (data: BannerValidationType) => {
             const response = await axiosPrivate.patch("banner", data);
             return response;
         },
         onSuccess: () => {
-            reset();
+            form.reset();
             toast.success("Banner section customized successfully!", {
                 position: "top-right"
             })
@@ -56,16 +41,41 @@ export const BannerService = () => {
         }       
     })
 
-    const onSubmit = async (data: BannerFormData) => {
+    const onSubmit = async (data: BannerValidationType) => {
         await mutateAsync(data);
-        console.log(data, "data");
     };
 
+    
+    const {data, isLoading} = useQuery({
+        queryKey: ["banner"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get("banner");
+            return response.data;
+        }
+    })
+
+    useEffect(() => {
+        try {
+            form.reset({
+                title: data?.title,
+                description: data?.description,
+                buttons: data?.buttons?.map((button: any) => ({
+                    name: button.name,
+                    route: button.route,
+                })),
+            });
+        } catch (error) {
+            console.error("Error fetching banner data:", error);
+        }
+    }, [data]);
 
     return {
-        register,
-        handleSubmit: handleSubmit(onSubmit),
-        errors,
-        setValue,
+        form,
+        onSubmit,
+        image: data?.image,
+        isLoading,
+        fields,
+        append,
+        remove
     };
 }

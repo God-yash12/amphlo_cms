@@ -1,40 +1,42 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { UseAxiosPrivate } from "../../../../auth/home_auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FeatureCardValidation } from "../../../validations/feature/feature-card-validation";
+import { FeatureCardData, FeatureCardValidation } from "../../../validations/feature/feature-card-validation";
 
-interface FormDataProps {
+
+interface CoreFeatureCardData {
+    id: number;
     title: string;
     description: string;
-    image: number;
+    image: {
+        id: number;
+        url: string;
+        filename: string;
+        mimetype: string;
+    };
 }
 
 export const CoreFeaturesFormService = () => {
     const axiosPrivate = UseAxiosPrivate()
+    const queryClient = useQueryClient()
+    const [selectedCoreFeatureCard, setSelectedCoreFeatureCard] = useState<CoreFeatureCardData | null>(null)
+    const [imagePreview, setImagePreview] = useState<string | null>(null)
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        formState: { errors },
-    } = useForm <FormDataProps> ({
+    const form = useForm<FeatureCardData>({
         resolver: zodResolver(FeatureCardValidation),
-        defaultValues: {
-            title: "",
-            description: "",
-        }
+        mode: "onChange",
     })
 
     const { mutateAsync } = useMutation({
-        mutationFn: async (data: FormDataProps) => {
+        mutationFn: async (data: FeatureCardData) => {
             const response = await axiosPrivate.post('core-feature-card', data);
             return response;
         },
         onSuccess: () => {
-            reset()
+            form.reset()
             toast.success("Key Feature Card Updated successfully")
         },
         onError: (error) => {
@@ -42,15 +44,83 @@ export const CoreFeaturesFormService = () => {
         }
     })
 
-    const onSubmit = async (data: FormDataProps) => {
-        await mutateAsync(data)
+    const { data } = useQuery({
+        queryKey: ["core-feature-card"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get("core-feature-card");
+            return response.data;
+        },
+    });
+
+    const updateCoreFeatureCard = useMutation({
+        mutationFn: async ({ id, updatedData }: { id: number; updatedData: FeatureCardData }) => {
+          const response = await axiosPrivate.patch(`core-feature-card/${id}`, updatedData);
+          return response;
+        },
+        onSuccess: () => {
+          form.reset();
+          toast.success("Key Feature Card updated successfully!");
+        queryClient.invalidateQueries({ queryKey: ["core-feature-card"] });
+          setSelectedCoreFeatureCard(null);
+        },
+        onError: (error: Error) => {
+          toast.error(`Error updating why amphlo card: ${error.message}`);
+        },
+      })  
+
+
+
+    const onSubmit = async (data: FeatureCardData) => {
+        if (selectedCoreFeatureCard) {
+            await updateCoreFeatureCard.mutateAsync({
+                id: (selectedCoreFeatureCard as any).id,
+                updatedData: data,
+            });
+        } else {
+            await mutateAsync(data)
+        }
     }
 
-    return {
-        register,
-        handleSubmit: handleSubmit(onSubmit),
-        errors,
-        setValue,
+         
+    const deleteCoreFeatureCard = useMutation({
+        mutationFn: async (id: number) => {
+            const response = await axiosPrivate.delete(`core-feature-card/${id}`)
+            return response
+        },
+        onSuccess: () => {
+            toast.success("Core Feature Card Deleted successfully")
+        },
+        onError: (error) => {
+            toast.error(`Failed to delete the Card ${error.message}`)
+        }
+    })
 
+     
+    useEffect(() => {
+        if (selectedCoreFeatureCard) {
+            try {
+                form.reset({
+                    title: selectedCoreFeatureCard.title,
+                    description: selectedCoreFeatureCard.description,
+                    image: selectedCoreFeatureCard.image?.id
+                });
+                if (selectedCoreFeatureCard.image?.url) {
+                    setImagePreview(selectedCoreFeatureCard.image.url);
+                }
+            } catch (error) {
+                console.error("Error resetting form:", error);
+            }
+        }
+    }, [selectedCoreFeatureCard, form]);
+
+    return {
+        form,
+        onSubmit,
+        data,
+        imagePreview,
+        setImagePreview,
+        selectedCoreFeatureCard,
+        setSelectedCoreFeatureCard,
+        deleteCoreFeatureCard
     }
 }

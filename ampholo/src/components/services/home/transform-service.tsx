@@ -1,52 +1,32 @@
-import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { UseAxiosPrivate } from "../../../auth/home_auth";
 import { toast } from "react-toastify";
-
-interface TransformFormData {
-    title?: string;
-    description?: string;
-    buttons?: {
-        name?: string;
-        route?: string;
-    }[];
-    image?: number;
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TransformValidation, TransformValidationType } from "../../validations/home/transform-validation"; 
 
 export const TransformService = () => {
 
     const axiosPrivate = UseAxiosPrivate();
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        formState: { errors },
-    } = useForm<TransformFormData>({
-        defaultValues: {
-            title: "",
-            description: "",
-            buttons: [{
-                name: "",
-                route: "",
-            },
-            {
-                name: "",
-                route: "",
-            }],
-            image: 0,
+    const form = useForm<TransformValidationType>({
+        resolver: zodResolver(TransformValidation),
+        mode: "onChange",
+    })
 
-        },
-    });
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: "buttons",
+    })
 
     const { mutateAsync } = useMutation({
-        mutationFn: async (data: TransformFormData) => {
+        mutationFn: async (data: TransformValidationType) => {
             const response = await axiosPrivate.patch("transform", data);
             return response;
         },
         onSuccess: () => {
-            reset();
+            form.reset();
             toast.success("Transform section customized successfully!", {
                 position: "top-right"
             })
@@ -56,16 +36,42 @@ export const TransformService = () => {
         }
     })
 
-    const onSubmit = async (data: TransformFormData) => {
+    const onSubmit = async (data: TransformValidationType) => {
         await mutateAsync(data);
-        console.log(data, "data");
     };
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["transform"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get("transform");
+            return response;
+        }
+    })
 
+    useEffect(() => {
+        try {
+            form.reset({
+                title: data?.data?.title,
+                description: data?.data?.description,
+                buttons: data?.data?.buttons?.map((button: any) => ({
+                    name: button.name,
+                    route: button.route,
+                })),
+            });
+            
+        } catch (error) {
+            console.error("Error fetching transform data:", error);
+        }
+    }, [data, form]);
+
+    
     return {
-        register,
-        handleSubmit: handleSubmit(onSubmit),
-        errors,
-        setValue,
+        form,
+        onSubmit,
+        image: data?.data?.image,
+        fields,
+        append,
+        remove,
+        isLoading
     };
 }

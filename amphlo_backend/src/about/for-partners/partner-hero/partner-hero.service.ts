@@ -5,16 +5,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PartnerHero } from './entities/partner-hero.entity';
 import { IsNull, Not, Repository } from 'typeorm';
 import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class PartnerHeroService {
   constructor(
     @InjectRepository(PartnerHero) private readonly partnerHeroRepo: Repository<PartnerHero>,
-    @InjectRepository(FileUpload) private readonly fileUploadRepo: Repository<FileUpload>
+    private readonly fileUploadService: FileUploadService
   ) {}
 
   async set(dto: CreatePartnerHeroDto) {
-    const image = await this.fileUploadRepo.findOne({ where: { id: dto.image } });
+    const image = await this.fileUploadService.getAllByIds([dto.image])
 
     if (!image) {
       throw new NotFoundException("Image not found");
@@ -22,8 +23,8 @@ export class PartnerHeroService {
 
     const existing = await this.get();
 
-    if (!existing) return this.createNewPartnerHero(dto, image)
-      return this.updateHero(existing, dto, image);
+    if (!existing) return this.createNewPartnerHero(dto, image[0])
+      return this.updateHero(existing, dto, image[0]);
     
   }
 
@@ -31,7 +32,7 @@ export class PartnerHeroService {
     const newHero = this.partnerHeroRepo.create({
       title: dto.title,
       description: dto.description,
-      image,
+      image: image[0],
       buttons: dto.buttons,
     });
     await this.partnerHeroRepo.save(newHero);
@@ -40,7 +41,7 @@ export class PartnerHeroService {
   }
 
   async updateHero(existing: PartnerHero, dto: CreatePartnerHeroDto, image: FileUpload) {
-    Object.assign(existing, { ...dto, image });
+    Object.assign(existing, { ...dto, image});
     await this.partnerHeroRepo.save(existing);
     return { message: 'Partner Hero updated' };
   }

@@ -16,19 +16,4 @@ export class PortalFeatureController {
   findAll() {
     return this.portalFeatureService.get();
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.portalFeatureService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updatePortalFeatureDto: UpdatePortalFeatureDto) {
-  //   return this.portalFeatureService.update(+id, updatePortalFeatureDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.portalFeatureService.remove(+id);
-  // }
 }

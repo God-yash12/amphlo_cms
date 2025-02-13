@@ -3,10 +3,10 @@ import { PortalHeroService } from './portal-hero.service';
 import { PortalHeroController } from './portal-hero.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PortalHero } from './entities/portal-hero.entity';
-import { FileUploadModule } from 'src/file-upload/file-upload.module';
+import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PortalHero]), FileUploadModule],
+  imports: [TypeOrmModule.forFeature([PortalHero, FileUpload])],
   controllers: [PortalHeroController],
   providers: [PortalHeroService],
 })

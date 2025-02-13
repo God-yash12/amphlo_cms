@@ -1,11 +1,24 @@
-import { Outlet } from "react-router-dom"
+
+import { Banner } from "./banner"
+import Counters from "./counters"
+import Hero from "./hero"
+import HomeAbout from "./home-about"
+import KeyFeature from "./key-feature"
+import { Testimonials } from "./testimonial"
+import { Transform } from "./transform"
+import WhyAmphlo from "./why-amphlo"
 
 const Home = () => {
   return (
-    <div>
-      <main>
-        <Outlet />
-      </main>
+    <div className="space-y-12">
+      <Hero />
+      <Banner />
+      <HomeAbout />
+      <KeyFeature />
+      <Transform />
+      <WhyAmphlo />
+      <Counters />
+      <Testimonials />
     </div>
   )
 }

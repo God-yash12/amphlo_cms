@@ -4,11 +4,12 @@ import Header from "../../../../ui/typographs/header/header";
 import Paragraph from "../../../../ui/typographs/paragraph";
 import { TextEditor } from "../../../../ui/editor/text-editor";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
-import { UniWhyAmphloCardService } from "../../../services/form-service/for-univerity/uni-whyamphlo-card";
+import { UniWhyAmphloService } from "../../../services/about/for-university/why-amphlo-service";
 
 export const WhyChooseAmphloCard = () => {
-    const { form, onSubmit } = UniWhyAmphloCardService()
+    const { form, onSubmit, isLoading } = UniWhyAmphloService()
     const errorMessage = form.formState.errors
+    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
             <div className="container mx-auto px-4 py-12">
@@ -18,7 +19,7 @@ export const WhyChooseAmphloCard = () => {
                         Why Choose Amphlo?
                     </Header>
                     <Paragraph className="text-gray-600">
-                        Customize and manage your website's Why Choose Amphlo card? section to highlight your main offerings
+                        Customize and manage your website's Why Choose Amphlo section to highlight your main offerings
                     </Paragraph>
                 </div>
 
@@ -37,6 +38,7 @@ export const WhyChooseAmphloCard = () => {
                                     className="w-full transition-all duration-200"
                                     size="lg"
                                     {...form.register('title')}
+
                                 />
                             </div>
                              {errorMessage.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}

@@ -4,28 +4,29 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
 import { Repository, Not, IsNull } from 'typeorm';
 import { PortalHero } from './entities/portal-hero.entity';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class PortalHeroService {
   constructor(
      @InjectRepository(PortalHero) private readonly portalHeroRepository: Repository<PortalHero>,
-     @InjectRepository(FileUpload) private readonly fileUploadRepository: Repository<FileUpload>
+     private readonly fileUploadService: FileUploadService,
    ){ }
    async set(dto: CreatePortalHeroDto) {
-     const image = await this.fileUploadRepository.findOne({ where: {id: dto.image}})
+     const image = await this.fileUploadService.getAllByIds([dto.imageId])
      if(!image) throw new NotFoundException("Hero Image does not Found")
  
        const existing = await this.get();
-       if(!existing) return await this.createNew(dto, image);
+       if(!existing) return await this.createNew(dto, image[0]);
  
-       return await this.update(existing, dto, image)
+       return await this.update(existing, dto, image[0])
    }
  
    async createNew(dto: CreatePortalHeroDto, image: FileUpload){
      const newHero = this.portalHeroRepository.create({
        title: dto.title,
        subTitle: dto.subTitle,
-       image,
+       image: image[0],
      })
      return this.portalHeroRepository.save(newHero)
    }
@@ -33,7 +34,7 @@ export class PortalHeroService {
    async update(existing:PortalHero, dto: CreatePortalHeroDto, image:FileUpload){
      Object.assign(existing, {       
        ...dto,
-       image,
+       image
      })
      return await this.portalHeroRepository.save(existing)
    }
@@ -46,20 +47,4 @@ export class PortalHeroService {
      })
    }
    
-
-  // findAll() {
-  //   return `This action returns all portalHero`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} portalHero`;
-  // }
-
-  // update(id: number, updatePortalHeroDto: UpdatePortalHeroDto) {
-  //   return `This action updates a #${id} portalHero`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} portalHero`;
-  // }
 }

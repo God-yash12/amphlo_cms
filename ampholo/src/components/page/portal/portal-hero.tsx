@@ -4,15 +4,17 @@ import InputField from "../../../ui/input/input";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
-import FileUploadInputField from "../../../ui/input/file-upload-input";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { UsePortalHeroService } from "../../services/portal/portal-hero-service";
+import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 
 // const routes = ["/about", "/countries", "/features", "/contact"] as const;
 
 export const PortalHeroSection = () => {
-    const { form, onSubmit } = UsePortalHeroService();
+    const { form, onSubmit, image, isLoading } = UsePortalHeroService();
     const errorMessage = form.formState.errors
+
+    if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
 
     return (
@@ -49,10 +51,20 @@ export const PortalHeroSection = () => {
                     />
                 </div>
                 {errorMessage.subTitle && <ErrorMessage>{errorMessage.subTitle.message}</ErrorMessage>}
-                <FileUploadInputField
-                    onUploadSuccess={(fileId) => form.setValue('image', fileId)}
+                <FileUploadInput
+                    accept="image/*"
+                    onChange={(files) => {
+                        form.setValue("imageId", files[0].id);
+                    }}
+                    initialFiles={image ? [{
+                        id: image.id,
+                        url: image.url,
+                        originalName: image.filename
+                    }] : []}
                 />
-                {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+
+                {errorMessage.imageId && <ErrorMessage>{errorMessage.imageId.message}</ErrorMessage>}
+
 
 
                 {/* Submit Button */}

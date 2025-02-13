@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form"
 import { UseAxiosPrivate } from "../../../auth/home_auth"
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PortalHeroValidationData, PortalHeroValidation } from "../../validations/portal/hero-validation";
@@ -19,8 +20,8 @@ export const UsePortalHeroService = () => {
             return response;
         },
         onSuccess: () => {
-            form.reset()
             toast.success("Portal Hero Section Customized Successfully")
+            form.reset()
         },
         onError: (error: any) => {
             toast.error(`Failed to Update the Hero Section ${error.message}`)
@@ -31,6 +32,28 @@ export const UsePortalHeroService = () => {
         mutation.mutate(data)
     }
 
+    const { data, isLoading } = useQuery({
+        queryKey: ['data'],
+        queryFn: async () => {
+            const response = await axiosPrivate.get("portal-hero");
+            return response.data;
+        }
+    });
 
-    return { form, onSubmit, }
+    useEffect(() => {
+        if (data) {
+            try {
+                form.reset({
+                    title: data.title,
+                    subTitle: data.subTitle,
+                })
+                
+            } catch (error) {
+                toast.error("Failed to fetch data")
+            }
+        }
+    }, [data, form]);
+
+
+    return { form, onSubmit, image: data?.image, isLoading }
 }

@@ -4,23 +4,15 @@ import PrimaryButton from "../../../ui/buttons/primary-button";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import { HeroService } from "../../services/home/hero-service";
-import FileUploadInputField from "../../../ui/input/file-upload-input";
-import { useFieldArray } from "react-hook-form";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
+import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 
-const routes = ["/about", "/countries", "/features", "/contact"] as const;
+const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 const Hero = () => {
-  const { form, onSubmit } = HeroService();
+  const { form, onSubmit, fields, append, remove, image, isLoading } = HeroService();
 
-  const {
-    fields,
-    append,
-    remove,
-  } = useFieldArray({
-    control: form.control,
-    name: "buttons"
-  });
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <div id="hero" className="flex flex-col gap-10">
@@ -47,21 +39,29 @@ const Hero = () => {
         {/* Description Editor */}
         <div className="w-auto">
           <TextEditor
-            placeholder="Write Hero Description"
             value={form.watch("description") ?? ""}
             onChange={(content) => {
               form.setValue("description", content);
             }}
           />
         </div>
-        <FileUploadInputField
-          onUploadSuccess={(fileId) => form.setValue('image', fileId)}
+
+        <FileUploadInput
+          accept="image/*"
+          onChange={(files) => {
+            form.setValue("imageId", files[0].id);
+          }}
+          initialFiles={image ? [{
+            id: image.id,
+            url: image.url,
+            originalName: image.filename
+          }] : []}
         />
 
         {/* Button Configuration */}
         <div className="flex flex-col gap-4 ">
           {fields.map((field, index) => (
-            <section key={field.id}  className="space-x-5">
+            <section key={field.id} className="space-x-5">
               <div className="flex flex-col gap-2">
                 <label className="block text-sm font-medium text-gray-700">
                   Button {index + 1}
@@ -87,11 +87,11 @@ const Hero = () => {
                       </option>
                     ))}
                   </select>
-              {
-                fields.length > 1 && (
-                  <SecondaryButton onClick={() => remove(index)}>Delete</SecondaryButton>
-                )
-              }
+                  {
+                    fields.length > 1 && (
+                      <SecondaryButton onClick={() => remove(index)}>Delete</SecondaryButton>
+                    )
+                  }
                 </div>
               </div>
             </section>
@@ -104,7 +104,7 @@ const Hero = () => {
           )
         }
         {/* Submit Button */}
-        <PrimaryButton type="submit" className="w-full text-center">Update</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full text-center">Save Changes</PrimaryButton>
       </form>
     </div>
   );

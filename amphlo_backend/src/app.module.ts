@@ -5,7 +5,6 @@ import { databaseConfig } from './config/database.config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { FileUploadModule } from './file-upload/file-upload.module';
-import { MulterConfigModule } from './config/multer.config.module';
 import { HomeAboutModule } from './home/home-about/home-about.module';
 import { HeroModule } from './home/hero/hero.module';
 import { KeyFeaturesModule } from './home/key-features/key-features.module';
@@ -40,27 +39,38 @@ import { PortalHeroModule } from './portal/portal-hero/portal-hero.module';
 
 import { PortalAccessModule } from './portal/portal-access/portal-access.module';
 import { PortalFeatureModule } from './portal/portal-feature/portal-feature.module';
-
+import { UniversityModule } from './register/university/university.module';
+import { PartnerModule } from './register/partner/partner.module';
+import { AgentRegisterfiModule } from './register/agent/agent.module';
+import { NestjsFormDataModule, MemoryStoredFile, FileSystemStoredFile } from 'nestjs-form-data';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
-      isGlobal: true,  
+      isGlobal: true,
     }),
 
     // TypeORM Configuration
     TypeOrmModule.forRootAsync({
-      useFactory: databaseConfig, 
-      inject: [ConfigService],  
+      useFactory: databaseConfig,
+      inject: [ConfigService],
     }),
-
+    NestjsFormDataModule.config({
+      storage: FileSystemStoredFile,
+      fileSystemStoragePath: 'uploads',
+      isGlobal: true,
+      autoDeleteFile: false,
+      limits: {
+        files: 10,
+        fileSize: 1024 * 1024 * 5,
+      },
+      cleanupAfterSuccessHandle: false,
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
-    
-    MulterConfigModule,
     FileUploadModule,
     HomeAboutModule,
     HeroModule,
@@ -94,13 +104,16 @@ import { PortalFeatureModule } from './portal/portal-feature/portal-feature.modu
     ContactModule,
     PortalHeroModule,
     PortalAccessModule,
-    PortalFeatureModule
+    PortalFeatureModule,
+    UniversityModule,
+    PartnerModule,
+    AgentRegisterfiModule,
 
   ],
 })
 
 export class AppModule implements OnModuleInit {
-  constructor(private configService: ConfigService){}
+  constructor(private configService: ConfigService) { }
   async onModuleInit() {
     try {
       console.log("Database Connected ")

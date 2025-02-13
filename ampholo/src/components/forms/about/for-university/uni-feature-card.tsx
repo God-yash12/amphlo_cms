@@ -3,25 +3,26 @@ import PrimaryButton from "../../../../ui/buttons/primary-button";
 import Header from "../../../../ui/typographs/header/header";
 import Paragraph from "../../../../ui/typographs/paragraph";
 import { TextEditor } from "../../../../ui/editor/text-editor";
-import FileUploadInputField from "../../../../ui/input/file-upload-input";
 import { UniFeatureCardService } from "../../../services/form-service/for-univerity/uni-feature-card";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
-
+import SecondaryButton from "../../../../ui/buttons/secondary-button";
+import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 
 export const UniAboutFeatureCard = () => {
-    const { form, onSubmit } = UniFeatureCardService()
-    const errorMessage = form.formState.errors
+  const { form, onSubmit, imagePreview, data, selectedFeatureCard, setSelectedFeatureCard, deleteMutation } = UniFeatureCardService()
+  const errorMessage = form.formState.errors
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 py-12">
         {/* Header Section */}
         <div className="max-w-2xl mx-auto text-center mb-12">
+
           <Header className="text-3xl font-bold text-gray-900 mb-4">
-            About Features Cards Management
+            {selectedFeatureCard ? "Update Feature Card" : "About Features Cards Management"}
           </Header>
           <Paragraph className="text-gray-600">
-            Customize and manage your website's About Features Cards Management section Cards 
+            Customize and manage your website's About Features Cards Management section Cards
           </Paragraph>
         </div>
 
@@ -58,10 +59,16 @@ export const UniAboutFeatureCard = () => {
                 />
                 {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
               </div>
-              <FileUploadInputField 
-              onUploadSuccess={(fileId) => form.setValue('image', fileId)}
+              <FileUploadInput
+                onChange={(files) => form.setValue('image', files[0].id)}
               />
               {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+              {imagePreview && (
+                <div>
+                  <label>Current Image</label>
+                  <img src={imagePreview} alt="Current Hero" width="200" />
+                </div>
+              )}
             </div>
 
             {/* Submit Button */}
@@ -75,6 +82,34 @@ export const UniAboutFeatureCard = () => {
             </div>
           </form>
         </div>
+
+        {/* feature card list */}
+
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold mb-4">Existing Feature Cards</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {data && data?.map((card) => (
+              <div key={card.id} className="p-6 bg-white shadow-md rounded-lg">
+                <h3 className="text-lg font-semibold">{card.title}</h3>
+                <p className="text-sm text-gray-600">{card.description}</p>
+                {card.image?.url && <img src={card.image.url} alt="Feature Image" className="w-20 h-20 object-cover mt-2" />}
+                <div className="flex space-x-4 mt-4">
+                  <SecondaryButton
+                    onClick={() => setSelectedFeatureCard(card)}
+                  >
+                    Edit
+                  </SecondaryButton>
+                  <SecondaryButton
+                    onClick={() => deleteMutation.mutate(card.id)}
+                  >
+                    Delete
+                  </SecondaryButton>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </div>
   );

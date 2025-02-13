@@ -11,13 +11,15 @@ import { ErrorMessage } from "../../../../ui/typographs/error-message";
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 export const JoinNow = () => {
-  const { form, onSubmit } = UseJoinNowService();
+  const { form, onSubmit, isLoading } = UseJoinNowService();
   const errorMessage = form.formState.errors;
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "buttons",
   });
+
+  if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
   return (
     <div id="hero" className="container mx-auto min-h-screen p-8 bg-gradient-to-b from-gray-50 to-white">
@@ -36,7 +38,7 @@ export const JoinNow = () => {
             variant="outlined"
             size="lg"
             placeholder="Enter the section title"
-            {...form.register("title", { required: "Title is required" })}
+            {...form.register("title")}
           />
           {errorMessage?.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}
         </div>

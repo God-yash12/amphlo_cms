@@ -10,7 +10,7 @@ export const HomeAboutValidation = z.object({
       list: z.string().optional(),
     })
   ).optional(),
-  image: z.number().optional(),
+  imageId: z.number().optional(),
 });
 
 export type HomeAboutValidationData = z.infer<typeof HomeAboutValidation>;

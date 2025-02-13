@@ -1,20 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { UseAxiosPrivate } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UniHeroValidation, UniHeroValidationData } from "../../../validations/about/for-university/uni-hero-validation";
 
-export const AboutHeroService = () => {
+export const UniHeroService = () => {
   const axiosPrivate = UseAxiosPrivate();
 
   const form = useForm<UniHeroValidationData>({
     resolver: zodResolver(UniHeroValidation),
-    defaultValues: {
-      title: "",
-      subTitle: "",
-      image: 0 || undefined,
-    },
   });
 
   const { mutateAsync } = useMutation<any, Error, UniHeroValidationData>({
@@ -38,8 +34,29 @@ export const AboutHeroService = () => {
     await mutateAsync(data);
   };
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["university-hero"],
+    queryFn: async () => {
+      const response = await axiosPrivate.get("university-hero");
+      return response.data;
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      form.reset({
+        title: data.title,
+        subTitle: data.subTitle,
+        image: data?.image
+      });
+    }
+
+  }, [data]);
+
   return {
     form,
     onSubmit,
+    image: data?.image,
+    isLoading
   };
 };

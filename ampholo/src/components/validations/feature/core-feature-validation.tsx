@@ -6,3 +6,5 @@ export const CoreFeatureValidation = z.object({
     mainTitle: z.string(),
     description : z.string().nonempty({message: "Description is Required"}),
 })
+
+export type CoreFeatureValidationData = z.infer<typeof CoreFeatureValidation>

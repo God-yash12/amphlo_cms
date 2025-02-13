@@ -3,16 +3,15 @@ import PrimaryButton from "../../../ui/buttons/primary-button";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import { TextEditor } from "../../../ui/editor/text-editor";
-import { useState } from "react";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { UseCoreFeatureService } from "../../services/feature/core-feature-service";
 
 export const CoreFeature = () => {
-  const { register, handleSubmit, setValue, errors } = UseCoreFeatureService();
-  const [editorContent, setEditorContent] = useState("");
+  const { form, onSubmit, isLoading } = UseCoreFeatureService();
 
+  if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
-  return (
+  return (  
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 py-12">
         {/* Header Section */}
@@ -28,7 +27,7 @@ export const CoreFeature = () => {
         {/* Form Section */}
         <div className="mx-auto">
           <form
-            onSubmit={handleSubmit}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="bg-white rounded-xl shadow-lg p-8 space-y-8"
           >
             {/* Title Input Section */}
@@ -39,9 +38,9 @@ export const CoreFeature = () => {
                   placeholder="Enter a compelling title for your features section"
                   className="w-full transition-all duration-200"
                   size="lg"
-                  {...register("title")}
+                  {...form.register("title")}
                 />
-                {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
+                {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
               </div>
               <div className="relative">
                 <InputField
@@ -49,9 +48,9 @@ export const CoreFeature = () => {
                   placeholder="Enter a compelling main title for your features section"
                   className="w-full transition-all duration-200"
                   size="lg"
-                  {...register("mainTitle")}
+                  {...form.register("mainTitle")}
                 />
-                {errors.mainTitle && <ErrorMessage>{errors.mainTitle.message}</ErrorMessage>}
+                {form.formState.errors.mainTitle && <ErrorMessage>{form.formState.errors.mainTitle.message}</ErrorMessage>}
               </div>
 
               {/* Description Editor Section */}
@@ -61,13 +60,12 @@ export const CoreFeature = () => {
                 </label>
                 <TextEditor
                   placeholder="Describe your key features in detail..."
-                  value={editorContent}
+                  value={form.watch("description")}
                   onChange={(content) => {
-                    setEditorContent(content);
-                    setValue("description", content);
+                    form.setValue("description", content);
                   }}
                 />
-                {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+                {form.formState.errors.description && <ErrorMessage>{form.formState.errors.description.message}</ErrorMessage>}
 
               </div>
             </div>

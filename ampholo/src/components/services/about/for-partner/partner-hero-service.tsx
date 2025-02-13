@@ -1,5 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useFieldArray, useForm } from "react-hook-form";
 import { UseAxiosPrivate } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,15 +9,16 @@ import { PartnerHeroValidation, PartnerHeroValidationData } from "../../../valid
 export const PartnerHeroService = () => {
     const axiosPrivate = UseAxiosPrivate();
 
+
     const form = useForm<PartnerHeroValidationData>({
         resolver: zodResolver(PartnerHeroValidation),
-        defaultValues: {
-            title: "",
-            description: "",
-            image: 0,
-            buttons: [{ name: "", route: "" }]
-        },
+        mode: "onChange",
     });
+
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: "buttons"
+      });
 
     const { mutateAsync } = useMutation<any, Error, PartnerHeroValidationData>({
         mutationFn: async (data) => {
@@ -39,8 +41,34 @@ export const PartnerHeroService = () => {
         await mutateAsync(data);
     };
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["partner-hero"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get("partner-hero");
+            return response.data;
+        }
+    })
+
+    useEffect(() => {
+      if(data){
+        form.reset({
+            title: data?.title,
+            description: data?.description,
+            buttons: data?.buttons.map((button: any) => ({
+                name: button.name,
+                route: button.route
+            }))
+        })
+      }
+    }, [data])
+
     return {
         form,
         onSubmit,
+        fields,
+        append,
+        remove,
+        image: data?.image,
+        isLoading
     };
 };

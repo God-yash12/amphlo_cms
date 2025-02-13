@@ -4,13 +4,16 @@ import { MdDelete } from "react-icons/md";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import { TextEditor } from "../../../ui/editor/text-editor";
-import FileUploadInputField from "../../../ui/input/file-upload-input";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { UsePortalFeatureServices } from "../../services/portal/portal-feature-service";
+import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 
 export const PortalFeature = () => {
-  const { form, onSubmit, append, remove, fields } = UsePortalFeatureServices();
+  const { form, onSubmit, append, remove, fields, image, isLoading } = UsePortalFeatureServices();
+
+  if(isLoading) return <Header className="text-center text-gray-800">Loading...</Header>
+
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
@@ -59,8 +62,13 @@ export const PortalFeature = () => {
         </div>
 
         {/* File Upload */}
-        <FileUploadInputField onUploadSuccess={(fileId) => form.setValue("image", fileId)} />
-
+        <FileUploadInput
+          onChange={(files) => form.setValue("imageId", files[0].id)} initialFiles={image ? [{
+            id: image.id,
+            url: image.url,
+            originalName: image.filename
+          }] : []} 
+          />
         {/* List Title and List Items */}
         <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-6">
           <InputField

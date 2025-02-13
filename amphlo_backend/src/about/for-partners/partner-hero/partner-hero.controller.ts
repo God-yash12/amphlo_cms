@@ -16,19 +16,4 @@ export class PartnerHeroController {
   findAll() {
     return this.partnerHeroService.get();
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.partnerHeroService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updatePartnerHeroDto: UpdatePartnerHeroDto) {
-  //   return this.partnerHeroService.update(+id, updatePartnerHeroDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.partnerHeroService.remove(+id);
-  // }
 }

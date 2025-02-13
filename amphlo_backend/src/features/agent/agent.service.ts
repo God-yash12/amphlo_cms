@@ -48,19 +48,5 @@ export class AgentService {
     });
   }
 
-  findAll() {
-    return `This action returns all agents`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} agent`;
-  }
-
-  update(id: number, updateAgentDto: UpdateAgentDto) {
-    return `This action updates a #${id} agent`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} agent`;
-  }
+ 
 }

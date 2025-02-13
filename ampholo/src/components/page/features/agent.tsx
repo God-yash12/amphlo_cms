@@ -10,12 +10,14 @@ import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { Textarea } from "@material-tailwind/react";
 
 export const Agent = () => {
-    const { form, onSubmit } = UseAgentService();
+    const { form, onSubmit, isLoading } = UseAgentService();
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: 'process',
     })
+
+    if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">

@@ -10,7 +10,9 @@ import { PortalAccessService } from "../../services/portal/portal-access-service
 
 
 export const PortalAccessProcess = () => {
-    const { form, onSubmit, fields, append, remove } = PortalAccessService()
+    const { form, onSubmit, fields, append, remove, isLoading } = PortalAccessService()
+
+    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
 
     return (
@@ -33,7 +35,6 @@ export const PortalAccessProcess = () => {
                 </div>
                 <div>
                     <TextEditor
-                        placeholder="Write the short Process Details"
                         value={form.watch('description') ?? ""}
                         onChange={(content) => {
                             form.setValue("description", content);

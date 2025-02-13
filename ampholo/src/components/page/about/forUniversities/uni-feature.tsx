@@ -7,8 +7,9 @@ import { UniFeatureService } from "../../../services/about/for-university/uni-fe
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
 
 export const UniAboutFeatures = () => {
-    const { form, onSubmit } = UniFeatureService()
+    const { form, onSubmit, isLoading } = UniFeatureService()
     const errorMessage = form.formState.errors
+    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
             <div className="container mx-auto px-4 py-12">

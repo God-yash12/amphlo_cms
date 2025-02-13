@@ -10,7 +10,7 @@ interface CustomInputProps extends Omit<InputProps, 'crossOrigin'> {
 }
 
 const InputField = forwardRef<HTMLInputElement, CustomInputProps>(
-    ({ label, required, className, placeholder, variant, ...rest }, ref) => {
+    ({ label, required, className, placeholder, type, variant, ...rest }, ref) => {
         const baseClass = "w-auto";
         return (
             <div>
@@ -18,6 +18,7 @@ const InputField = forwardRef<HTMLInputElement, CustomInputProps>(
                 <Input
                     ref={ref}
                     label={label}
+                    type={type}
                     variant={variant || "outlined"}
                     className={twMerge(baseClass, className)}
                     required={required}

@@ -17,11 +17,6 @@ export class FeatureCardController {
     return this.featureCardService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.featureCardService.findOne(+id);
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFeatureCardDto: UpdateFeatureCardDto) {
     return this.featureCardService.update(+id, updateFeatureCardDto);

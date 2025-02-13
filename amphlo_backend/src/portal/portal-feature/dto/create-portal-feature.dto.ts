@@ -1,5 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
+
+export class listDto {
+    @IsString()
+    list: string
+}
 
 export class CreatePortalFeatureDto {
     @ApiProperty({
@@ -26,12 +32,13 @@ export class CreatePortalFeatureDto {
     })
     @IsArray()
     @ValidateNested({ each: true })
-    listItem: { list: string }[];
+    @Type(() => listDto)
+    listItem: listDto[];
 
     @ApiProperty({
         description: "Image of the page"
     })
     @IsNumber()
-    image: number
+    imageId: number
 
 }

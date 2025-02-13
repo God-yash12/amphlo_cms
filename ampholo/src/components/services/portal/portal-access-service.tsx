@@ -1,9 +1,10 @@
 import { useFieldArray, useForm } from "react-hook-form"
 import { UseAxiosPrivate } from "../../../auth/home_auth"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { toast } from "react-toastify"
 import { PortalAccessFormData, PortalAccessValidation } from "../../validations/portal/portal-access-validation";
+import { useEffect } from "react"
 
 
 export const PortalAccessService = () => {
@@ -37,9 +38,39 @@ export const PortalAccessService = () => {
         await mutateAsync(data)
     }
 
+        const { data, isLoading } = useQuery({
+            queryKey: ['portalaccess'],
+            queryFn: async () => {
+                const response = await axiosPrivate.get("portal-access");
+                return response.data;
+            }
+        });
+    
+        useEffect(() => {
+            if (data) {
+                try {
+                    form.reset({
+                        title: data.title,
+                        description: data.description,
+                        process: data.process.map((item: any) => ({
+                            processCount: item.processCount,  
+                            processTitle: item.processTitle,
+                            processDescription: item.processDescription,
+                        })), 
+                        
+                    })
+                    
+                } catch (error) {
+                    toast.error("Failed to fetch data")
+                }
+            }
+        }, [data, form]);
+    
+
     return {
         form,
         onSubmit,
-        fields, append, remove
+        fields, append, remove,
+        isLoading
     }
 }

@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ForbiddenException } from "@nestjs/common";
+import { ForbiddenException, ValidationPipe } from "@nestjs/common";
 import { log } from "console";
 
 async function bootstrap() {
@@ -24,6 +24,12 @@ async function bootstrap() {
     },
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
   });
+
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    stopAtFirstError: true,
+    transform: true,
+  }));
 
   const config = new DocumentBuilder()
     .setTitle('cms')

@@ -2,10 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Upl
 import { ApiTags, ApiOperation, ApiResponse, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { WhyAmphloService } from './why-amphlo.service';
 import { CreateWhyAmphloDto } from './dto/create-why-amphlo.dto';
-import { UpdateWhyAmphloDto } from './dto/update-why-amphlo.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { storageConfig } from 'src/config/storage.config';
-import { fileFilterConfig } from 'src/config/file-filter.config';
 
 @ApiTags('why-amphlo')
 @Controller('why-amphlo')
@@ -13,10 +10,6 @@ export class WhyAmphloController {
   constructor(private readonly whyAmphloService: WhyAmphloService) {}
 
   @Patch()
-  @UseInterceptors(FileInterceptor('image', {
-    storage: storageConfig,
-    fileFilter: fileFilterConfig,
-  }))
   @ApiOperation({ summary: 'Create or update a WhyAmphlo entry' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: CreateWhyAmphloDto })

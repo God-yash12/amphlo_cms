@@ -5,24 +5,24 @@ import { HomeAbout } from './entities/home-about.entity';
 import { IsNull, Not, Repository } from 'typeorm';
 import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
 import { dot } from 'node:test/reporters';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class HomeAboutService {
   constructor(
     @InjectRepository(HomeAbout)
     private readonly homeAboutRepository: Repository<HomeAbout>,
-    @InjectRepository(FileUpload)
-    private readonly fileUploadRepository: Repository<FileUpload>,
+    private readonly fileUploadService: FileUploadService,
   ) { }
   async set(dto: CreateHomeAboutDto) {
-    const image = await this.fileUploadRepository.findOne({ where: { id: dto.image } })
+    const image = await this.fileUploadService.getAllByIds([dto.imageId])
     if (!image) throw new NotFoundException("Home About does not Found")
 
     const existing = await this.get();
 
-    if (!existing) return await this.createNew(dto, image);
+    if (!existing) return await this.createNew(dto, image[0]);
 
-    return await this.update(existing, dto, image);
+    return await this.update(existing, dto, image[0]);
   }
 
   async createNew(dto: CreateHomeAboutDto, image: FileUpload) {
@@ -31,7 +31,7 @@ export class HomeAboutService {
       description: dto.description,
       listTitle: dto.listTitle,
       listItem: dto.listItem,
-      image
+      image: image[0],
     })
     await this.homeAboutRepository.save(newHomeAbout)
 
@@ -47,10 +47,11 @@ export class HomeAboutService {
     await this.homeAboutRepository.save(existing);
   }
 
-  get(): Promise<HomeAbout | null> {
-    return this.homeAboutRepository.findOne({
+  async get(): Promise<HomeAbout | null> {
+    const homeAbout = await this.homeAboutRepository.findOne({
       where: { id: Not(IsNull()) },
       relations: ['image']
     })
+    return homeAbout
   }
 }

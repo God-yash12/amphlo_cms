@@ -1,5 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsNumber, IsOptional, IsString, Length, ValidateNested } from "class-validator";
+
+class ListItemDto {
+    @IsString()
+    list: string;
+}
 
 export class CreateHomeAboutDto {
     @ApiProperty({
@@ -7,6 +13,8 @@ export class CreateHomeAboutDto {
         example: "Welcome to AMPHLO"
     })
     @IsString()
+    @Length(3, 100)
+    @IsOptional()
     title: string;
 
     @ApiProperty({
@@ -33,12 +41,13 @@ export class CreateHomeAboutDto {
     })
     @IsArray()
     @ValidateNested({ each: true })
-    listItem: { list: string }[];
+    @Type(() => ListItemDto)
+    listItem: ListItemDto[];
 
     @ApiProperty({
         description: "Image of the page"
     })
     @IsNumber()
-    image: number
+    imageId: number
 
 }

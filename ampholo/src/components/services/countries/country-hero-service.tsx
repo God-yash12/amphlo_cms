@@ -12,7 +12,7 @@ export const CountryHeroService = () => {
 
     const form = useForm<CountriesValidationData>({
         resolver: zodResolver(countriesValidation),
-        defaultValues: {    
+        defaultValues: {
             title: "",
             description: "",
             image: 0,
@@ -23,21 +23,26 @@ export const CountryHeroService = () => {
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "buttons"
-      });
+    });
 
     const { mutateAsync } = useMutation({
         mutationFn: async (data: CountriesValidationData) => {
-          const response = await axiosPrivate.patch("country", data);
-          return response.data;
+            const response = await axiosPrivate.post("country", data);
+            return response.data;
+
         },
         onSuccess: () => {
             form.reset();
             toast.success("Country Hero Section updated successfully");
         },
-        onError: () => {
-            toast.error("Error updating Country Hero Section");
+        onError: (error: any) => {
+            if (error?.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("Error updating Country Hero Section");
+            }
+            form.reset()
         },
-
     });
 
     const onSubmit = (data: CountriesValidationData) => {

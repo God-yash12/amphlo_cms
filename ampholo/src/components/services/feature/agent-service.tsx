@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form"
 import { UseAxiosPrivate } from "../../../auth/home_auth"
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { AgentProcessValidation, AgentProcessValidationData } from "../../validations/feature/agent-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,11 +11,6 @@ export const UseAgentService = () => {
 
     const form = useForm<AgentProcessValidationData> ({
         resolver: zodResolver(AgentProcessValidation),
-        defaultValues:{
-            title: "Title",
-            description: "Description",
-            process: [{processNumber: 1, processTitle: "Title", processDescription: "Description"}]
-        },
         mode: 'onChange',
     })
 
@@ -37,8 +33,31 @@ export const UseAgentService = () => {
         mutation.mutate(data);
     };
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["agent"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get('agent');
+            return response.data;
+        }
+    })
+
+    useEffect(() => {
+        if (data) {
+            form.reset({
+                title: data.title,
+                description: data.description,
+                process: data.process.map((item: any) => ({
+                    processNumber: item.processNumber,
+                    processTitle: item.processTitle,
+                    processDescription: item.processDescription
+                }))
+            })
+        }
+    }, [data])
+
     return {
         form,
-        onSubmit
+        onSubmit,
+        isLoading
     }
 }

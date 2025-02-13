@@ -1,30 +1,14 @@
 import PrimaryButton from "../../../../ui/buttons/primary-button";
-import FileUploadInputField from "../../../../ui/input/file-upload-input";
+import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 import Header from "../../../../ui/typographs/header/header";
 import Paragraph from "../../../../ui/typographs/paragraph";
 import { UseGalleryService } from "../../../services/about/for-partner/partner-gallery";
-import { UseFileSubmit } from "../../../services/file-upload/file-upload-service";
 
 
 export const PartnerGallery = () => {
-  const { form, onSubmit } = UseGalleryService();
-  const { mutate: uploadFiles } = UseFileSubmit();
+  const { form, onSubmit, isLoading } = UseGalleryService();
 
-  const handleFileUpload = (files: any[]) => {
-    if (files.length) {
-      uploadFiles(files, {
-        onSuccess: (response) => {
-          form.setValue(
-            "image",
-            Array.isArray(response) ? response.map((file) => file.id) : [response.id]
-          );
-        },
-        onError: () => {
-          console.error("Failed to upload files.");
-        },
-      });
-    }
-  };
+  if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
   return (
     <div>
@@ -39,9 +23,13 @@ export const PartnerGallery = () => {
       </div>
 
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FileUploadInputField
+        <FileUploadInput
           multiple={true}
-          onUploadedFiles={handleFileUpload}
+          maxFiles={5}
+          accept="image/*"
+          onChange={(files) => {
+            form.setValue("galleryIds", files.map((file) => file.id));
+            }}
         />
         <PrimaryButton
           type="submit"

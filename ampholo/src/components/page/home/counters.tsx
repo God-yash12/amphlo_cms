@@ -1,113 +1,136 @@
-import { useState } from "react";
 import { TextEditor } from "../../../ui/editor/text-editor";
 import InputField from "../../../ui/input/input";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import PrimaryButton from "../../../ui/buttons/primary-button";
-import { CounterService } from "../../services/home/counter-service";
+import { useCounterService } from "../../services/home/counter-service";
+import { ErrorMessage } from "../../../ui/typographs/error-message";
 
 const Counters = () => {
-  const [editorContent, setEditorContent] = useState("");
-  const { register, handleSubmit, onSubmit, setValue } = CounterService();
+  const { form, onSubmit, isLoading } = useCounterService();
+  const errorMessage = form.formState.errors;
+
+  if(isLoading) return <div>
+    Loading...
+  </div>
 
   return (
-    <div className="flex flex-col items-center gap-8 p-6 bg-gray-50 rounded-lg shadow-sm">
-      <div className="flex flex-col gap-2 text-center">
-        <Header className="text-gray-800 text-2xl font-bold">Home Counter Section</Header>
-        <Paragraph className="text-gray-600">Customize Counter section</Paragraph>
+    <div className="flex flex-col gap-8  bg-gray-50 rounded-xl shadow-md ">
+      {/* Header Section */}
+      <div className="text-center">
+        <Header className="text-3xl font-extrabold text-gray-800 mb-2">
+          Home Counter Section
+        </Header>
+        <Paragraph className="text-gray-600">
+          Customize the Counter section with accurate details and descriptions.
+        </Paragraph>
       </div>
 
+      {/* Form Section */}
       <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center justify-center gap-6 w-full max-w-4xl"
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full space-y-8"
       >
-        {/* Counter Information Section */}
-        <div className="w-full bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Counter Information</h2>
-          <div className="flex flex-col gap-4">
+        {/* Counter Information */}
+        <div className="bg-white p-6 rounded-xl shadow-md">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            Counter Information
+          </h2>
+          <div className="space-y-4">
             <InputField
               label="Title"
               size="lg"
               placeholder="Enter Counter Title"
-              {...register("title")}
+              {...form.register("title")}
             />
+            {errorMessage.title && <ErrorMessage className="text-red-500">{errorMessage.title.message}</ErrorMessage>}
             <TextEditor
               placeholder="Write Counter Description"
-              value={editorContent}
-              onChange={(content) => {
-                setEditorContent(content);
-                setValue("description", content);
-              }}
+              value={form.watch("description")}
+              onChange={(content) => form.setValue("description", content)}
             />
+            {errorMessage.description && <ErrorMessage className="text-red-500">{errorMessage.description.message}</ErrorMessage>}
           </div>
         </div>
 
-        {/* Counter Numbers and Descriptions Section */}
-        <div className="w-full bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Counter Numbers and Descriptions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Counter Numbers and Descriptions */}
+        <div className="bg-white p-6 rounded-xl shadow-md">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            Counter Numbers and Descriptions
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Country Section */}
-            <section className="flex flex-col gap-4">
+            <section className="space-y-4">
               <InputField
-                label="Country"
-                type="number"
-                {...register("countryCount")}
+                label="Country Count"
+                placeholder="Enter Country Count"
+                {...form.register("countryCount", { valueAsNumber: true })}
               />
+              {errorMessage.countryCount && <ErrorMessage className="text-red-500">{errorMessage.countryCount.message}</ErrorMessage>}
               <textarea
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter country subtitle"
-                {...register("countryCountSubTitle")}
+                {...form.register("countryCountSubTitle")}
               />
+              {errorMessage.countryCountSubTitle && <ErrorMessage className="text-red-500">{errorMessage.countryCountSubTitle.message}</ErrorMessage>}
             </section>
 
             {/* Sub-agents Section */}
-            <section className="flex flex-col gap-4">
+            <section className="space-y-4">
               <InputField
-                label="Sub-agents"
-                type="number"
-                {...register("agentCount")}
+                label="Sub-agents Count"
+                placeholder="Enter Sub-agents Count"
+                {...form.register("agentCount", { valueAsNumber: true })}
               />
+              {errorMessage.agentCount && <ErrorMessage className="text-red-500">{errorMessage.agentCount.message}</ErrorMessage>}
               <textarea
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter agent subtitle"
-                {...register("agentCountSubTitle")}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter sub-agents subtitle"
+                {...form.register("agentCountSubTitle")}
               />
+              {errorMessage.agentCountSubTitle && <ErrorMessage className="text-red-500">{errorMessage.agentCountSubTitle.message}</ErrorMessage>}
             </section>
 
             {/* Students Enrolled Section */}
-            <section className="flex flex-col gap-4">
+            <section className="space-y-4">
               <InputField
                 label="Students Enrolled"
-                type="number"
-                {...register("studentsCount")}
+                placeholder="Enter Students Enrolled Count"
+                {...form.register("studentsCount", { valueAsNumber: true })}
               />
+              {errorMessage.studentsCount && <ErrorMessage className="text-red-500">{errorMessage.studentsCount.message}</ErrorMessage>}
               <textarea
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter students enrolled subtitle"
-                {...register("studentsCountSubTitle")}
+                {...form.register("studentsCountSubTitle")}
               />
+              {errorMessage.studentsCountSubTitle && <ErrorMessage className="text-red-500">{errorMessage.studentsCountSubTitle.message}</ErrorMessage>}
             </section>
 
             {/* Average Partner Rating Section */}
-            <section className="flex flex-col gap-4">
+            <section className="space-y-4">
               <InputField
                 label="Average Partner Rating"
-                type="number"
-                {...register("partnerRatingCount")}
+                placeholder="Enter Partner Rating"
+                {...form.register("partnerRatingCount", { valueAsNumber: true })}
               />
+              {errorMessage.partnerRatingCount && <ErrorMessage className="text-red-500">{errorMessage.partnerRatingCount.message}</ErrorMessage>}
               <textarea
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter partner rating subtitle"
-                {...register("partnerRatingSubTitle")}
+                {...form.register("partnerRatingSubTitle")}
               />
+              {errorMessage.partnerRatingSubTitle && <ErrorMessage className="text-red-500">{errorMessage.partnerRatingSubTitle.message}</ErrorMessage>}
             </section>
           </div>
         </div>
 
         {/* Submit Button */}
-        <PrimaryButton type="submit" className="mt-6 w-full">
+
+        <PrimaryButton type="submit" className="w-full">
           Submit
         </PrimaryButton>
+
       </form>
     </div>
   );

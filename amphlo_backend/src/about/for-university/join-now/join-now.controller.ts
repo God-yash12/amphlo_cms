@@ -3,7 +3,7 @@ import { JoinNowService } from './join-now.service';
 import { CreateJoinNowDto } from './dto/create-join-now.dto';
 import { UpdateJoinNowDto } from './dto/update-join-now.dto';
 
-@Controller('join-now')
+@Controller('join-now-university')
 export class JoinNowController {
   constructor(private readonly joinNowService: JoinNowService) {}
 

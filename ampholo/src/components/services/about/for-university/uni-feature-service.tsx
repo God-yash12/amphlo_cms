@@ -1,19 +1,17 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { UseAxiosPrivate } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UniAboutFeatures, UniAboutFeaturesData } from "../../../validations/about/for-university/uni-feature-validation";
+import { useEffect } from "react";
 
 export const UniFeatureService = () => {
   const axiosPrivate = UseAxiosPrivate();
 
   const form = useForm<UniAboutFeaturesData>({
     resolver: zodResolver(UniAboutFeatures),
-    defaultValues: {
-      title: "",
-      description: "",
-    },
+    mode: "onChange",
   });
 
   const { mutateAsync } = useMutation<any, Error, UniAboutFeaturesData>({
@@ -37,8 +35,26 @@ export const UniFeatureService = () => {
     await mutateAsync(data);
   };
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["university-feature"],
+    queryFn: async () => {
+      const response = await axiosPrivate.get("university-feature");
+      return response.data;
+    }
+  })
+
+  useEffect(() => {
+    if (data) {
+      form.reset({
+        title: data.title,
+        description: data.description,
+      })
+    }
+  }, [data, form])
+
   return {
     form,
     onSubmit,
-  };
-};
+    isLoading
+  }
+}

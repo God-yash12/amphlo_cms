@@ -3,7 +3,7 @@ import { AboutMoreService } from './about-more.service';
 import { CreateAboutMoreDto } from './dto/create-about-more.dto';
 import { UpdateAboutMoreDto } from './dto/update-about-more.dto';
 
-@Controller('about-more')
+@Controller('amphlo-journey')
 export class AboutMoreController {
   constructor(private readonly aboutMoreService: AboutMoreService) {}
 

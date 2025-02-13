@@ -16,19 +16,4 @@ export class PortalHeroController {
   findAll() {
     return this.portalHeroService.get();
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.portalHeroService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updatePortalHeroDto: UpdatePortalHeroDto) {
-  //   return this.portalHeroService.update(+id, updatePortalHeroDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.portalHeroService.remove(+id);
-  // }
 }

@@ -1,21 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFieldArray, useForm } from "react-hook-form";
 import { UseAxiosPrivate } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PartnerFeatureValidation, PartnerFeatureValidationData } from "../../../validations/about/for-partner/partner-feauture";
-
 export const PartnerFeatureService = () => {
   const axiosPrivate = UseAxiosPrivate();
 
   const form = useForm<PartnerFeatureValidationData>({
     resolver: zodResolver(PartnerFeatureValidation),
-    defaultValues: {
-      featureTitle: "",
-      featureDescription: "",
-      image: 0,
-      feature: [{title: "", description: ""}]
-    },
+    mode: "onChange",
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -44,11 +39,33 @@ export const PartnerFeatureService = () => {
     await mutateAsync(data);
   };
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["partner-features"],
+    queryFn: async () => {
+      const response = await axiosPrivate.get("partner-features");
+      return response.data;
+    }
+  })
+
+  useEffect(() => {
+    try {
+      form.reset({
+        featureTitle: data?.featureTitle,
+        featureDescription: data?.featureDescription,
+        feature: data?.feature.map((feature: any) => ({title: feature.title, description: feature.description}))
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [data])  
+
   return {
     form,
     onSubmit,
     fields,
     append,
     remove,
+    image: data?.image,
+    isLoading
   };
 };

@@ -4,16 +4,16 @@ import { UpdateTestimonialDto } from './dto/update-testimonial.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Testimonial } from './entities/testimonial.entity';
 import { Repository } from 'typeorm';
-import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class TestimonialsService {
   constructor(
     @InjectRepository(Testimonial) private readonly testimonialsRepository: Repository<Testimonial>,
-    @InjectRepository(FileUpload) private readonly fileUploadRepository: Repository<FileUpload>
+    private readonly fileUploadService: FileUploadService,
   ) { }
   async create(dto: CreateTestimonialDto) {
-    const image = await this.fileUploadRepository.findOne({ where: { id: dto.image } })
+    const image = await this.fileUploadService.getAllByIds([dto.imageId])
     if (!image) throw new NotFoundException("Testimonials Image Not Found")
 
     const newTestimonial = await this.testimonialsRepository.create({
@@ -22,7 +22,7 @@ export class TestimonialsService {
       feedback: dto.workPlace,
       ratings: dto.ratings,
       createdDate: dto.createdAt,
-      image,
+      image: image[0],
     })
 
     await this.testimonialsRepository.save(newTestimonial)
@@ -38,17 +38,21 @@ export class TestimonialsService {
     return `This action returns a #${id} testimonial`;
   }
 
-  async update(id: number, updateTestimonialDto: UpdateTestimonialDto) {
-    const image = await this.testimonialsRepository.findOne({where: {id: updateTestimonialDto.image}})
-    if(!image) throw new NotFoundException("Image doesn't Found")
-    const testimonial = await this.testimonialsRepository.findOne({where: {id: id}})
-    if(!testimonial) throw new NotFoundException("Testimonial does not Found");
+  async update(id: number, dto: UpdateTestimonialDto) {
+    const testimonial = await this.testimonialsRepository.findOne({ where: { id }, relations: ['image'] })
+    if (!testimonial) throw new NotFoundException("Testimonial does not Found");
 
-    Object.assign(testimonial, image, updateTestimonialDto )
-    
+    if (dto.imageId) {
+      const image = await this.fileUploadService.getAllByIds([dto.imageId])
+      if (!image) throw new NotFoundException("Image doesn't Found")
+      testimonial.image = image[0]
+    }
+
+    Object.assign(testimonial, dto)
+
     await this.testimonialsRepository.save(testimonial)
 
-    return { message: " Testimonial Updated successfully"}
+    return { message: " Testimonial Updated successfully" }
   }
 
   async remove(id: number) {

@@ -5,29 +5,14 @@ import { UpdateAustraliaDto } from './dto/update-country.dto';
 
 @Controller('country')
 export class CountryController {
-  constructor(private readonly countryService: CountryService) {}
-  @Patch()
+  constructor(private readonly countryService: CountryService) { }
+  @Post()
   create(@Body() createAustraliaDto: CreateAustraliaDto) {
-    return this.countryService.set(createAustraliaDto);
+    return this.countryService.create(createAustraliaDto);
   }
 
   @Get()
   findAll() {
-    return this.countryService.get();
+    return this.countryService.findAll();
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.australiaService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateAustraliaDto: UpdateAustraliaDto) {
-  //   return this.australiaService.update(+id, updateAustraliaDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.australiaService.remove(+id);
-  // }
 }

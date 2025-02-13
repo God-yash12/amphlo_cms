@@ -1,7 +1,5 @@
-import { useState } from "react";
 // @ts-ignore
 import ReactStars from "react-rating-stars-component";
-import FileUploadInputField from "../../../ui/input/file-upload-input";
 import InputField from "../../../ui/input/input";
 import { UseTestimonialService } from "../../services/home/testimonial-service";
 import { TextEditor } from "../../../ui/editor/text-editor";
@@ -10,19 +8,21 @@ import { ErrorMessage } from "../../../ui/typographs/error-message";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
+import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
+
 
 export const Testimonials = () => {
-    const { form, onSubmit, testimonials, isLoading, isError, error, deleteMutation, selectedTestimonial, handleUpdate } = UseTestimonialService();
+    const { form, onSubmit, testimonials, isLoading, isError, error, deleteMutation, selectedTestimonial, setSelectedTestimonial } = UseTestimonialService();
     const errorMessage = form.formState.errors;
-    const [rating, setRating] = useState(0);
 
+   
     return (
         <div>
             <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
                 {/* Header Section */}
                 <div className="mb-8 text-center">
                     <Header className="text-3xl font-bold text-gray-800 mb-2">
-                       {selectedTestimonial ? "Update Testimonial" : " Share Your Experience"}
+                        {selectedTestimonial ? "Update Testimonial" : " Share Your Experience"}
                     </Header>
                     <Paragraph className="text-gray-600">
                         We value your feedback! Help us improve by sharing your testimonial.
@@ -84,15 +84,16 @@ export const Testimonials = () => {
                             Profile Picture
                         </label>
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
-                            <FileUploadInputField
-                                onUploadSuccess={(imageId) => form.setValue("image", imageId)}
+                            <FileUploadInput
+                                onChange={(fileId) => form.setValue('imageId', fileId[0].id)}
+                                initialFiles={ selectedTestimonial?.image? [{
+                                    id: selectedTestimonial?.image.id,
+                                    url: selectedTestimonial?.image.url,
+                                    originalName: selectedTestimonial?.image.filename
+                                }] : []}
                             />
                         </div>
-                        {errorMessage.image && (
-                            <ErrorMessage className="text-red-500 text-sm">
-                                {errorMessage.image.message}
-                            </ErrorMessage>
-                        )}
+
                     </div>
 
                     {/* Rating Section */}
@@ -105,9 +106,8 @@ export const Testimonials = () => {
                                 count={5}
                                 size={32}
                                 isHalf={true}
-                                value={rating}
+                                value={Number(form.watch("ratings")) || 0}
                                 onChange={(newRating: number) => {
-                                    setRating(newRating);
                                     form.setValue("ratings", newRating);
                                 }}
                                 activeColor="#fbbf24"
@@ -135,7 +135,7 @@ export const Testimonials = () => {
                 <Header className="text-2xl font-bold text-gray-800 mb-4">Testimonials</Header>
                 {isLoading && <Paragraph>Loading testimonials...</Paragraph>}
                 {isError && error && <Paragraph className="text-red-500">Error: {error.message}</Paragraph>}
-                {testimonials && testimonials.map((testimonial, index) => (
+                {testimonials && testimonials.map((testimonial: any, index: number) => (
                     <div key={index} className="border-b border-gray-200 py-4 flex items-center space-x-4">
                         <img
                             src={testimonial.image?.url}
@@ -151,13 +151,13 @@ export const Testimonials = () => {
                                 count={5}
                                 size={20}
                                 isHalf={true}
-                                value={(testimonial.ratings)}
+                                value={Number(testimonial.ratings)}
                                 edit={false}
                                 activeColor="#fbbf24"
                             />
                         </div>
                         <div className="flex space-x-6">
-                            <SecondaryButton onClick={() => handleUpdate(testimonial)}>Update</SecondaryButton>
+                            <SecondaryButton onClick={() => setSelectedTestimonial(testimonial)}>Update</SecondaryButton>
                             <SecondaryButton onClick={() => deleteMutation.mutate(testimonial.id)}>Delete</SecondaryButton>
                         </div>
                     </div>

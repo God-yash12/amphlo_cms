@@ -1,19 +1,17 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { UseAxiosPrivate } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UniWhyChooseValidation, UniWhyChooseValidationData } from "../../../validations/about/for-university/uni-why-amphlo-validation";
+import { useEffect } from "react";
 
 export const UniWhyAmphloService = () => {
   const axiosPrivate = UseAxiosPrivate();
 
   const form = useForm<UniWhyChooseValidationData>({
     resolver: zodResolver(UniWhyChooseValidation),
-    defaultValues: {
-      title: "",
-      description: "",
-    },
+
   });
 
   const { mutateAsync } = useMutation<any, Error, UniWhyChooseValidationData>({
@@ -36,8 +34,32 @@ export const UniWhyAmphloService = () => {
     await mutateAsync(data);
   };
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["uni-whyamphlo"],
+    queryFn: async () => {
+      const response = await axiosPrivate.get("uni-whyamphlo");
+      return response.data;
+    },
+  });
+
+
+  useEffect(() => {
+    if (data) {
+      try {
+        form.reset({
+          title: data.title,
+          description: data.description,
+        })
+      } catch (error) {
+        console.log(error)
+        toast.error("Failed to fetch data")
+      }
+    }
+  }, [data, form]);
+
   return {
     form,
     onSubmit,
+    isLoading
   };
 };

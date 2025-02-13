@@ -4,15 +4,14 @@ import { IsNull, Not, Repository } from 'typeorm';
 import { CreateAboutMoreDto } from './dto/create-about-more.dto';
 import { AboutMore } from './entities/about-more.entity';
 import { FileUpload } from '../../file-upload/entities/file-upload.entity'
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class AboutMoreService {
   constructor(
     @InjectRepository(AboutMore)
     private readonly aboutMoreRepository: Repository<AboutMore>,
-
-    @InjectRepository(FileUpload)
-    private readonly fileUploadRepository: Repository<FileUpload>,
+    private readonly fileUploadService: FileUploadService
   ) {}
 
   async set(createAboutMoreDto: CreateAboutMoreDto): Promise<AboutMore[]> {
@@ -22,12 +21,16 @@ export class AboutMoreService {
     const newEntries = this.aboutMoreRepository.create(
       await Promise.all(
         createAboutMoreDto.aboutMore.map(async (dto) => {
-          const image = dto.image ? await this.fileUploadRepository.findOne({ where: { id: dto.image } }) : null;
+          let image = null;
+          if (dto.image) {
+            const images = await this.fileUploadService.getAllByIds([dto.image]);
+            image = images.length > 0 ? images[0] : null;
+          }
           return {
             title: dto.title,
             description: dto.description,
             year: dto.year,
-            image: image ?? null,  
+            image: image,  
           };
         }),
       ),

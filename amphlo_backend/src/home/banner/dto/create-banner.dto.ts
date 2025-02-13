@@ -1,7 +1,7 @@
 import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
-export class BannerButtonDto {
+export class ButtonDto {
     @IsString()
     name: string;
 
@@ -16,8 +16,8 @@ export class CreateBannerDto {
     @IsString()
     description: string;
 
-    @IsString()
-    image: string;
+    @IsNumber()
+    imageId: number;
 
     @IsArray()
     @ValidateNested({ each: true })
@@ -25,10 +25,3 @@ export class CreateBannerDto {
     buttons: ButtonDto[];
 }
 
-class ButtonDto {
-    @IsString()
-    name: string;
-
-    @IsString()
-    route: string;
-}

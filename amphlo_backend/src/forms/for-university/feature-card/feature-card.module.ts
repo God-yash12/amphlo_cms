@@ -3,10 +3,10 @@ import { FeatureCardService } from './feature-card.service';
 import { FeatureCardController } from './feature-card.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FeatureCard } from './entities/feature-card.entity';
-import { FileUploadModule } from 'src/file-upload/file-upload.module';
+import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FeatureCard]), FileUploadModule],
+  imports: [TypeOrmModule.forFeature([FeatureCard, FileUpload])],
   controllers: [FeatureCardController],
   providers: [FeatureCardService],
 })

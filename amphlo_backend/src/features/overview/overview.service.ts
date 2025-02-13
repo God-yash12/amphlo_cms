@@ -5,25 +5,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Overview } from './entities/overview.entity';
 import { In, Repository } from 'typeorm';
 import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class OverviewService {
   constructor(
     @InjectRepository(Overview) private readonly overviewRepository: Repository<Overview>,
-    @InjectRepository(FileUpload) private readonly fileUploadRepository: Repository<FileUpload>
+    private readonly fileUploadService: FileUploadService
   ) { }
 
   async create(dto: CreateOverviewDto) {
     const overviewData = await Promise.all(
       dto.overview.map(async item => {
-        const image = await this.fileUploadRepository.findOne({ where: { id: item.image } });
+        const image = await this.fileUploadService.getAllByIds([item.image])
         if (!image) {
           throw new Error(`Image with ID ${item.image} not found`);
         }
         return {
           title: item.title,
           description: item.description,
-          images: [image],
+          images: [image[0]],
         };
       })
     );

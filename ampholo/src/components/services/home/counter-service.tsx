@@ -1,56 +1,29 @@
 
-import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { UseAxiosPrivate } from "../../../auth/home_auth";
-import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CounterValidation, CounterValidationType } from "../../validations/home/counter-validation";
+import { useForm } from "react-hook-form";
 
-interface CounterFormData {
-    title: string;
-    description: string;
-    countryCount?: number;
-    countryCountSubTitle?: string;
-    agentCount?: number;
-    agentCountSubTitle?: string;
-    studentsCount?: number;
-    studentsCountSubTitle?: string;
-    partnerRatingCount?: number;
-    partnerRatingSubTitle?: string;
-}
-
-export const CounterService = () => {
+export const useCounterService = () => {
 
     const axiosPrivate = UseAxiosPrivate()
-    const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        formState: { errors }
-    } = useForm<CounterFormData>({
-        defaultValues: {
-            title: "",
-            description: "",
-            countryCount: 0,
-            countryCountSubTitle: "",
-            agentCount: 0,
-            agentCountSubTitle: "",
-            studentsCount: 0,
-            studentsCountSubTitle: "",
-            partnerRatingCount: 0,
-            partnerRatingSubTitle: ""
-        },
-        mode: "onChange"
+    const form = useForm<CounterValidationType>({
+        resolver: zodResolver(CounterValidation),
+        mode: "onChange",
     })
 
+    
 
     const { mutateAsync } = useMutation({
-        mutationFn: async (data: CounterFormData) => {
-            
+        mutationFn: async (data: CounterValidationType) => {
             const response = await axiosPrivate.patch('counters', data)
             return response;
         },
         onSuccess: () => {
-            resetFormValue()
+            form.reset()
             toast.success("Counter form submitted successfully!!", {
                 position: "top-right"
             })
@@ -60,34 +33,26 @@ export const CounterService = () => {
         }
     })
 
-    const onSubmit = (data: CounterFormData) => {
+    const onSubmit = (data: CounterValidationType) => {
         mutateAsync(data)
-        resetFormValue()
     }
 
-    const resetFormValue = () => {
-       reset({
-        title: "",
-        description: "",
-        countryCount: 0,
-        countryCountSubTitle: "",
-        agentCount: 0,
-        agentCountSubTitle: "",
-        studentsCount: 0,
-        studentsCountSubTitle: "",
-        partnerRatingCount: 0,
-        partnerRatingSubTitle: "",
-       })
-    }
+    const { data, isLoading } = useQuery({
+        queryKey: ["counters"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get('counters')
+            return response.data
+        }
+    })
 
-    
+    useEffect(() => {
+        form.reset(data)
+    }, [data])
+
     return {
-        register,
-        reset,
-        handleSubmit,
-        setValue,
-        errors,
-        onSubmit,        
+        form,
+        onSubmit,
+        isLoading 
     }
 
 }

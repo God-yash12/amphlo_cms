@@ -1,24 +1,23 @@
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { UseAxiosPrivate } from "../../../../auth/home_auth"
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { JourneyValidation, JourneyValidationData } from "../../../validations/about/for-university/uni-journey-validation";
+import { useEffect } from "react";
 
 export const UseJourneyService = () => {
     const axiosPrivate = UseAxiosPrivate()
 
-    const form = useForm<JourneyValidationData> ({
+    const form = useForm<JourneyValidationData>({
         resolver: zodResolver(JourneyValidation),
-        defaultValues:{
-            title: "",
-            description: "",
-            cardDetail: [{count: 0, cardTitle: "", cardDescription: ""}]
-        },
         mode: 'onChange',
     })
-
-    const mutation  = useMutation({
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: 'cardDetail',
+    })
+    const mutation = useMutation({
         mutationFn: async (data: JourneyValidationData) => {
             const response = await axiosPrivate.patch('university-journey', data);
             return response;
@@ -36,8 +35,34 @@ export const UseJourneyService = () => {
         mutation.mutate(data);
     };
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["university-journey"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get("university-journey");
+            return response.data;
+        }
+    })
+
+    useEffect(() => {
+        if (data) {
+            form.reset({
+                title: data.title,
+                description: data.description,
+                cardDetail: data.cardDetail.map((card: any) => ({
+                    count: card.count,
+                    cardTitle: card.cardTitle,
+                    cardDescription: card.cardDescription
+                }))
+            })
+        }
+    }, [data, form])
+
     return {
         form,
-        onSubmit
+        onSubmit,
+        isLoading,
+        fields,
+        append,
+        remove
     }
 }

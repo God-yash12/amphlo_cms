@@ -1,4 +1,4 @@
-import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsNumber, IsOptional, IsString, Max, Min, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
 export class ButtonDto {
@@ -11,14 +11,16 @@ export class ButtonDto {
 
 export class CreateHomeTransformDto {
     @IsString()
+    @IsOptional()
     title: string;
 
 
     @IsString()
+    @IsOptional()
     description: string;
 
     @IsNumber()
-    image: number;
+    imageId: number;
 
     @IsArray()
     @ValidateNested({ each: true })

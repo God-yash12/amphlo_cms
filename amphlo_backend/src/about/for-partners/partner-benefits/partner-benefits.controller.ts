@@ -17,18 +17,4 @@ export class PartnerBenefitsController {
     return this.partnerBenefitsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.partnerBenefitsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePartnerBenefitDto: UpdatePartnerBenefitDto) {
-    return this.partnerBenefitsService.update(+id, updatePartnerBenefitDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.partnerBenefitsService.remove(+id);
-  }
 }

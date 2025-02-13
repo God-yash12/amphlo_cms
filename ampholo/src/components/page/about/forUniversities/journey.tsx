@@ -4,19 +4,16 @@ import Header from "../../../../ui/typographs/header/header";
 import Paragraph from "../../../../ui/typographs/paragraph";
 import { TextEditor } from "../../../../ui/editor/text-editor";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
-import { useFieldArray } from "react-hook-form";
 import SecondaryButton from "../../../../ui/buttons/secondary-button";
 import { Textarea } from "@material-tailwind/react";
 import { UseJourneyService } from "../../../services/about/for-university/uni-journey-service";
 
 export const JourneyUniversity = () => {
-    const { form, onSubmit } = UseJourneyService();
+    const { form, onSubmit, isLoading, fields, append, remove } = UseJourneyService();
     const errorMessage = form.formState.errors
 
-    const { fields, append, remove } = useFieldArray({
-        control: form.control,
-        name: 'cardDetail',
-    })
+
+    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -79,7 +76,11 @@ export const JourneyUniversity = () => {
                                         placeholder=" Number"
                                         {...form.register(`cardDetail.${index}.count`, { valueAsNumber: true })}
                                     />
-                                    {/* {errorMessage && <ErrorMessage>{errorMessage.cardDetail?.message}</ErrorMessage>} */}
+                                    {errorMessage.cardDetail?.[index]?.count &&  (
+                                        <ErrorMessage>
+                                            {errorMessage.cardDetail[index]?.count?.message}
+                                        </ErrorMessage>
+                                    )}
                                     <InputField
                                         label="Title"
                                         placeholder="Title"

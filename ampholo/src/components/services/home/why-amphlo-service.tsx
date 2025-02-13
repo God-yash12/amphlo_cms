@@ -1,8 +1,9 @@
-import { useForm } from "react-hook-form"
+import { useEffect } from "react";
+import { useFieldArray, useForm } from "react-hook-form"
 import { UseAxiosPrivate } from "../../../auth/home_auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { WhyAmphloFormData, WhyAmphloValidation } from '../../validations/home/why-amphlo-validation';
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { toast } from "react-toastify"
 
 
@@ -13,6 +14,12 @@ export const WhyAmphloService = () => {
         resolver: zodResolver(WhyAmphloValidation),
         mode: "onChange",
     })
+
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: 'lists',
+      })
+    
 
     const { mutateAsync } = useMutation({
         mutationFn: async (data: WhyAmphloFormData) => {
@@ -32,8 +39,29 @@ export const WhyAmphloService = () => {
         await mutateAsync(data)
     }
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["why-amphlo"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get('why-amphlo')
+            return response.data
+        }
+    })
+
+    useEffect(() => {
+        try {
+            form.reset(data)
+        } catch (error) {
+            console.error("Error fetching why amphlo data:", error);
+        }
+    }, [data])
+
     return {
         form,
         onSubmit,
+        fields,
+        append,
+        remove,
+        image: data?.image,
+        isLoading
     }
 }

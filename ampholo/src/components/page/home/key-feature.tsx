@@ -4,17 +4,14 @@ import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import { UseKeyFeatureService } from "../../services/home/key-features-service";
 import { TextEditor } from "../../../ui/editor/text-editor";
-import { useState } from "react";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 
 const KeyFeatures = () => {
-  const { register, handleSubmit, setValue, errors } = UseKeyFeatureService();
-  const [editorContent, setEditorContent] = useState("");
-
+  const { form, onSubmit } = UseKeyFeatureService();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-12">
+    <div className="flex flex-col gap-10 bg-gradient-to-b from-gray-50 to-white">
+      <div className="">
         {/* Header Section */}
         <div className="max-w-2xl mx-auto text-center mb-12">
           <Header className="text-3xl font-bold text-gray-900 mb-4">
@@ -28,7 +25,7 @@ const KeyFeatures = () => {
         {/* Form Section */}
         <div className="mx-auto">
           <form
-            onSubmit={handleSubmit}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="bg-white rounded-xl shadow-lg p-8 space-y-8"
           >
             {/* Title Input Section */}
@@ -39,9 +36,9 @@ const KeyFeatures = () => {
                   placeholder="Enter a compelling title for your features section"
                   className="w-full transition-all duration-200"
                   size="lg"
-                  {...register("title")}
+                  {...form.register("title")}
                 />
-                {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
+                {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
               </div>
 
               {/* Description Editor Section */}
@@ -51,13 +48,12 @@ const KeyFeatures = () => {
                 </label>
                 <TextEditor
                   placeholder="Describe your key features in detail..."
-                  value={editorContent}
+                  value={form.watch("description")}
                   onChange={(content) => {
-                    setEditorContent(content);
-                    setValue("description", content);
+                    form.setValue("description", content);
                   }}
                 />
-                {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+                {form.formState.errors.description && <ErrorMessage>{form.formState.errors.description.message}</ErrorMessage>}
 
               </div>
             </div>

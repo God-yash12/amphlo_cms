@@ -1,43 +1,27 @@
 import { useForm } from "react-hook-form"
 import { UseAxiosPrivate } from "../../../auth/home_auth"
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CoreFeatureValidation } from "../../validations/feature/core-feature-validation";
-
-interface HeroDataProps {
-    title: string;
-    mainTitle?: string;
-    description?: string;
-
-}
+import { CoreFeatureValidation, CoreFeatureValidationData } from "../../validations/feature/core-feature-validation";
+import { useEffect } from "react";
 
 
 export const UseCoreFeatureService = () => {
     const axiosPrivate = UseAxiosPrivate()
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        formState: { errors }
-    } = useForm<HeroDataProps>({
+    const form = useForm<CoreFeatureValidationData>({
         resolver: zodResolver(CoreFeatureValidation),
-        defaultValues: {
-            title: "",
-            description: "",
-            mainTitle: "",
-        }
+        mode: "onChange"
     })
 
     const mutation = useMutation({
-        mutationFn: async (data: HeroDataProps) => {
+        mutationFn: async (data: CoreFeatureValidationData) => {
             const response = await axiosPrivate.patch('core-features', data);
             return response;
         },
         onSuccess: () => {
-            reset()
+            form.reset()
             toast.success("Feature Core Feature Section Customized Successfully")
         },
         onError: (error: any) => {
@@ -45,16 +29,28 @@ export const UseCoreFeatureService = () => {
         }
     })
 
-    const onSubmit = (data: HeroDataProps) => {
+    const onSubmit = (data: CoreFeatureValidationData) => {
         mutation.mutate(data)
     }
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["core-features"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get('core-features')
+            return response.data
+        }
+    })
+
+    useEffect(() => {
+        if (data) {
+            form.reset(data)
+        }
+    }, [data, form])   
+
     return {
-        register,
-        handleSubmit: handleSubmit(onSubmit),
-        reset,
-        setValue,
-        errors,
+        form,
+        onSubmit,
+        isLoading
 
     }
 }

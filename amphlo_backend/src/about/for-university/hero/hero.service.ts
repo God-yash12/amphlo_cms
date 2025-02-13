@@ -6,19 +6,19 @@ import { AboutHero } from './entities/hero.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
 import { Hero } from 'src/home/hero/entities/hero.entity';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class HeroService {
   constructor(
     @InjectRepository(AboutHero)
     private readonly aboutHeroRepository: Repository<AboutHero>,
-    @InjectRepository(FileUpload)
-    private readonly fileUploadRepository: Repository<FileUpload>,
+    private readonly fileUploadService: FileUploadService
   ) {}
 
 
   async set(createHeroDto: CreateHeroDto) {
-    const image = await this.fileUploadRepository.findOne({ where: { id: createHeroDto.image } });
+    const image = await this.fileUploadService.getAllByIds([createHeroDto.image])
     if (!image) throw new NotFoundException("Hero Image does not Found");
 
     const existing = await this.get();
@@ -26,12 +26,12 @@ export class HeroService {
       const newHero = this.aboutHeroRepository.create({
         title: createHeroDto.title,
         subTitle: createHeroDto.subTitle,
-        image: image,
+        image:image[0]
       });
       return this.aboutHeroRepository.save(newHero);
     }
 
-    return await this.update(existing, createHeroDto, image);
+    return await this.update(existing, createHeroDto, image[0]);
   }
 
 

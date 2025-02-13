@@ -25,6 +25,6 @@ export class CreateHeroDto {
     buttons?: HeroButtonDto[];
 
     @IsNumber()
-    image: number;
-
+    @IsOptional()
+    imageId?: number;
 }

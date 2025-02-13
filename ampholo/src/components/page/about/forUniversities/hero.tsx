@@ -2,13 +2,16 @@ import InputField from "../../../../ui/input/input";
 import PrimaryButton from "../../../../ui/buttons/primary-button";
 import Header from "../../../../ui/typographs/header/header";
 import Paragraph from "../../../../ui/typographs/paragraph";
-import FileUploadInputField from "../../../../ui/input/file-upload-input";
-import { AboutHeroService } from "../../../services/about/for-university/uni-hero-service";
+import { UniHeroService } from "../../../services/about/for-university/uni-hero-service";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
+import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 
 export const HeroUniversity = () => {
-    const { form, onSubmit } = AboutHeroService()
+    const { form, onSubmit, image, isLoading } = UniHeroService()
     const errorMessage = form.formState.errors
+
+    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
+
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -52,10 +55,18 @@ export const HeroUniversity = () => {
                                 />
                                 {errorMessage.subTitle && <ErrorMessage>{errorMessage.subTitle.message}</ErrorMessage>}
                             </div>
-                            <FileUploadInputField
-                                onUploadSuccess={(fileId) => form.setValue('image', fileId)}
+                            <FileUploadInput
+                                accept="image/*"
+                                onChange={(files) => form.setValue('image', files[0].id)}
+                                initialFiles={image ? [{
+                                    id: image.id,
+                                    url: image.url,
+                                    originalName: image.filename
+                                }] : []}
                             />
                             {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+                           
+
                         </div>
 
                         {/* Submit Button */}

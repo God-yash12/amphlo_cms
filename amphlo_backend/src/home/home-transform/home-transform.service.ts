@@ -12,19 +12,18 @@ export class HomeTransformService {
   constructor(
     @InjectRepository(HomeTransform)
     private readonly homeTransformRepository: Repository<HomeTransform>,
-    @InjectRepository(FileUpload) 
-    private readonly fileUploadRepository: Repository<FileUpload>
+    private readonly fileUploadService: FileUploadService,
   ) {}
 
 
     async set(dto: CreateHomeTransformDto, file: Express.Multer.File) {
-    const image = await this.fileUploadRepository.findOne({where: {id: (dto.image)}})
+    const image = await this.fileUploadService.getAllByIds([dto.imageId])
     if(!image) throw new NotFoundException("Image Not Found")
     
     const existing = await this.get();  
-    if(!existing) return await this.createNew(dto, image)
+    if(!existing) return await this.createNew(dto, image[0])
 
-    return this.updateTransform(existing, dto, image) 
+      return this.updateTransform(existing, dto, image[0]) 
   }
 
   async createNew(dto: CreateHomeTransformDto, image: FileUpload){
@@ -32,7 +31,7 @@ export class HomeTransformService {
       title: dto.title,
       description: dto.description,
       buttons: dto.buttons,
-      image
+      image:image[0]
 
     })
     return await this.homeTransformRepository.save(newHomeTransform)
@@ -49,23 +48,9 @@ export class HomeTransformService {
   }
 
   async get(): Promise<HomeTransform | null>{
-    return await this.homeTransformRepository.findOne({where: {id: Not(IsNull())}, relations: ['image']})
+    const homeTransform = await this.homeTransformRepository.findOne({where: {id: Not(IsNull())}, relations: ['image']})
+    if(!homeTransform) return null
+    return homeTransform
   }
 
-  findAll() {
-    return `This action returns all homeTransform`;
-  }
-
-
-  findOne(id: number) {
-    return `This action returns a #${id} homeTransform`;
-  }
-
-  update(id: number, updateHomeTransformDto: UpdateHomeTransformDto) {
-    return `This action updates a #${id} homeTransform`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} homeTransform`;
-  }
 }

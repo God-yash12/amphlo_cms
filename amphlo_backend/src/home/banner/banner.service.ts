@@ -5,22 +5,23 @@ import { IsNull, Not, Repository } from 'typeorm';
 import { Banner } from './entities/banner.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class BannerService {
 
   constructor(
     @InjectRepository(Banner) private readonly bannerRepository: Repository<Banner>,
-    @InjectRepository(FileUpload) private readonly fileUploadRepository: Repository<FileUpload>
+    private readonly fileUploadService: FileUploadService,
   ) { }
   async set(createBannerDto: CreateBannerDto) {
-    const image = await this.fileUploadRepository.findOne({ where: { id: parseInt(createBannerDto.image) } })
+    const image = await this.fileUploadService.getAllByIds([createBannerDto.imageId])
     if (!image) throw new NotFoundException("Banner Image Not Found")
 
     const existing = await this.get();
-    if (!existing) return await this.createNew(createBannerDto, image)
+    if (!existing) return await this.createNew(createBannerDto, image[0])
 
-    return await this.updateBanner(existing, createBannerDto, image)
+    return await this.updateBanner(existing, createBannerDto, image[0])
   }
 
   async createNew(dto: CreateBannerDto, image: FileUpload) {
@@ -28,7 +29,7 @@ export class BannerService {
       title: dto.title,
       description: dto.description,
       buttons: dto.buttons,
-      image: image
+      image: image[0]
     })
     return await this.bannerRepository.save(newBanner)
   }

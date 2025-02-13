@@ -6,26 +6,21 @@ import { AxiosError } from "axios";
 interface FileUploadResponse {
   id: number;
   url: string;
+  originalName: string;
 }
 
 export const UseFileSubmit = () => {
   const axiosPrivate = UseAxiosPrivate();
 
-  return useMutation<FileUploadResponse, AxiosError, File | File[]>({
-    mutationFn: async (input: File | File[]) => {
+  return useMutation<FileUploadResponse[], AxiosError, File[]>({
+    mutationFn: async (input: File[]) => {
       const formData = new FormData();
 
-      if (Array.isArray(input)) {
-        // Handle multiple files
-        input.forEach((file, index) => {
-          formData.append(`images[${index}]`, file);
-        });
-      } else {
-        // Handle single file
-        formData.append("image", input);
-      }
+      input.forEach((file) => {
+        formData.append(`files`, file);
+      });
 
-      const response = await axiosPrivate.post<FileUploadResponse>(
+      const response = await axiosPrivate.post<FileUploadResponse[]>(
         "/file-upload",
         formData,
         {

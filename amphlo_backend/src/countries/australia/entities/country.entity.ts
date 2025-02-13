@@ -3,7 +3,7 @@ import { FileUpload } from "src/file-upload/entities/file-upload.entity";
 
 @Entity("countryhero")
 export class CountryHero {
-    @PrimaryColumn()
+    @PrimaryColumn({unique: true})
     countryName: string;
 
     @Column()

@@ -1,4 +1,15 @@
-import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+
+export class FeatureDto {
+    @IsString()
+    @IsOptional()
+    title: string;
+
+    @IsString()
+    @IsOptional()
+    description: string;
+}
 
 export class CreatePartnerFeatureDto {
 
@@ -13,5 +24,6 @@ export class CreatePartnerFeatureDto {
 
     @IsArray()
     @ValidateNested({ each: true })
-    feature: [{ title: string, description: string }]
+    @Type(() => FeatureDto)
+    feature: FeatureDto[]
 }

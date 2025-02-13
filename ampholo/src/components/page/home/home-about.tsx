@@ -4,19 +4,15 @@ import { MdDelete } from "react-icons/md";
 import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import { TextEditor } from "../../../ui/editor/text-editor";
-import FileUploadInputField from "../../../ui/input/file-upload-input";
 import PrimaryButton from "../../../ui/buttons/primary-button";
-import { UseHomrAboutServices } from "../../services/home/home-about-service";
+import { UseHomeAboutServices } from "../../services/home/home-about-service";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
-import { useFieldArray } from "react-hook-form";
+import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 
 const HomeAbout = () => {
-  const { form, onSubmit } = UseHomrAboutServices();
+  const { form, onSubmit, fields, append, remove, image, isLoading } = UseHomeAboutServices();
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "listItem",
-  });
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
@@ -61,7 +57,14 @@ const HomeAbout = () => {
         </div>
 
         {/* File Upload */}
-        <FileUploadInputField onUploadSuccess={(fileId) => form.setValue("image", fileId)} />
+        <FileUploadInput
+          onChange={(files) => form.setValue("imageId", files[0].id)}
+          initialFiles={image ? [{
+            id: image.id,
+            url: image.url,
+            originalName: image.filename
+          }] : []}
+        />
 
         {/* List Title and List Items */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -84,7 +87,7 @@ const HomeAbout = () => {
         </div>
 
         {fields.map((input, index) => (
-          <div key={input.id} className="flex flex-col md:flex-row gap-4 items-center">
+          <div key={input.id} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InputField
               label={`List ${index + 1}`}
               placeholder="Enter list item"

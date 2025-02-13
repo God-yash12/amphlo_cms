@@ -1,28 +1,27 @@
 import { Repository, Not, IsNull } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePortalFeatureDto } from './dto/create-portal-feature.dto';
-import { UpdatePortalFeatureDto } from './dto/update-portal-feature.dto';
 import { PortalFeature } from './entities/portal-feature.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class PortalFeatureService {
 constructor(
     @InjectRepository(PortalFeature)
     private readonly PortalFeatureRepository: Repository<PortalFeature>,
-    @InjectRepository(FileUpload)
-    private readonly fileUploadRepository: Repository<FileUpload>,
+    private readonly fileUploadService: FileUploadService,
   ) { }
   async set(dto: CreatePortalFeatureDto) {
-    const image = await this.fileUploadRepository.findOne({ where: { id: dto.image } })
+    const image = await this.fileUploadService.getAllByIds([dto.imageId])
     if (!image) throw new NotFoundException("Home About does not Found")
 
     const existing = await this.get();
 
-    if (!existing) return await this.createNew(dto, image);
+    if (!existing) return await this.createNew(dto, image[0]);
 
-    return await this.update(existing, dto, image);
+    return await this.update(existing, dto, image[0]);
   }
 
   async createNew(dto: CreatePortalFeatureDto, image: FileUpload) {
@@ -31,7 +30,7 @@ constructor(
       description: dto.description,
       listTitle: dto.listTitle,
       listItem: dto.listItem,
-      image
+      image: image[0]
     })
     await this.PortalFeatureRepository.save(newPortalFeature)
 
@@ -41,7 +40,7 @@ constructor(
   async update(existing: PortalFeature, dto: CreatePortalFeatureDto, image: FileUpload) {
     Object.assign(existing, {
       ...dto,
-      image,
+      image: image[0]
     });
 
     await this.PortalFeatureRepository.save(existing);
@@ -54,19 +53,4 @@ constructor(
     })
   }
 
-  // findAll() {
-  //   return `This action returns all portalFeature`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} portalFeature`;
-  // }
-
-  // update(id: number, updatePortalFeatureDto: UpdatePortalFeatureDto) {
-  //   return `This action updates a #${id} portalFeature`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} portalFeature`;
-  // }
 }

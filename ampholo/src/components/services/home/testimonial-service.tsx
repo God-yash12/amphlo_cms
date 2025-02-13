@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { UseAxiosPrivate } from "../../../auth/home_auth";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 
-interface Testimonial {
+export interface Testimonial {
     id: number;
     personName: string;
     workPlace: string;
@@ -25,7 +25,7 @@ interface Testimonial {
 export const UseTestimonialService = () => {
     const axiosPrivate = UseAxiosPrivate();
     const queryClient = useQueryClient();
-    const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null); // Add type to useState
+    const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
 
     const form = useForm<TestimonialsValidationData>({
         resolver: zodResolver(TestimonialsValidation)
@@ -59,7 +59,7 @@ export const UseTestimonialService = () => {
         },
         onSuccess: () => {
             toast.success("Testimonials Deleted Successfully");
-            {/* @ts-ignore */}
+            {/* @ts-ignore */ }
             queryClient.invalidateQueries(["testimonials"]);
         },
         onError: (error) => {
@@ -75,30 +75,44 @@ export const UseTestimonialService = () => {
         onSuccess: () => {
             form.reset();
             toast.success("Testimonial updated successfully");
-            {/* @ts-ignore */}
+            {/* @ts-ignore */ }
             queryClient.invalidateQueries(["testimonials"]);
+            setSelectedTestimonial(null);
         },
         onError: (error) => {
             toast.error(`Failed to update testimonial: ${error.message}`);
         }
     });
 
-    const handleUpdate = (testimonial: Testimonial) => {
-        setSelectedTestimonial(testimonial);
-        form.setValue("personName", testimonial.personName);
-        form.setValue("workPlace", testimonial.workPlace);
-        form.setValue("feedback", testimonial.feedback);
-        form.setValue("ratings", testimonial.ratings);
-        form.setValue("image", testimonial.image?.id); 
-    };
 
     const onSubmit = (data: TestimonialsValidationData) => {
-        if (selectedTestimonial) {
-            updateTestimonial.mutate({ id: selectedTestimonial.id, updatedData: data });
-        } else {
-            mutation.mutate(data);
+        try {
+            if (selectedTestimonial) {
+                updateTestimonial.mutate({ id: selectedTestimonial.id, updatedData: data });
+            } else {
+                mutation.mutate(data);
+            }
+        } catch (error) {
+            console.log(error)
         }
     };
+
+    useEffect(() => {
+        try {
+            if (selectedTestimonial) {
+                form.reset({
+                    personName: selectedTestimonial.personName,
+                    workPlace: selectedTestimonial.workPlace,
+                    feedback: selectedTestimonial.feedback,
+                    imageId: selectedTestimonial?.image.id,
+                    ratings: Number(selectedTestimonial.ratings),
+                });
+
+            }
+        } catch (error) {
+            console.error("Error resetting form:", error);
+        }
+    }, [selectedTestimonial, form]);
 
     return {
         form,
@@ -110,6 +124,8 @@ export const UseTestimonialService = () => {
         deleteMutation,
         selectedTestimonial,
         setSelectedTestimonial,
-        handleUpdate,
+        updateTestimonial,
+        image: selectedTestimonial?.image,
     };
+
 };

@@ -11,13 +11,15 @@ import { BecamePartnerService } from "../../../services/about/for-partner/became
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 export const JoinNowPartnerSection = () => {
-  const { form, onSubmit } = BecamePartnerService();
+  const { form, onSubmit, isLoading } = BecamePartnerService();
   const errorMessage = form.formState.errors;
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "buttons",
   });
+
+  if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
   return (
     <div id="hero" className="container mx-auto min-h-screen p-8 bg-gradient-to-b from-gray-50 to-white">

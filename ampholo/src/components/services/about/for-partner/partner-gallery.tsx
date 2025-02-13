@@ -1,8 +1,8 @@
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { UseAxiosPrivate } from "../../../../auth/home_auth"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { toast } from "react-toastify"
-
 
 export const UseGalleryService = () => {
     const axiosPrivate = UseAxiosPrivate()
@@ -11,7 +11,7 @@ export const UseGalleryService = () => {
 
     const mutation = useMutation({
         mutationFn: async (data) => {
-            const response = await axiosPrivate.post('partner-gallery', data);
+            const response = await axiosPrivate.post('galleries', data);
             return response;
         },
         onSuccess: () => {
@@ -27,6 +27,20 @@ export const UseGalleryService = () => {
         mutation.mutate(data)
     }
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["galleries"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get('galleries');
+            return response;
+        }
+    })
 
-    return { form, onSubmit }
+    useEffect(() => {
+        form.reset({
+            galleryIds: data?.data.map((gallery: any) => gallery.id)
+        })
+    }, [data])
+
+
+    return { form, onSubmit, data,  isLoading }
 }

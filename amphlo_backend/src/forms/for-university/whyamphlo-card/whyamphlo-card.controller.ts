@@ -5,7 +5,7 @@ import { UpdateWhyamphloCardDto } from './dto/update-whyamphlo-card.dto';
 
 @Controller('whyamphlo-card')
 export class WhyamphloCardController {
-  constructor(private readonly whyamphloCardService: WhyamphloCardService) {}
+  constructor(private readonly whyamphloCardService: WhyamphloCardService) { }
 
   @Post()
   create(@Body() createWhyamphloCardDto: CreateWhyamphloCardDto) {
@@ -22,13 +22,13 @@ export class WhyamphloCardController {
   //   return this.whyamphloCardService.findOne(+id);
   // }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateWhyamphloCardDto: UpdateWhyamphloCardDto) {
-  //   return this.whyamphloCardService.update(+id, updateWhyamphloCardDto);
-  // }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateWhyamphloCardDto: UpdateWhyamphloCardDto) {
+    return this.whyamphloCardService.update(+id, updateWhyamphloCardDto);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.whyamphloCardService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.whyamphloCardService.remove(+id);
+  }
 }

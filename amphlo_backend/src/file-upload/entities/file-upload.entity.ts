@@ -19,6 +19,7 @@ import { AboutMore } from 'src/about-more/about-more/entities/about-more.entity'
 import { PortalHero } from 'src/portal/portal-hero/entities/portal-hero.entity';
 import { PortalFeature } from 'src/portal/portal-feature/entities/portal-feature.entity';
 import { CountryHero } from 'src/countries/australia/entities/country.entity';
+import { Gallery } from 'src/about/for-partners/gallery/entities/gallery.entity';
 
 
 
@@ -41,34 +42,34 @@ export class FileUpload {
   homeAbout_image: HomeAbout;
 
   //  relation with Home hero section
-  @OneToOne(() => Hero, hero => hero.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => Hero, hero => hero.image, { onDelete: 'CASCADE' })
   heroImage: Hero;
 
   // relation with why-amphlo section
-  @OneToOne(() => WhyAmphlo, whyAmphlo => whyAmphlo.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => WhyAmphlo, whyAmphlo => whyAmphlo.image, { onDelete: 'CASCADE' })
   whyAmphloImage: WhyAmphlo;
 
   // relation with home banner section
-  @OneToOne(() => Banner, banner => banner.image, {onDelete: 'CASCADE'})
-  bannerImage: Banner;    
+  @OneToOne(() => Banner, banner => banner.image, { onDelete: 'CASCADE' })
+  bannerImage: Banner;
 
   // relation with home transform section
-  @OneToOne(() => HomeTransform, homeTransform => homeTransform.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => HomeTransform, homeTransform => homeTransform.image, { onDelete: 'CASCADE' })
   transformImage: HomeTransform;
 
   // relation with home key feature card
-  @OneToOne(() => KeyFeatureCard, keyfeatureCard => keyfeatureCard.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => KeyFeatureCard, keyfeatureCard => keyfeatureCard.image, { onDelete: 'CASCADE' })
   keyFeatureImage: KeyFeatureCard;
 
 
   // relation with the Feature page
 
   // Feature Hero section
-  @OneToOne(() => FeatureHero, featureHeroimage => featureHeroimage.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => FeatureHero, featureHeroimage => featureHeroimage.image, { onDelete: 'CASCADE' })
   featureHeroImage: FeatureHero
 
   // relation with Core feature cards 
-  @OneToOne(() => FeatureCard, featuresCardImage => featuresCardImage.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => FeatureCard, featuresCardImage => featuresCardImage.image, { onDelete: 'CASCADE' })
   featureCardImage: FeatureCard
 
   // relation with the overview
@@ -76,36 +77,36 @@ export class FileUpload {
   overviewImage: Overview;
 
   //relation with the Testimonials 
-  @OneToOne(() =>Testimonial, testimonial => testimonial.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => Testimonial, testimonial => testimonial.image, { onDelete: 'CASCADE' })
   testimonialImage: Testimonial;
 
   // relation with the About for university hero
-  @OneToOne(() => AboutHero, aboutHero => aboutHero.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => AboutHero, aboutHero => aboutHero.image, { onDelete: 'CASCADE' })
   uniHeroImage: AboutHero;
 
   // relation with about for university why amphlo card section 
-  @OneToOne(() => WhyamphloCard, whyAmphloCard => whyAmphloCard.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => WhyamphloCard, whyAmphloCard => whyAmphloCard.image, { onDelete: 'CASCADE' })
   uniWhyAmphloCard: WhyamphloCard;
-  
+
   // relation with about for univer feature card section 
-  @OneToOne(() => WhyamphloCard, featureCardImage => featureCardImage.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => WhyamphloCard, featureCardImage => featureCardImage.image, { onDelete: 'CASCADE' })
   uniFeatureCardImage: WhyamphloCard;
 
   // relation with partner
   //relation with partner hero 
-  @OneToOne(() => PartnerHero, partnerHero => partnerHero.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => PartnerHero, partnerHero => partnerHero.image, { onDelete: 'CASCADE' })
   partnerHeroImage: PartnerHero;
 
   //relation with partner benefit card
-  @OneToOne(() => PartnerBenefit, partnerBenefit => partnerBenefit.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => PartnerBenefit, partnerBenefit => partnerBenefit.image, { onDelete: 'CASCADE' })
   partnerBenefitImage: PartnerBenefit;
 
   // relation with partner feature
-  @OneToOne(()=> PartnerFeature, partnerFeature => partnerFeature.image, {onDelete: "CASCADE"})
+  @OneToOne(() => PartnerFeature, partnerFeature => partnerFeature.image, { onDelete: "CASCADE" })
   partnerFeatureImage: PartnerFeature;
 
   // relation with australia
-  @OneToOne(() => CountryHero, countryHero => countryHero.image, {onDelete: 'CASCADE'})
+  @OneToOne(() => CountryHero, countryHero => countryHero.image, { onDelete: 'CASCADE' })
   countryHeroImage: CountryHero;
 
   // relation with about more
@@ -115,11 +116,15 @@ export class FileUpload {
   //relation with portal
 
   //relation with portal hero section
-  @OneToOne(() => PortalHero, portalHero => portalHero.image, {onDelete: "CASCADE"})
+  @OneToOne(() => PortalHero, portalHero => portalHero.image, { onDelete: "CASCADE" })
   portalHeroImage: PortalHero;
 
   // relation with portal feature section
-  @OneToOne(() => PortalFeature, portalFeature => portalFeature.image, {onDelete: "CASCADE"})
+  @OneToOne(() => PortalFeature, portalFeature => portalFeature.image, { onDelete: "CASCADE" })
   PortalFeatureImage: PortalFeature;
+
+  // relation with gallery
+  @ManyToOne(() => Gallery, gallery => gallery.files, { onDelete: 'CASCADE' })
+  gallery: Gallery;
 
 }

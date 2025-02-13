@@ -3,11 +3,11 @@ import { BannerService } from './banner.service';
 import { BannerController } from './banner.controller';
 import { Banner } from './entities/banner.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FileUploadModule } from 'src/file-upload/file-upload.module';
+import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Banner]), FileUploadModule],
+  imports: [TypeOrmModule.forFeature([Banner, FileUpload])],
   controllers: [BannerController],
   providers: [BannerService],
 })

@@ -4,10 +4,10 @@ import { TextEditor } from "../../../../ui/editor/text-editor";
 import PrimaryButton from "../../../../ui/buttons/primary-button";
 import Header from "../../../../ui/typographs/header/header";
 import Paragraph from "../../../../ui/typographs/paragraph";
-import FileUploadInputField from "../../../../ui/input/file-upload-input";
 import SecondaryButton from "../../../../ui/buttons/secondary-button";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
 import { CountryHeroService } from "../../../services/countries/country-hero-service";
+import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 
@@ -30,7 +30,7 @@ export const CountryHero = () => {
 
         {/* Form Section */}
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <InputField
+          <InputField
             label="Country Name"
             size="lg"
             value={countryName}
@@ -59,8 +59,8 @@ export const CountryHero = () => {
           {errorMessage && <ErrorMessage>{errorMessage.description?.message}</ErrorMessage>}
 
           {/* File Upload */}
-          <FileUploadInputField
-            onUploadSuccess={(fileId: number) => form.setValue("image", fileId)}
+          <FileUploadInput
+            onChange={(fileId) => form.setValue('image', fileId[0].id)}
           />
           {errorMessage && <ErrorMessage>{errorMessage.image?.message}</ErrorMessage>}
 

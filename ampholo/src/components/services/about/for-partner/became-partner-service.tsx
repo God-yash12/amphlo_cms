@@ -1,20 +1,17 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { UseAxiosPrivate } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { JoinNowValidationData, JoinNowValidation } from "../../../validations/about/for-university/uni-join-now";
+import { useEffect } from "react";
 
 export const BecamePartnerService = () => {
   const axiosPrivate = UseAxiosPrivate();
 
   const form = useForm<JoinNowValidationData>({
     resolver: zodResolver(JoinNowValidation),
-    defaultValues: {
-      title: "",
-      description: "",
-      buttons: [{name: "", route: ""}]
-    },
+    mode: "onChange",
   });
 
   const { mutateAsync } = useMutation<any, Error, JoinNowValidationData>({
@@ -38,8 +35,30 @@ export const BecamePartnerService = () => {
     await mutateAsync(data);
   };
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["partner-joinnow"],
+    queryFn: async () => {
+      const response = await axiosPrivate.get("partner-joinnow");
+      return response.data;
+    }
+  })
+
+  useEffect(() => {
+    try {
+      form.reset({
+        title: data.title,
+        description: data.description,
+        buttons: data.buttons.map((button: any) => ({name: button.name, route: button.route}))
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [data])
+  
+
   return {
     form,
     onSubmit,
+    isLoading
   };
 };

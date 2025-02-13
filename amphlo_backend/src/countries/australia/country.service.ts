@@ -5,67 +5,38 @@ import { IsNull, Not, Repository } from 'typeorm';
 import { CountryHero } from './entities/country.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 @Injectable()
 export class CountryService {
   constructor(
     @InjectRepository(CountryHero)
     private readonly countryHeroRepository: Repository<CountryHero>,
-
-    @InjectRepository(FileUpload)
-    private readonly fileUploadRepository: Repository<FileUpload>,
-  ) {}
+    private readonly fileUploadService: FileUploadService
+  ) { }
 
 
-  async set (dto: CreateAustraliaDto) {
-    const image = await this.fileUploadRepository.findOne({where: {id: dto.image}})
-    if(!image) throw new NotFoundException('Image does not exist')
-    
-      const existing = await this.get()
-      if(!existing) return this.createNew(dto, image)
+  async create(dto: CreateAustraliaDto) {
+    const countryName = await this.countryHeroRepository.findOne({ where: { countryName: dto.countryName } })
+    if (countryName) throw new NotFoundException('Country Already exists')
 
-      return this.updateExisting(existing, dto, image)
-  }
+      let image = null;
+      if (dto.image) {
+        image = await this.fileUploadService.getAllByIds([dto.image]);
+        if (!image) throw new NotFoundException('Image not found');
+      } 
 
-  async createNew(dto: CreateAustraliaDto, image: FileUpload) {
-    const countryHero = this.countryHeroRepository.create({
+    const newCountry = await this.countryHeroRepository.create({
+      countryName: dto.countryName,
       title: dto.title,
       description: dto.description,
       buttons: dto.buttons,
-      image,
-
+      image: image[0],
     })
-    return this.countryHeroRepository.save(countryHero)
+    return this.countryHeroRepository.save(newCountry)
   }
 
-
-  async updateExisting(existing: CountryHero, dto: CreateAustraliaDto, image: FileUpload){
-    Object.assign(existing, {
-      ...dto,
-
-      image,
-    })
-    return this.countryHeroRepository.save(existing)
-  }
-  
-
-  async get() {
-    return this.countryHeroRepository.findOne({where: {countryName: Not(IsNull())}})
+    findAll() {
+    return this.countryHeroRepository.find({relations: ['image']});
   }
 
-
-  //   findAll() {
-  //   return `This action returns all australia`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} australia`;
-  // }
-
-  // update(id: number, updateAustraliaDto: UpdateAustraliaDto) {
-  //   return `This action updates a #${id} australia`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} australia`;
-  // }
 }

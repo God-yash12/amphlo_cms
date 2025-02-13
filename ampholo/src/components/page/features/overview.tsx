@@ -6,8 +6,8 @@ import { TextEditor } from "../../../ui/editor/text-editor";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { UseOverviewService } from "../../services/feature/overview";
 import { FiPlus } from "react-icons/fi";
-import FileUploadInputField from "../../../ui/input/file-upload-input";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
+import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 
 export const FeatureOverview = () => {
     const {
@@ -18,8 +18,9 @@ export const FeatureOverview = () => {
         remove
     } = UseOverviewService();
 
-    const { register, formState: { errors }, setValue } = form;
-
+    if (fields.length === 0) {
+        append({ title: "", description: "", image: 0 });
+    } 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
             <div className="container mx-auto px-4 py-12">
@@ -41,19 +42,17 @@ export const FeatureOverview = () => {
                     >
                         {fields.map((field, index) => (
                             <div key={field.id} className="space-y-4 border-b pb-8 relative">
-
-
                                 {/* Title Input */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <InputField
                                         label="Title"
                                         placeholder="Enter feature title"
                                         className="w-full"
-                                        {...register(`overview.${index}.title`)}
+                                        {...form.register(`overview.${index}.title`)}
                                     />
-                                    {errors.overview?.[index]?.title && (
+                                    {form.formState.errors.overview?.[index]?.title && (
                                         <ErrorMessage>
-                                            {errors.overview[index]?.title?.message}
+                                            {form.formState.errors.overview[index]?.title?.message}
                                         </ErrorMessage>
                                     )}
                                    {fields.length >1 && (
@@ -74,26 +73,26 @@ export const FeatureOverview = () => {
                                     </label>
                                     <TextEditor
                                         placeholder="Describe your feature in detail..."
-                                        value={field.description}
+                                        value={form.watch(`overview.${index}.description`)}
                                         onChange={(content) => {
-                                            setValue(`overview.${index}.description`, content);
+                                            form.setValue(`overview.${index}.description`, content);
                                         }}
                                     />
-                                    {errors.overview?.[index]?.description && (
+                                    {form.formState.errors.overview?.[index]?.description && (
                                         <ErrorMessage>
-                                            {errors.overview[index]?.description?.message}
+                                            {form.formState.errors.overview[index]?.description?.message}
                                         </ErrorMessage>
                                     )}
                                 </div>
 
                                 {/* Image Upload */}
                                 <div className="relative">
-                                    <FileUploadInputField
-                                        onUploadSuccess={(fileId) => form.setValue(`overview.${index}.image`, fileId)}
+                                    <FileUploadInput        
+                                        onChange={(files) => form.setValue(`overview.${index}.image`, files[0].id)}
                                     />
-                                    {errors.overview?.[index]?.image && (
+                                    {form.formState.errors.overview?.[index]?.image && (
                                         <ErrorMessage>
-                                            {errors.overview[index]?.image?.message}
+                                            {form.formState.errors.overview[index]?.image?.message}
                                         </ErrorMessage>
                                     )}
                                 </div>

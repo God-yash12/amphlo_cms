@@ -3,10 +3,10 @@ import { TestimonialsService } from './testimonials.service';
 import { TestimonialsController } from './testimonials.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Testimonial } from './entities/testimonial.entity';
-import { FileUploadModule } from 'src/file-upload/file-upload.module';
+import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Testimonial]), FileUploadModule],
+  imports: [TypeOrmModule.forFeature([Testimonial, FileUpload])],
   controllers: [TestimonialsController],
   providers: [TestimonialsService],
 })

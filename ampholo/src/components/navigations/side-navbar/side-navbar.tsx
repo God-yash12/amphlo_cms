@@ -28,48 +28,48 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
       element: "Home",
       path: "/home",
       icon: FaHome,
-      children: [
-        {
-          id: 5,
-          element: "Hero",
-          path: "/home/hero",
-        },
-        {
-          id: 6,
-          element: "Key Feature",
-          path: "/home/key-features",
-        },
-        {
-          id: 7,
-          element: "Banner",
-          path: "/home/banner",
-        },
-        {
-          id: 8,
-          element: "Why AMPHLO",
-          path: "/home/why-amphlo", 
-        },
-        {
-          id: 9,
-          element: "Counters",
-          path: "/home/counters",
-        },
-        {
-          id: 10,
-          element: "About",
-          path: "/home/home-about",
-        },
-        {
-          id: 11,
-          element: "Transform",
-          path: "/home/transform",
-        },
-        {
-          id: 12,
-          element: "Testimonials",
-          path: "/home/testimonials",
-        },
-      ],
+      // children: [
+      //   {
+      //     id: 5,
+      //     element: "Hero",
+      //     path: "/home/hero",
+      //   },
+      //   {
+      //     id: 6,
+      //     element: "Key Feature",
+      //     path: "/home/key-features",
+      //   },
+      //   {
+      //     id: 7,
+      //     element: "Banner",
+      //     path: "/home/banner",
+      //   },
+      //   {
+      //     id: 8,
+      //     element: "Why AMPHLO",
+      //     path: "/home/why-amphlo", 
+      //   },
+      //   {
+      //     id: 9,
+      //     element: "Counters",
+      //     path: "/home/counters",
+      //   },
+      //   {
+      //     id: 10,
+      //     element: "About",
+      //     path: "/home/home-about",
+      //   },
+      //   {
+      //     id: 11,
+      //     element: "Transform",
+      //     path: "/home/transform",
+      //   },
+      //   {
+      //     id: 12,
+      //     element: "Testimonials",
+      //     path: "/home/testimonials",
+      //   },
+      // ],
     },
     {
       id: 3,
@@ -99,33 +99,33 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
       element: "Features",
       path: "/features",
       icon: MdFeaturedPlayList,
-      children: [
-        {
-          id: 22,
-          element: "Hero",
-          path: "/features/hero",
-        },
-        {
-          id: 23,
-          element: "Core Feature",
-          path: "/features/core-features",
-        },
-        {
-          id: 24,
-          element: "Agent",
-          path: "/features/agent",
-        },
-        {
-          id: 25,
-          element: "Overview",
-          path: "/features/overview", 
-        },
-        {
-          id: 26,
-          element: "FAQs",
-          path: "/features/faqs",
-        },
-      ]
+      // children: [
+      //   {
+      //     id: 22,
+      //     element: "Hero",
+      //     path: "/features/hero",
+      //   },
+      //   {
+      //     id: 23,
+      //     element: "Core Feature",
+      //     path: "/features/core-features",
+      //   },
+      //   {
+      //     id: 24,
+      //     element: "Agent",
+      //     path: "/features/agent",
+      //   },
+      //   {
+      //     id: 25,
+      //     element: "Overview",
+      //     path: "/features/overview", 
+      //   },
+      //   {
+      //     id: 26,
+      //     element: "FAQs",
+      //     path: "/features/faqs",
+      //   },
+      // ]
     },
     {
       id: 5,

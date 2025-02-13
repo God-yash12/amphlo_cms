@@ -1,10 +1,10 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form"
 import { UseAxiosPrivate } from "../../../auth/home_auth"
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FeatureHeroValidation, FeatureHeroValidationData } from "../../validations/feature/hero-valiadtion";
-
 
 export const UseHeroService = () => {
     const axiosPrivate = UseAxiosPrivate()
@@ -31,6 +31,29 @@ export const UseHeroService = () => {
         mutation.mutate(data)
     }
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["feature-hero"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get('features-hero')
+            return response.data
+        }
+    })
+    useEffect(() => {
+        if (data) {
+            try {
+                form.reset({
+                    title: data.title,
+                    description: data.description,
+                    buttons: data.buttons?.map((button: any) => ({
+                        name: button.name,
+                        route: button.route
+                    })),
+                })
+            } catch (error) {
+                toast.error("Failed to fetch data")
+            }
+        }
+    }, [data, form]);
 
-    return { form, onSubmit, }
+    return { form, onSubmit, image: data?.image, isLoading }
 }

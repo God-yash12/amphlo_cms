@@ -9,14 +9,7 @@ export const UseOverviewService = () => {
   const axiosPrivate = UseAxiosPrivate();
 
   const form = useForm<OverViewValidationData>({
-    resolver: zodResolver(OverViewValidation),
-    defaultValues: {
-      overview: [{
-        title: '',
-        description: '',
-        image: 0
-      }]
-    }
+    resolver: zodResolver(OverViewValidation)
   });
 
   const { fields, append, remove } = useFieldArray({

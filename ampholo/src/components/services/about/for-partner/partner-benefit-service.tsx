@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { UseAxiosPrivate } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
@@ -10,16 +10,12 @@ export const PartnerBenefitService = () => {
 
     const form = useForm<PartnerBenefitValidationData>({
         resolver: zodResolver(PartnerBenefitValidation),
-        defaultValues: {
-            title: "",
-            description: "",
-            image: 0
-        },
+        mode: "onChange",
     });
 
     const { mutateAsync } = useMutation<any, Error, PartnerBenefitValidationData>({
         mutationFn: async (data) => {
-            const response = await axiosPrivate.patch("partner-benefits", data);
+            const response = await axiosPrivate.post("partner-benefits", data);
             return response.data;
         },
         onSuccess: () => {
@@ -38,8 +34,20 @@ export const PartnerBenefitService = () => {
         await mutateAsync(data);
     };
 
+    const { data } = useQuery({
+        queryKey: ["partner-benefits"],
+        queryFn: async () => {
+            const response = await axiosPrivate.get("partner-benefits");
+            return response.data;
+        }
+    });
+
+
+
     return {
         form,
         onSubmit,
+        data,
+       
     };
 };

@@ -13,9 +13,9 @@ export class CreateTestimonialDto {
     @IsString()
     feedback: string;
 
-    @IsNotEmpty()
     @IsNumber()
-    image: number;
+    @IsOptional()
+    imageId: number;
 
     @IsNotEmpty()
     @IsNumber()

@@ -5,10 +5,9 @@ import Paragraph from "../../../../ui/typographs/paragraph";
 import { TextEditor } from "../../../../ui/editor/text-editor";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
 import { FiPlus } from "react-icons/fi";
-// import FileUploadInputField from "../../../../ui/input/file-upload-input";
 import SecondaryButton from "../../../../ui/buttons/secondary-button";
 import { PartnerFeatureService } from "../../../services/about/for-partner/partner-feature-service";
-import FileUploadInputField from "../../../../ui/input/file-upload-input";
+import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 
 export const PartnerFeatureSection = () => {
     const {
@@ -16,12 +15,16 @@ export const PartnerFeatureSection = () => {
         onSubmit,
         fields,
         append,
-        remove
+        remove,
+        image,
+        isLoading       
     } = PartnerFeatureService();
 
     const { register, formState: { errors }, setValue } = form;
 
     const errorMessage = form.formState.errors;
+
+    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -65,10 +68,17 @@ export const PartnerFeatureSection = () => {
                             />
                             {errorMessage.featureDescription && <ErrorMessage>{errorMessage.featureDescription.message}</ErrorMessage>}
                         </div>
-                        <FileUploadInputField
-                            onUploadSuccess={(imageId) => form.setValue('image', imageId)}
+                        <FileUploadInput
+                            accept="image/*"
+                            onChange={(files) => form.setValue('image', files[0].id)}
+                            initialFiles={image ? [{
+                                id: image.id,
+                                url: image.url,
+                                originalName: image.filename
+                            }] : []}
                         />
-                        {/* {errorMessage.image && <ErrorMessage>e{errorMessage.image?.message}</ErrorMessage>} */}
+                        {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+                        
                     </div>
 
                     {/* Form Section */}
