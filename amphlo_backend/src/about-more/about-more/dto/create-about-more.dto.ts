@@ -12,10 +12,11 @@ export class AboutMoreData{
 
     @IsOptional()
     @IsDate()
+    @Type(() => Date)
     year: Date;
 
+    @IsNumber()
     @IsOptional()
-    @IsDate(  )
     image: number;
 }
 

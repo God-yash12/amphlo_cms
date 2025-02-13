@@ -45,7 +45,6 @@ const Counters = () => {
             />
             {errorMessage.title && <ErrorMessage className="text-red-500">{errorMessage.title.message}</ErrorMessage>}
             <TextEditor
-              placeholder="Write Counter Description"
               value={form.watch("description")}
               onChange={(content) => form.setValue("description", content)}
             />

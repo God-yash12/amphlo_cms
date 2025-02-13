@@ -16,18 +16,18 @@ export const OurJourney = () => {
         fields,
         append,
         remove,
-        image,
-        isLoading   
+        data,
+        isLoading,
     } = OurJourneyService();
-    console.log(image, "jioijnhj bhjn k")
 
     const { register, formState: { errors }, setValue } = form;
 
+    if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
+
     if (fields.length === 0) {
-        append({ title: '', description: '', image: 0, year: '' }, { shouldFocus: false });
+        append({ title: '', description: '', image: 0, year: new Date() }, { shouldFocus: false });
     }
 
-    if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -102,7 +102,7 @@ export const OurJourney = () => {
                                     <input
                                         type="date"
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                                        {...register(`aboutMore.${index}.year`)}
+                                        {...register(`aboutMore.${index}.year`, { valueAsDate: true })}
                                     />
                                     {errors.aboutMore?.[index]?.year && (
                                         <ErrorMessage>
@@ -116,18 +116,23 @@ export const OurJourney = () => {
                                     <FileUploadInput
                                         accept="image/*"
                                         onChange={(files) => form.setValue(`aboutMore.${index}.image`, files[0].id)}
-                                        initialFiles={image ? [{
-                                            id: image?.id,
-                                            url: image?.url,
-                                            originalName: image?.filename
-                                        }] : []}
+                                        initialFiles={
+                                            data?.[index]?.image
+                                              ? [{
+                                                  id: data[index].image.id,
+                                                  url: data[index].image.url,
+                                                  originalName: data[index].image.filename,
+                                                }]
+                                              : []
+                                          }
                                     />
+
                                     {errors.aboutMore?.[index]?.image && (
                                         <ErrorMessage>
                                             {errors.aboutMore[index]?.image?.message}
                                         </ErrorMessage>
                                     )}
-                                   
+
                                 </div>
                             </div>
                         ))}
@@ -136,7 +141,7 @@ export const OurJourney = () => {
                             {fields.length < 10 && (
                                 <PrimaryButton
                                     type="button"
-                                    onClick={() => append({ title: '', description: '', image: 0, year: '' })}
+                                    onClick={() => append({ title: '', description: '', image: 0, year: new Date() })}
                                     className="flex items-center gap-2"
                                 >
                                     <FiPlus className="w-4 h-4" />

@@ -8,7 +8,7 @@ import { AboutMoreValidation, AboutMoreValidationData } from "../../../validatio
 
 
 export const OurJourneyService = () => {
-  const axiosPrivate = UseAxiosPrivate(); 
+  const axiosPrivate = UseAxiosPrivate();
 
   const form = useForm<AboutMoreValidationData>({
     resolver: zodResolver(AboutMoreValidation),
@@ -31,7 +31,7 @@ export const OurJourneyService = () => {
     },
     onSuccess: () => {
       form.reset()
-      toast.success("Features Overview updated successfully");
+      toast.success("Journey section updated successfully");
     },
     onError: (error: any) => {
       toast.error(`Update failed: ${error.message}`);
@@ -52,19 +52,25 @@ export const OurJourneyService = () => {
 
   useEffect(() => {
     try {
-      form.reset({
-        aboutMore: data?.data?.map((item: any) => ({
-          title: item.title,
-          description: item.description,
-          year: item.year,
-          image: item.image
-        })) || []
-
-      })
+      if (data?.length) {
+        form.reset({
+          aboutMore: data?.map((item: any) => ({
+            title: item.title || '',
+            description: item.description ?? item.description.replace(/<[^>]+>/g, ''),
+            year: item.year.split('T')[0],
+            image: item.image ? {
+              id: item.image.id,
+              url: item.image.url,
+              filename: item.image.filename,
+            } : null
+          }))
+        });
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }, [data, form])
+  }, [data]);
+
 
   return {
     form,
@@ -72,7 +78,7 @@ export const OurJourneyService = () => {
     fields,
     append,
     remove,
-    image: data?.data?.map((item: any) => item.image),
-    isLoading
+    data,
+    isLoading,
   };
 };

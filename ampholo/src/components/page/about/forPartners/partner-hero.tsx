@@ -42,7 +42,6 @@ export const PartnersHeroSection = () => {
 
           {/* Description Editor */}
           <TextEditor
-            placeholder="Write Hero Description"
             value={form.watch("description") ?? ""}
             onChange={(content) => form.setValue("description", content)}
           />

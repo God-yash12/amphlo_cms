@@ -11,8 +11,6 @@ import { UseJourneyService } from "../../../services/about/for-university/uni-jo
 export const JourneyUniversity = () => {
     const { form, onSubmit, isLoading, fields, append, remove } = UseJourneyService();
     const errorMessage = form.formState.errors
-
-
     if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
 
     return (
@@ -53,7 +51,6 @@ export const JourneyUniversity = () => {
                                     Feature Description
                                 </label>
                                 <TextEditor
-                                    placeholder="Describe your key features in detail..."
                                     value={form.watch('description') ?? ''}
                                     onChange={(content) => {
                                         form.setValue("description", content);

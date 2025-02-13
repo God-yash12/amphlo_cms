@@ -46,7 +46,6 @@ export const JoinNowPartnerSection = () => {
         {/* Description Editor */}
         <div>
           <TextEditor
-            placeholder="Write the section description"
             value={form.watch("description") ?? ""}
             onChange={(content) => form.setValue("description", content)}
           />

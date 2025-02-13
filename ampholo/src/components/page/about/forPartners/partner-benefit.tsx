@@ -50,7 +50,6 @@ export const PartnerBenefitSection = () => {
                   Card Description
                 </label>
                 <TextEditor
-                  placeholder="Describe your key features in detail..."
                   value={form.watch('description') ?? ""}
                   onChange={(content) => {
                     form.setValue("description", content);

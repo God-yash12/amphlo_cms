@@ -4,8 +4,8 @@ export const AboutMoreValidation = z.object({
     aboutMore: z.array(z.object({
         title: z.string().nonempty({ message: "Title is Required" }),
         description: z.string().nonempty({ message: "Description is Required" }),
-        year: z.string().nonempty({message: 'Please select a Date'}),
-        image: z.number().min(1, { message: "At least one image is required" })
+        year: z.date(),
+        image: z.number().optional()
     })).min(1, {message: "AT least one field is Required!!"})
 })
 

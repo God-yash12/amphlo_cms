@@ -62,7 +62,6 @@ export const PartnerFeatureSection = () => {
                                 Feature Description
                             </label>
                             <TextEditor
-                                placeholder="Describe your key features in detail..."
                                 value={form.watch('featureDescription') ?? ""}
                                 onChange={(content) => form.setValue('featureDescription', content)}
                             />
