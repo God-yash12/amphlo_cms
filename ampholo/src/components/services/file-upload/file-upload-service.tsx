@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { UseAxiosPrivate } from "../../../auth/home_auth";
+import { useAxios } from "../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 
@@ -10,7 +10,7 @@ interface FileUploadResponse {
 }
 
 export const UseFileSubmit = () => {
-  const axiosPrivate = UseAxiosPrivate();
+  const axiosPrivate = useAxios();
 
   return useMutation<FileUploadResponse[], AxiosError, File[]>({
     mutationFn: async (input: File[]) => {

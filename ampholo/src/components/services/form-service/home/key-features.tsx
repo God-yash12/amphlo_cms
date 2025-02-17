@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { UseAxiosPrivate } from "../../../../auth/home_auth";
+import { useAxios } from "../../../../auth/home_auth";
 import { WhyAmphloCardValidation } from "../../../validations/form/for-university/why-amphlo-card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { WhyAmphloCardData } from "../../../validations/form/for-university/why-amphlo-card";
@@ -20,7 +20,7 @@ interface FormDataProps {
 }
 
 export const KeyFeaturesFormService = () => {
-    const axiosPrivate = UseAxiosPrivate()
+    const axiosPrivate = useAxios()
     const [imagePreview, setImagePreview] = useState<string | null>(null)
     const [selectedKeyFeatureCard, setSelectedKeyFeatureCard] = useState<FormDataProps | null>(null)
     const queryClient = useQueryClient()

@@ -3,25 +3,23 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ForbiddenException, ValidationPipe } from "@nestjs/common";
-import { log } from "console";
+import { ValidationPipe } from "@nestjs/common";
+import cookieParser from 'cookie-parser'
+import { CorsOptions } from "@nestjs/common/interfaces/external/cors-options.interface";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(
+    AppModule,
+    {
+      logger: ["warn", "error", "debug", "verbose"]
+    }
+  );
   const configService = app.get(ConfigService);
 
-
+  app.use(cookieParser())
   app.enableCors({
-    // origin: 'http://localhost:3000',
-    origin: function (origin: undefined | string, callback: (e: Error, b: boolean) => {}) {
-      if (origin === undefined && configService.get("NODE_ENV") === 'production') throw new ForbiddenException("Not Allowed By CORs")
-
-      if (origin === configService.get(`CLIENT_URL`) || configService.get("NODE_ENV") === 'development') {
-        return callback(null, true)
-      } else {
-        return callback(new ForbiddenException("Error"), false)
-      }
-    },
+    origin: ['http://localhost:5173'],
+    credentials: true,
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
   });
 
@@ -32,7 +30,7 @@ async function bootstrap() {
   }));
 
   const config = new DocumentBuilder()
-    .setTitle('cms')
+    .setTitle('AMPHLO.COM')
     .setDescription('api for cms')
     .setVersion('1.0')
     .build();

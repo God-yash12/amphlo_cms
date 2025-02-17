@@ -1,5 +1,5 @@
 import { useFieldArray, useForm } from "react-hook-form"
-import { UseAxiosPrivate } from "../../../../auth/home_auth"
+import { useAxios } from "../../../../auth/home_auth"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +7,7 @@ import { JourneyValidation, JourneyValidationData } from "../../../validations/a
 import { useEffect } from "react";
 
 export const UseJourneyService = () => {
-    const axiosPrivate = UseAxiosPrivate()
+    const axiosPrivate = useAxios()
 
     const form = useForm<JourneyValidationData>({
         resolver: zodResolver(JourneyValidation),

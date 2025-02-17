@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { UseAxiosPrivate } from "../../../auth/home_auth";
+import { useAxios } from "../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TransformValidation, TransformValidationType } from "../../validations/home/transform-validation"; 
 
 export const TransformService = () => {
 
-    const axiosPrivate = UseAxiosPrivate();
+    const axiosPrivate = useAxios();
 
     const form = useForm<TransformValidationType>({
         resolver: zodResolver(TransformValidation),

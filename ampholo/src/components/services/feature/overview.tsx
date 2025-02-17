@@ -1,12 +1,12 @@
 import { useForm, useFieldArray } from "react-hook-form";
-import { UseAxiosPrivate } from "../../../auth/home_auth";
+import { useAxios } from "../../../auth/home_auth";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OverViewValidation, OverViewValidationData } from "../../validations/feature/overview-validation";
 
 export const UseOverviewService = () => {
-  const axiosPrivate = UseAxiosPrivate();
+  const axiosPrivate = useAxios();
 
   const form = useForm<OverViewValidationData>({
     resolver: zodResolver(OverViewValidation)

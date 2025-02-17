@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { UseAxiosPrivate } from "../../../../auth/home_auth";
+import { useAxios } from "../../../../auth/home_auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FeatureCardData, FeatureCardValidation } from "../../../validations/feature/feature-card-validation";
 
@@ -20,7 +20,7 @@ interface CoreFeatureCardData {
 }
 
 export const CoreFeaturesFormService = () => {
-    const axiosPrivate = UseAxiosPrivate()
+    const axiosPrivate = useAxios()
     const queryClient = useQueryClient()
     const [selectedCoreFeatureCard, setSelectedCoreFeatureCard] = useState<CoreFeatureCardData | null>(null)
     const [imagePreview, setImagePreview] = useState<string | null>(null)

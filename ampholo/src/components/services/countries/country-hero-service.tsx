@@ -3,12 +3,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CountriesValidationData } from "../../validations/countries/countries-validation";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { UseAxiosPrivate } from "../../../auth/home_auth";
+import { useAxios } from "../../../auth/home_auth";
 import { toast } from "react-toastify";
 
 
 export const CountryHeroService = () => {
-    const axiosPrivate = UseAxiosPrivate();
+    const axiosPrivate = useAxios();
 
     const form = useForm<CountriesValidationData>({
         resolver: zodResolver(countriesValidation),

@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { UseAxiosPrivate } from "../../../../auth/home_auth";
+import { useAxios } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UniAboutFeatures, UniAboutFeaturesData } from "../../../validations/about/for-university/uni-feature-validation";
 import { useEffect } from "react";
 
 export const UniFeatureService = () => {
-  const axiosPrivate = UseAxiosPrivate();
+  const axiosPrivate = useAxios();
 
   const form = useForm<UniAboutFeaturesData>({
     resolver: zodResolver(UniAboutFeatures),

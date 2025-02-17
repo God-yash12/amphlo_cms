@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form"
-import { UseAxiosPrivate } from "../../../auth/home_auth"
+import { useAxios } from "../../../auth/home_auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { WhyAmphloFormData, WhyAmphloValidation } from '../../validations/home/why-amphlo-validation';
 import { useMutation, useQuery } from "@tanstack/react-query"
@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 
 
 export const WhyAmphloService = () => {
-    const axiosPrivate = UseAxiosPrivate()
+    const axiosPrivate = useAxios()
 
     const form = useForm <WhyAmphloFormData>({
         resolver: zodResolver(WhyAmphloValidation),

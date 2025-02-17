@@ -4,6 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 import { MdFeaturedPlayList } from "react-icons/md";
 import { IconType } from "react-icons";
 import { MdArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
+import SecondaryButton from "../../../ui/buttons/secondary-button";
+import { logoutService } from "../../services/login-service/logout-service";
 
 interface SideNavBarProps {
   isSidebarOpen: boolean;
@@ -21,12 +23,13 @@ interface NavElement {
 const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
   const location = useLocation();
+  const { handleLogout } = logoutService()
 
   const navElements: NavElement[] = [
     {
       id: 2,
       element: "Home",
-      path: "/home",
+      path: "/",
       icon: FaHome,
       // children: [
       //   {
@@ -130,7 +133,7 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
     {
       id: 5,
       element: "Countries",
-      path: "/destination", 
+      path: "/destination",
       icon: MdFeaturedPlayList,
       // children: [
       //   {
@@ -174,7 +177,7 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
       //     element: "United States",
       //     path: "/destination/united-states",
       //   },
-          
+
       // ],
 
     },
@@ -208,6 +211,7 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
       element: "About Uni-Feature",
       path: "/contents/about-feature-card",
     },
+
   ]
   // Toggle dropdown
   const toggleDropdown = (id: number) => {
@@ -232,7 +236,7 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
       >
         <FaTimes />
       </button>
-    
+
       <nav>
         <h1 className="text-2xl font-poppins text-gray-400 px-4 mt-2">Amphlo</h1>
         <h2 className="text-md lg:text-xl font-poppins text-gray-400 text-left mt-6">
@@ -248,9 +252,8 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
               <ul className="mt-2">
                 <Link
                   to={data.path}
-                  className={`text-gray-400 font-poppins py-2 px-2 hover:bg-gray-700 rounded flex justify-between items-center ${
-                    isItemActive ? "bg-gray-700" : ""
-                  }`}
+                  className={`text-gray-400 font-poppins py-2 px-2 hover:bg-gray-700 rounded flex justify-between items-center ${isItemActive ? "bg-gray-700" : ""
+                    }`}
                   onClick={() => toggleDropdown(data.id)}
                 >
                   <li className="flex flex-row justify-center items-center text-md">
@@ -275,9 +278,8 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
                         <Link
                           key={child.id}
                           to={child.path}
-                          className={`text-gray-400 text-md font-poppins py-2 px-2 hover:bg-gray-700 rounded flex mt-2 ${
-                            isChildActive ? "bg-gray-700" : ""
-                          }`}
+                          className={`text-gray-400 text-md font-poppins py-2 px-2 hover:bg-gray-700 rounded flex mt-2 ${isChildActive ? "bg-gray-700" : ""
+                            }`}
                         >
                           <li>{child.element}</li>
                         </Link>
@@ -291,25 +293,30 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
         })}
 
         <div>
-        <h2 className="text-md lg:text-xl font-poppins text-gray-400 text-left mt-6 mb-2">
-          Contens
-        </h2>
-         <div>
-          {
-            formElement.map((item) => (
-              <ul key={item.id} className="">
-                <Link
-                 to={item.path}
-                 className={`text-gray-400 font-poppins py-2 px-2 hover:bg-gray-700 rounded flex items-center mb-2 ${
-                  isActive(item) ? "bg-gray-700" : ""
-                }`}
-                 >
-                  {item.element}
-                </Link>
-              </ul>
-            ))
-          }
-         </div>
+       
+          <h2 className="text-md lg:text-xl font-poppins text-gray-400 text-left mt-6 mb-2">
+            Contens
+          </h2>
+          <div>
+            {
+              formElement.map((item) => (
+                <ul key={item.id} className="">
+                  <Link
+                    to={item.path}
+                    className={`text-gray-400 font-poppins py-2 px-2 hover:bg-gray-700 rounded flex items-center mb-2 ${isActive(item) ? "bg-gray-700" : ""
+                      }`}
+                  >
+                    {item.element}
+                  </Link>
+                </ul>
+              ))
+            }
+          </div>
+        </div>
+        <div>
+          <SecondaryButton
+          onClick={handleLogout} 
+          className="text-gray-300, bg-transparent w-full border-white mt-4">Logout</SecondaryButton>
         </div>
       </nav>
     </div>

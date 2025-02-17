@@ -1,5 +1,5 @@
 import { useFieldArray, useForm } from "react-hook-form"
-import { UseAxiosPrivate } from "../../../auth/home_auth"
+import { useAxios } from "../../../auth/home_auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { toast } from "react-toastify"
@@ -8,7 +8,7 @@ import { useEffect } from "react"
 
 
 export const PortalAccessService = () => {
-    const axiosPrivate = UseAxiosPrivate()
+    const axiosPrivate = useAxios()
 
     const form = useForm<PortalAccessFormData>({
         resolver: zodResolver(PortalAccessValidation),

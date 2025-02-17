@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFieldArray, useForm } from "react-hook-form";
-import { UseAxiosPrivate } from "../../../auth/home_auth";
+import { useAxios } from "../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HeroSectionValidation, THeroSectionValidation } from "../../validations/home/hero-validation";
 
 export const HeroService = () => {
-  const axiosPrivate = UseAxiosPrivate();
+  const axiosPrivate = useAxios();
 
   const form = useForm<THeroSectionValidation>({
     resolver: zodResolver(HeroSectionValidation),

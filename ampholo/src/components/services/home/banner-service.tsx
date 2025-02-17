@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { UseAxiosPrivate } from "../../../auth/home_auth";
+import { useAxios } from "../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { BannerValidation, BannerValidationType } from "../../validations/home/banner-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export const BannerService = () => {
 
-    const  axiosPrivate  = UseAxiosPrivate();
+    const  axiosPrivate  = useAxios();
     
     const form = useForm<BannerValidationType>({
         resolver: zodResolver(BannerValidation),

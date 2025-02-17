@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { UseAxiosPrivate } from "../../../auth/home_auth";
+import { useAxios } from "../../../auth/home_auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TestimonialsValidation, TestimonialsValidationData } from "../../validations/home/testimonial-validation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -23,7 +23,7 @@ export interface Testimonial {
 }
 
 export const UseTestimonialService = () => {
-    const axiosPrivate = UseAxiosPrivate();
+    const axiosPrivate = useAxios();
     const queryClient = useQueryClient();
     const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
 

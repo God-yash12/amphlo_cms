@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { UseAxiosPrivate } from "../../../../auth/home_auth";
+import { useAxios } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { WhyAmphloCardValidation, WhyAmphloCardData } from "../../../validations/form/for-university/why-amphlo-card";
@@ -20,7 +20,7 @@ interface WhyAmphloCard {
 
 
 export const UniWhyAmphloCardService = () => {
-  const axiosPrivate = UseAxiosPrivate();
+  const axiosPrivate = useAxios();
   const queryClient = useQueryClient();
   const [selectedWhyAmphloCard, setSelectedWhyAmphloCard] = useState<WhyAmphloCard | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);

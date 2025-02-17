@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form"
-import { UseAxiosPrivate } from "../../../auth/home_auth"
+import { useAxios } from "../../../auth/home_auth"
 import { FAQValidation, FAQValidationData } from "../../validations/feature/faq-validation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -12,7 +12,7 @@ interface FAQItem {
 }
 
 export const UseFAQService = () => {
-    const axiosPrivate = UseAxiosPrivate()
+    const axiosPrivate = useAxios()
     const queryClient = useQueryClient();
 
     const form = useForm<FAQValidationData>({

@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFieldArray, useForm } from "react-hook-form";
-import { UseAxiosPrivate } from "../../../../auth/home_auth";
+import { useAxios } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PartnerFeatureValidation, PartnerFeatureValidationData } from "../../../validations/about/for-partner/partner-feauture";
 export const PartnerFeatureService = () => {
-  const axiosPrivate = UseAxiosPrivate();
+  const axiosPrivate = useAxios();
 
   const form = useForm<PartnerFeatureValidationData>({
     resolver: zodResolver(PartnerFeatureValidation),

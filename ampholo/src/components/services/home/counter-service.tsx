@@ -1,7 +1,7 @@
 
 import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { UseAxiosPrivate } from "../../../auth/home_auth";
+import { useAxios } from "../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CounterValidation, CounterValidationType } from "../../validations/home/counter-validation";
@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 
 export const useCounterService = () => {
 
-    const axiosPrivate = UseAxiosPrivate()
+    const axiosPrivate = useAxios()
     const form = useForm<CounterValidationType>({
         resolver: zodResolver(CounterValidation),
         mode: "onChange",

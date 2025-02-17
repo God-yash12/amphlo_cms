@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { UseAxiosPrivate } from "../../../../auth/home_auth";
+import { useAxios } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { JoinNowValidationData, JoinNowValidation } from "../../../validations/about/for-university/uni-join-now";
 import { useEffect } from "react";
 
 export const BecamePartnerService = () => {
-  const axiosPrivate = UseAxiosPrivate();
+  const axiosPrivate = useAxios();
 
   const form = useForm<JoinNowValidationData>({
     resolver: zodResolver(JoinNowValidation),

@@ -43,6 +43,9 @@ import { UniversityModule } from './register/university/university.module';
 import { PartnerModule } from './register/partner/partner.module';
 import { AgentRegisterfiModule } from './register/agent/agent.module';
 import { NestjsFormDataModule, MemoryStoredFile, FileSystemStoredFile } from 'nestjs-form-data';
+import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
+import { AdminSignupModule } from './admin-signup/admin-signup.module';
 
 @Module({
   imports: [
@@ -108,6 +111,9 @@ import { NestjsFormDataModule, MemoryStoredFile, FileSystemStoredFile } from 'ne
     UniversityModule,
     PartnerModule,
     AgentRegisterfiModule,
+    AuthModule,
+    AdminModule,
+    AdminSignupModule,
 
   ],
 })

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { UseAxiosPrivate } from "../../../../auth/home_auth";
+import { useAxios } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UniFeatureCardValidation, UniFeatureCardValidationData } from "../../../validations/form/for-university/feature-card-validation";
@@ -22,7 +22,7 @@ interface FeatureCard {
 
 
 export const UniFeatureCardService = () => {
-  const axiosPrivate = UseAxiosPrivate();
+  const axiosPrivate = useAxios();
   const [selectedFeatureCard, setSelectedFeatureCard] = useState<FeatureCard | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
