@@ -31,48 +31,6 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
       element: "Home",
       path: "/",
       icon: FaHome,
-      // children: [
-      //   {
-      //     id: 5,
-      //     element: "Hero",
-      //     path: "/home/hero",
-      //   },
-      //   {
-      //     id: 6,
-      //     element: "Key Feature",
-      //     path: "/home/key-features",
-      //   },
-      //   {
-      //     id: 7,
-      //     element: "Banner",
-      //     path: "/home/banner",
-      //   },
-      //   {
-      //     id: 8,
-      //     element: "Why AMPHLO",
-      //     path: "/home/why-amphlo", 
-      //   },
-      //   {
-      //     id: 9,
-      //     element: "Counters",
-      //     path: "/home/counters",
-      //   },
-      //   {
-      //     id: 10,
-      //     element: "About",
-      //     path: "/home/home-about",
-      //   },
-      //   {
-      //     id: 11,
-      //     element: "Transform",
-      //     path: "/home/transform",
-      //   },
-      //   {
-      //     id: 12,
-      //     element: "Testimonials",
-      //     path: "/home/testimonials",
-      //   },
-      // ],
     },
     {
       id: 3,
@@ -102,84 +60,12 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
       element: "Features",
       path: "/features",
       icon: MdFeaturedPlayList,
-      // children: [
-      //   {
-      //     id: 22,
-      //     element: "Hero",
-      //     path: "/features/hero",
-      //   },
-      //   {
-      //     id: 23,
-      //     element: "Core Feature",
-      //     path: "/features/core-features",
-      //   },
-      //   {
-      //     id: 24,
-      //     element: "Agent",
-      //     path: "/features/agent",
-      //   },
-      //   {
-      //     id: 25,
-      //     element: "Overview",
-      //     path: "/features/overview", 
-      //   },
-      //   {
-      //     id: 26,
-      //     element: "FAQs",
-      //     path: "/features/faqs",
-      //   },
-      // ]
     },
     {
       id: 5,
       element: "Countries",
       path: "/destination",
       icon: MdFeaturedPlayList,
-      // children: [
-      //   {
-      //     id: 27,
-      //     element: "Australia",
-      //     path: "/destination/australia",
-      //   },
-      //   {
-      //     id: 28,
-      //     element: "New Zealand",
-      //     path: "/destination/new-zealand",
-      //   },
-      //   {
-      //     id: 29,
-      //     element: "Canada",
-      //     path: "/destination/canada",
-      //   },
-      //   {
-      //     id: 30,
-      //     element: "United States",
-      //     path: "/destination/united-states",
-      //   },
-      //   {
-      //     id: 31,
-      //     element: "United Kingdom",
-      //     path: "/destination/united-kingdom",
-      //   },
-      //   {
-      //     id: 32,
-      //     element: "France",
-      //     path: "/destination/france",
-
-      //   },
-      //   {
-      //     id: 33,
-      //     element: "Germany",
-      //     path: "/destination/germany",
-      //   },
-      //   {
-      //     id: 34,
-      //     element: "United States",
-      //     path: "/destination/united-states",
-      //   },
-
-      // ],
-
     },
     {
       id: 6,
@@ -228,7 +114,7 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
   };
 
   return (
-    <div className="relative h-screen p-4">
+    <div className="no-scroolbar relative p-4 h-full overflow-y-scroll">
       {/* Close Button in small screen */}
       <button
         onClick={toggleSidebar}
@@ -293,7 +179,7 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
         })}
 
         <div>
-       
+
           <h2 className="text-md lg:text-xl font-poppins text-gray-400 text-left mt-6 mb-2">
             Contens
           </h2>
@@ -313,10 +199,14 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
             }
           </div>
         </div>
+        <Link to="/add-admin">
+          <SecondaryButton
+            className="text-gray-300, bg-transparent w-full border-white mt-4">Add Admin</SecondaryButton>
+        </Link>
         <div>
           <SecondaryButton
-          onClick={handleLogout} 
-          className="text-gray-300, bg-transparent w-full border-white mt-4">Logout</SecondaryButton>
+            onClick={handleLogout}
+            className="text-gray-300, bg-transparent w-full border-white mt-4">Logout</SecondaryButton>
         </div>
       </nav>
     </div>

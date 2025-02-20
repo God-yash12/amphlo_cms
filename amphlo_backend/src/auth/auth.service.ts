@@ -1,23 +1,29 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AdminService } from 'src/admin/admin.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { AdminSignupService } from 'src/admin-signup/admin-signup.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly adminService: AdminService,
+    private readonly adminService: AdminSignupService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
 
-  async login(username: string, password: string) {
-    const isValid = await this.adminService.validateAdmin(username, password);
-    if (!isValid) {
-      throw new UnauthorizedException('Invalid credentials');
+  async login(email: string, password: string) {
+    const admin = await this.adminService.findByEmail(email);
+    if (!admin) {
+      throw new UnauthorizedException('Invalid email');
     }
 
-    const payload = { username };
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid password');
+    }
+
+    const payload = { email, name: admin.name };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET'),
       expiresIn: this.configService.get('JWT_EXPIRY'),

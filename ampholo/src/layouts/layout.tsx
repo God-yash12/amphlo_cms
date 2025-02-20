@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SideNavBar from "../components/navigations/side-navbar/side-navbar";
 import AdminTopbar from "../components/navigations/topbar/topbar";
 import { FaBars } from "react-icons/fa";
@@ -10,23 +10,44 @@ const AdminLayout = () => {
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
+    useEffect(() => {
+        const handleOutsideClick = (event: MouseEvent) => {
+            const sidebar = document.getElementById("sidebar");
+            if (
+                isSidebarOpen &&
+                sidebar &&
+                !sidebar.contains(event.target as Node)
+            ) {
+                setIsSidebarOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => document.removeEventListener("mousedown", handleOutsideClick);
+    }, [isSidebarOpen]);
 
     return (
-        <div className="flex h-screen">
-            {/* Sidebar */} 
+        <div className="flex relative h-screen overflow-hidden">
+            {/* Sidebar */}
             <aside
-                className={`fixed top-0 left-0 h-full bg-primary text-white z-50 transition-transform transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-                    } lg:translate-x-0 lg:static lg:w-64`}
+                id="sidebar"
+                className={`fixed top-0 left-0 bg-primary text-white z-50  transition-transform transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+                    } lg:translate-x-0 lg:static lg:w-64 h-full`}
             >
                 <SideNavBar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
             </aside>
 
-            {/* Main Content */}
-            <div className="flex-1 flex flex-col">
+            {/* Overlay for small screens when sidebar is open */}
+            {isSidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
 
+            <div className="flex-1 flex flex-col  h-full">
                 {/* Topbar */}
-                <header className=" bg-primary text-white p-4 shadow-lg flex items-center gap-4">
-
+                <header className="bg-primary text-white p-4 shadow-lg flex items-center gap-4">
                     {/* Hamburger Button */}
                     <button
                         onClick={toggleSidebar}

@@ -1,10 +1,18 @@
+import { useState } from "react";
 import PrimaryButton from "../../ui/buttons/primary-button";
 import InputField from "../../ui/input/input";
 import { Loginservice } from "../services/login-service/login-service";
+import { FaEye, FaEyeSlash  } from "react-icons/fa";
+
 
 export const LoginForm = () => {
 
     const { form, submitLogin } = Loginservice()
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
@@ -18,25 +26,33 @@ export const LoginForm = () => {
                     {/* Email Input */}
                     <div>
                         <InputField
-                            label="Username"
+                            label="email"
                             variant="outlined"
-                            placeholder="Enter your Username"
+                            placeholder="Enter your email"
                             className="w-full"
-                            {...form.register('username')}
+                            {...form.register('email')}
                         />
                     </div>
 
                     {/* Password Input */}
-                    <div>
-                        <InputField
-                            label="Password"
-                            type="password"
-                            variant="outlined"
-                            placeholder="Enter your password"
-                            className="w-full"
-                            {...form.register('password')}
-                        />
-                    </div>
+                   {/* Password Input */}
+                                       <div className="relative">
+                                           <InputField
+                                               label="Password"
+                                               type={showPassword ? "text" : "password"}
+                                               variant="outlined"
+                                               placeholder="Enter your password"
+                                               className="w-full"
+                                               {...form.register('password')}
+                                           />
+                                           <button
+                                               type="button"
+                                               onClick={togglePasswordVisibility}
+                                               className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                                           >
+                                               {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
+                                           </button>
+                                       </div>
 
                     {/* Login Button */}
                     <PrimaryButton type="submit" className="w-full py-2 text-lg">

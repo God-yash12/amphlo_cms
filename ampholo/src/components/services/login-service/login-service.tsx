@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const loginschema = z.object({
-    username: z.string(),
+    email: z.string(),
     password: z.string(),
 })
 
@@ -23,8 +23,8 @@ export const Loginservice = () => {
     const form = useForm<loginschemaData>({
         resolver: zodResolver(loginschema),
         defaultValues: {
-            password: "1234",
-            username: "Ganesh"
+            password: "admin1",
+            email: "admin1@gmail.com"
         }
     })
 

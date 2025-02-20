@@ -13,6 +13,7 @@
     "@hookform/resolvers": "^3.10.0",
     "@material-tailwind/react": "^2.1.10",
     "@nestjs/mapped-types": "*",
+    "@types/jwt-decode": "^3.1.0",
     "@types/react-stars": "^2.2.4",
     "axios": "^1.7.9",
     "jodit": "^4.2.47",

@@ -12,6 +12,7 @@ export const logoutService = () => {
         if(!accessToken){
             toast.error("Token not Found")
         }else{
+            window.alert("Are you sure want to logout?")
             localStorage.removeItem('token')
             setAccessToken(null)
             navigate('/login')

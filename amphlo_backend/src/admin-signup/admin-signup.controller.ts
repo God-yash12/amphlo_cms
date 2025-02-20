@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AdminSignupService } from './admin-signup.service';
 import { CreateAdminSignupDto } from './dto/create-admin-signup.dto';
 import { UpdateAdminSignupDto } from './dto/update-admin-signup.dto';
+import { AdminSignup } from './entities/admin-signup.entity';
 
 @Controller('admin-signup')
 export class AdminSignupController {
@@ -13,13 +14,16 @@ export class AdminSignupController {
   }
 
   @Get()
-  findAll() {
-    return this.adminSignupService.findAll();
+ async findAll() {
+    const admins = this.adminSignupService.findAll();
+    return admins;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminSignupService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    const admin = await this.adminSignupService.findOne(id);
+    const { password, ...info} = admin
+    return info
   }
 
   @Patch(':id')

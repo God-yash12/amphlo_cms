@@ -33,7 +33,6 @@ const Hero = () => {
             placeholder="Title"
             {...form.register("title", { required: "Title is required" })}
           />
-
         </div>
 
         {/* Description Editor */}

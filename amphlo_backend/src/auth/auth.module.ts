@@ -3,11 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { AdminModule } from 'src/admin/admin.module';
+import { AdminSignupModule } from 'src/admin-signup/admin-signup.module';
 
 @Module({
   imports: [
-    AdminModule,
+    AdminSignupModule,
     ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

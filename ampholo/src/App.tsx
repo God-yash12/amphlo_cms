@@ -32,6 +32,7 @@ import Features from "./components/page/features/feature";
 import { LoginForm } from "./components/login/login";
 import PersistLogin from "./auth/presist_login";
 import { RequireAuth } from "./auth/require_auth";
+import { Adminsignup } from "./components/admin-signup/admin-signup";
 
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
                 </Route>
                 {/* About Portal Route */}
                 <Route path="portal" element={<Portal />} />
+                <Route path="/add-admin" element={<Adminsignup />} />
               </Route>
             </Route >
           </Route>
