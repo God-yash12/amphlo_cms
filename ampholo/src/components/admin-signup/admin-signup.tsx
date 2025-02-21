@@ -4,10 +4,11 @@ import InputField from "../../ui/input/input";
 import { AdminSignupService } from "../services/admin-signup/admin-signup-service";
 import Header from "../../ui/typographs/header/header";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import BeatLoader from "react-spinners/BeatLoader";
 
 export const Adminsignup = () => {
 
-    const { form, submitLogin } = AdminSignupService()
+    const { form, submitLogin, loginMutation } = AdminSignupService()
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -65,7 +66,7 @@ export const Adminsignup = () => {
 
                     {/* Button */}
                     <PrimaryButton type="submit" className="w-full py-2 text-lg">
-                        Add New Admin
+                    {loginMutation.isPending ? <div className="flex items-center justify-center gap-5"> Adding New Admin <BeatLoader /></div> :"Add New Admin" }
                     </PrimaryButton>
                 </form>
             </div>

@@ -6,13 +6,14 @@ import Paragraph from "../../../ui/typographs/paragraph";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { BannerService } from "../../services/home/banner-service";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 export const Banner = () => {
   const { form, onSubmit, image, isLoading, fields, append, remove } = BannerService();
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
     <div id="hero" className="flex flex-col gap-10">

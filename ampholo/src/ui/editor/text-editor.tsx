@@ -14,7 +14,7 @@ export const TextEditor: React.FC<TextEditorProps> = ({ placeholder, value, onCh
   const config = useMemo(
     () => ({
       readonly: false,
-      placeholder: placeholder || 'Start typing...',
+      placeholder: placeholder || '',
     }),
     [placeholder]
   );

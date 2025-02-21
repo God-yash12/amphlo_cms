@@ -7,11 +7,12 @@ import { ErrorMessage } from "../../../../ui/typographs/error-message";
 import SecondaryButton from "../../../../ui/buttons/secondary-button";
 import { Textarea } from "@material-tailwind/react";
 import { UseJourneyService } from "../../../services/about/for-university/uni-journey-service";
+import { PropagateLoader } from "react-spinners";
 
 export const JourneyUniversity = () => {
     const { form, onSubmit, isLoading, fields, append, remove } = UseJourneyService();
     const errorMessage = form.formState.errors
-    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
+    if (isLoading) return <PropagateLoader className="text-center" />
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">

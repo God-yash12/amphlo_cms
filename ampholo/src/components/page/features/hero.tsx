@@ -7,6 +7,7 @@ import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { UseHeroService } from "../../services/feature/hero-service";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 const routes = ["/about", "/countries", "/features", "/contact"] as const;
 
@@ -23,7 +24,7 @@ const Hero = () => {
     name: "buttons"
   });
 
-  if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
     <div id="hero" className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -70,8 +71,8 @@ const Hero = () => {
             }] : []}
           />
           {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
-        
-  
+
+
           {/* Button Configuration */}
           <div className="flex flex-col gap-4 ">
             {fields.map((field, index) => (

@@ -8,14 +8,13 @@ import PrimaryButton from "../../../ui/buttons/primary-button"
 import SecondaryButton from "../../../ui/buttons/secondary-button"
 import { Textarea } from "@material-tailwind/react"
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy"
+import PropagateLoader from "react-spinners/PropagateLoader"
 
 const WhyAmphlo = () => {
   const { form, onSubmit, fields, append, remove, image, isLoading } = WhyAmphloService()
 
-  if(isLoading) return <div>
-    Loading...
-  </div>
-  
+  if (isLoading) return <PropagateLoader className="text-center" />
+
   return (
     <div className="flex flex-col gap-12">
       <div className="text-center mb-6">
@@ -29,7 +28,7 @@ const WhyAmphlo = () => {
             placeholder="Enter reasons for choosing AMPHLO"
             size="lg"
             {...form.register("title")}
-            // aria-invalid={form.formState.errors.title ? "true" : "false"}
+          // aria-invalid={form.formState.errors.title ? "true" : "false"}
           />
           {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
 
@@ -38,7 +37,7 @@ const WhyAmphlo = () => {
             placeholder="Enter the main title"
             size="lg"
             {...form.register("mainTitle")}
-            // aria-invalid={form.formState.errors.mainTitle ? "true" : "false"}
+          // aria-invalid={form.formState.errors.mainTitle ? "true" : "false"}
           />
           {form.formState.errors.mainTitle && <ErrorMessage>{form.formState.errors.mainTitle.message}</ErrorMessage>}
         </div>
@@ -60,7 +59,7 @@ const WhyAmphlo = () => {
             originalName: image.filename
           }] : []}
         />
-        
+
         {/* List Item Process */}
         <section className="space-y-5">
           <Header>Add Lists</Header>

@@ -34,7 +34,7 @@ export const PartnerBenefitService = () => {
         await mutateAsync(data);
     };
 
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["partner-benefits"],
         queryFn: async () => {
             const response = await axiosPrivate.get("partner-benefits");
@@ -48,6 +48,6 @@ export const PartnerBenefitService = () => {
         form,
         onSubmit,
         data,
-       
+        isLoading
     };
 };

@@ -1,3 +1,4 @@
+import { PropagateLoader } from "react-spinners";
 import PrimaryButton from "../../../../ui/buttons/primary-button";
 import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 import Header from "../../../../ui/typographs/header/header";
@@ -8,7 +9,7 @@ import { UseGalleryService } from "../../../services/about/for-partner/partner-g
 export const PartnerGallery = () => {
   const { form, onSubmit, isLoading } = UseGalleryService();
 
-  if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
     <div>

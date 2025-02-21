@@ -36,7 +36,6 @@ import { CountryModule } from './countries/australia/country.module';
 import { AboutMoreModule } from './about-more/about-more/about-more.module';
 import { ContactModule } from './contact/contact.module';
 import { PortalHeroModule } from './portal/portal-hero/portal-hero.module';
-
 import { PortalAccessModule } from './portal/portal-access/portal-access.module';
 import { PortalFeatureModule } from './portal/portal-feature/portal-feature.module';
 import { UniversityModule } from './register/university/university.module';
@@ -45,7 +44,8 @@ import { AgentRegisterfiModule } from './register/agent/agent.module';
 import { NestjsFormDataModule, MemoryStoredFile, FileSystemStoredFile } from 'nestjs-form-data';
 import { AuthModule } from './auth/auth.module';
 import { AdminSignupModule } from './admin-signup/admin-signup.module';
-import { MailerModule } from './mailer/mailer.module';
+import { ResetPasswordModule } from './reset-password/reset-password.module';
+
 
 @Module({
   imports: [
@@ -113,7 +113,7 @@ import { MailerModule } from './mailer/mailer.module';
     AgentRegisterfiModule,
     AuthModule,
     AdminSignupModule,
-    MailerModule,
+    ResetPasswordModule,
 
   ],
 })

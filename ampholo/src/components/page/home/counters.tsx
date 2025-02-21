@@ -5,14 +5,13 @@ import Paragraph from "../../../ui/typographs/paragraph";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import { useCounterService } from "../../services/home/counter-service";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 const Counters = () => {
   const { form, onSubmit, isLoading } = useCounterService();
   const errorMessage = form.formState.errors;
 
-  if(isLoading) return <div>
-    Loading...
-  </div>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
     <div className="flex flex-col gap-8  bg-gray-50 rounded-xl shadow-md ">

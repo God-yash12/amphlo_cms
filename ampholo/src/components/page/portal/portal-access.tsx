@@ -7,12 +7,13 @@ import PrimaryButton from "../../../ui/buttons/primary-button"
 import SecondaryButton from "../../../ui/buttons/secondary-button"
 import { Textarea } from "@material-tailwind/react"
 import { PortalAccessService } from "../../services/portal/portal-access-service"
+import { PropagateLoader } from "react-spinners"
 
 
 export const PortalAccessProcess = () => {
     const { form, onSubmit, fields, append, remove, isLoading } = PortalAccessService()
 
-    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
+    if (isLoading) return <PropagateLoader className="text-center" />
 
 
     return (

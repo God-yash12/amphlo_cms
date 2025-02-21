@@ -8,6 +8,7 @@ import { UseAgentService } from "../../services/feature/agent-service";
 import { useFieldArray } from "react-hook-form";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { Textarea } from "@material-tailwind/react";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 export const Agent = () => {
     const { form, onSubmit, isLoading } = UseAgentService();
@@ -17,7 +18,7 @@ export const Agent = () => {
         name: 'process',
     })
 
-    if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
+    if (isLoading) return <PropagateLoader className="text-center" />
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">

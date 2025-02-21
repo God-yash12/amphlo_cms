@@ -4,7 +4,7 @@ import { UpdateAdminSignupDto } from './dto/update-admin-signup.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminSignup } from './entities/admin-signup.entity';
 import { Repository } from 'typeorm';
-import * as bcrypt from "bcrypt";
+
 
 @Injectable()
 export class AdminSignupService {
@@ -35,7 +35,7 @@ export class AdminSignupService {
 
   async findByEmail(email: string): Promise<AdminSignup | null> {
     return this.adminRepository.findOne({ where: { email } });
-  }  
+  }
 
   async update(id: number, updateAdminSignupDto: UpdateAdminSignupDto) {
     const updateAdmin = await this.adminRepository.findOne({where: {id}})

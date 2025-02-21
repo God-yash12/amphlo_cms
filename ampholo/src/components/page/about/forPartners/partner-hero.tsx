@@ -7,6 +7,7 @@ import SecondaryButton from "../../../../ui/buttons/secondary-button";
 import { PartnerHeroService } from "../../../services/about/for-partner/partner-hero-service";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
 import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
+import { PropagateLoader } from "react-spinners";
 
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
@@ -15,7 +16,7 @@ export const PartnersHeroSection = () => {
   const errorMessage = form.formState.errors;
 
 
-  if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
 
   return (

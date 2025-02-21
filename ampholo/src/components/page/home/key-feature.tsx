@@ -5,9 +5,12 @@ import Paragraph from "../../../ui/typographs/paragraph";
 import { UseKeyFeatureService } from "../../services/home/key-features-service";
 import { TextEditor } from "../../../ui/editor/text-editor";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 const KeyFeatures = () => {
-  const { form, onSubmit } = UseKeyFeatureService();
+  const { form, onSubmit, isLoading } = UseKeyFeatureService();
+
+  if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
     <div className="flex flex-col gap-10 bg-gradient-to-b from-gray-50 to-white">

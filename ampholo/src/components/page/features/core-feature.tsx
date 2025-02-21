@@ -5,11 +5,12 @@ import Paragraph from "../../../ui/typographs/paragraph";
 import { TextEditor } from "../../../ui/editor/text-editor";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { UseCoreFeatureService } from "../../services/feature/core-feature-service";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 export const CoreFeature = () => {
   const { form, onSubmit, isLoading } = UseCoreFeatureService();
 
-  if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
   return (  
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">

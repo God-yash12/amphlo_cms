@@ -57,10 +57,10 @@ export const HeroService = () => {
       form.reset({
         title: data.title,
         description: data.description,
-        buttons: data.buttons.map((button: any) => ({
-          name: button.name,
-          route: button.route,
-        })),
+        // buttons: data.buttons.map((button: any) => ({
+        //   name: button.name,
+        //   route: button.route,
+        // })),
       });
     }
   }, [data]);

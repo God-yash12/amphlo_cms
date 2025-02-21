@@ -34,7 +34,7 @@ export const UseKeyFeatureService = () => {
     console.log(data, "data");
   };
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["key-features"],
     queryFn: async () => {
       const response = await axiosPrivate.get("key-features");
@@ -53,6 +53,6 @@ export const UseKeyFeatureService = () => {
   return {
    form,
    onSubmit,
-   
+   isLoading,
   };
 };

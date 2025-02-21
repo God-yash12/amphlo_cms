@@ -33,6 +33,9 @@ import { LoginForm } from "./components/login/login";
 import PersistLogin from "./auth/presist_login";
 import { RequireAuth } from "./auth/require_auth";
 import { Adminsignup } from "./components/admin-signup/admin-signup";
+import { ResetPassword } from "./components/login/reset-password/reset-password";
+import { VerifyOTP } from "./components/login/reset-password/verify-otp";
+import { NewPasswordForm } from "./components/login/reset-password/reset-password-form";
 
 
 function App() {
@@ -42,8 +45,13 @@ function App() {
       <ToastContainer />
       <Router>
         <Routes>
-          <Route path="/"  />
           <Route path="/login" element={<LoginForm />} />
+
+          {/* password reset  */}
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="verify-otp" element={<VerifyOTP />} />
+          <Route path="create-newPassword" element={<NewPasswordForm />} />
+
           <Route element={<PersistLogin />} >
             <Route element={<RequireAuth />} >
               <Route element={<AdminLayout />}>

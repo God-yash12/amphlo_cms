@@ -23,8 +23,8 @@ export const Loginservice = () => {
     const form = useForm<loginschemaData>({
         resolver: zodResolver(loginschema),
         defaultValues: {
-            password: "admin1",
-            email: "admin1@gmail.com"
+            password: "12345",
+            email: "fpk69ngsr6@vafyxh.com"
         }
     })
 
@@ -56,5 +56,6 @@ export const Loginservice = () => {
     return {
         form,
         submitLogin,
+        loginMutation,
     }
 }

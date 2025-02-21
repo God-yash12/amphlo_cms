@@ -5,12 +5,13 @@ import Paragraph from "../../../../ui/typographs/paragraph";
 import { UniHeroService } from "../../../services/about/for-university/uni-hero-service";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
 import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
+import { PropagateLoader } from "react-spinners";
 
 export const HeroUniversity = () => {
     const { form, onSubmit, image, isLoading } = UniHeroService()
     const errorMessage = form.formState.errors
 
-    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
+    if (isLoading) return <PropagateLoader className="text-center" />
 
 
     return (

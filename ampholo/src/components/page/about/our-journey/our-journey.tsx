@@ -8,6 +8,7 @@ import Header from "../../../../ui/typographs/header/header";
 import Paragraph from "../../../../ui/typographs/paragraph";
 import { OurJourneyService } from "../../../services/about/our-journey/our-journey-service";
 import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
+import { PropagateLoader } from "react-spinners";
 
 export const OurJourney = () => {
     const {
@@ -22,7 +23,7 @@ export const OurJourney = () => {
 
     const { register, formState: { errors }, setValue } = form;
 
-    if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
+    if (isLoading) return <PropagateLoader className="text-center" />
 
     if (fields.length === 0) {
         append({ title: '', description: '', image: 0, year: new Date() }, { shouldFocus: false });

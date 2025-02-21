@@ -6,12 +6,13 @@ import { TextEditor } from "../../../../ui/editor/text-editor";
 import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
 import { PartnerBenefitService } from "../../../services/about/for-partner/partner-benefit-service";
+import { PropagateLoader } from "react-spinners";
 
 
 export const PartnerBenefitSection = () => {
-  const { form, onSubmit } = PartnerBenefitService()
+  const { form, onSubmit, isLoading } = PartnerBenefitService()
   const errorMessage = form.formState.errors
-
+   if (isLoading) return <PropagateLoader className="text-center" />
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 py-12">

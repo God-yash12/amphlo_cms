@@ -6,13 +6,14 @@ import Paragraph from "../../../ui/typographs/paragraph";
 import { HeroService } from "../../services/home/hero-service";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
+import { PropagateLoader } from "react-spinners";
 
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 const Hero = () => {
   const { form, onSubmit, fields, append, remove, image, isLoading } = HeroService();
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
     <div id="hero" className="flex flex-col gap-10">

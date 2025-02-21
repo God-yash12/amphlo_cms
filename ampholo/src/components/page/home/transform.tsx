@@ -6,15 +6,14 @@ import Paragraph from "../../../ui/typographs/paragraph";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { TransformService } from "../../services/home/transform-service";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 export const Transform = () => {
   const { form, onSubmit, image, fields, append, remove, isLoading } = TransformService();
 
-  if(isLoading) return <div className="flex justify-center items-center h-screen">
-    Loading...
-  </div>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
     <div id="hero" className="flex flex-col gap-10">
@@ -56,7 +55,7 @@ export const Transform = () => {
             originalName: image.filename
           }] : []}
         />
-        
+
 
 
         {/* Button Configuration */}

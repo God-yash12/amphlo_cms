@@ -8,6 +8,7 @@ import { FiPlus } from "react-icons/fi";
 import SecondaryButton from "../../../../ui/buttons/secondary-button";
 import { PartnerFeatureService } from "../../../services/about/for-partner/partner-feature-service";
 import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
+import { PropagateLoader } from "react-spinners";
 
 export const PartnerFeatureSection = () => {
     const {
@@ -24,7 +25,7 @@ export const PartnerFeatureSection = () => {
 
     const errorMessage = form.formState.errors;
 
-    if(isLoading) return <div className="text-center text-gray-800">Loading...</div>
+    if (isLoading) return <PropagateLoader className="text-center" />
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">

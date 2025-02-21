@@ -8,11 +8,12 @@ import PrimaryButton from "../../../ui/buttons/primary-button";
 import { UseHomeAboutServices } from "../../services/home/home-about-service";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 const HomeAbout = () => {
   const { form, onSubmit, fields, append, remove, image, isLoading } = UseHomeAboutServices();
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">

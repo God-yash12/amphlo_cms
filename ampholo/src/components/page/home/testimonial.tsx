@@ -9,13 +9,14 @@ import Header from "../../../ui/typographs/header/header";
 import Paragraph from "../../../ui/typographs/paragraph";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 
 export const Testimonials = () => {
     const { form, onSubmit, testimonials, isLoading, isError, error, deleteMutation, selectedTestimonial, setSelectedTestimonial } = UseTestimonialService();
     const errorMessage = form.formState.errors;
 
-   
+
     return (
         <div>
             <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
@@ -86,7 +87,7 @@ export const Testimonials = () => {
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
                             <FileUploadInput
                                 onChange={(fileId) => form.setValue('imageId', fileId[0].id)}
-                                initialFiles={ selectedTestimonial?.image? [{
+                                initialFiles={selectedTestimonial?.image ? [{
                                     id: selectedTestimonial?.image.id,
                                     url: selectedTestimonial?.image.url,
                                     originalName: selectedTestimonial?.image.filename
@@ -133,7 +134,7 @@ export const Testimonials = () => {
             {/* Testimonials Section */}
             <div className="mt-10">
                 <Header className="text-2xl font-bold text-gray-800 mb-4">Testimonials</Header>
-                {isLoading && <Paragraph>Loading testimonials...</Paragraph>}
+                {isLoading && <PropagateLoader className="text-center" />}
                 {isError && error && <Paragraph className="text-red-500">Error: {error.message}</Paragraph>}
                 {testimonials && testimonials.map((testimonial: any, index: number) => (
                     <div key={index} className="border-b border-gray-200 py-4 flex items-center space-x-4">

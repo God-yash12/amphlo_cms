@@ -7,6 +7,7 @@ import Paragraph from "../../../ui/typographs/paragraph";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { UsePortalHeroService } from "../../services/portal/portal-hero-service";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
+import { PropagateLoader } from "react-spinners";
 
 // const routes = ["/about", "/countries", "/features", "/contact"] as const;
 
@@ -14,7 +15,7 @@ export const PortalHeroSection = () => {
     const { form, onSubmit, image, isLoading } = UsePortalHeroService();
     const errorMessage = form.formState.errors
 
-    if (isLoading) return <div className="text-center text-gray-800">Loading...</div>
+    if (isLoading) return <PropagateLoader className="text-center" />
 
 
     return (

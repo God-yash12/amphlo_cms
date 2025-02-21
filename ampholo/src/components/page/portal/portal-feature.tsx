@@ -8,11 +8,12 @@ import PrimaryButton from "../../../ui/buttons/primary-button";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { UsePortalFeatureServices } from "../../services/portal/portal-feature-service";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
+import { PropagateLoader } from "react-spinners";
 
 export const PortalFeature = () => {
   const { form, onSubmit, append, remove, fields, image, isLoading } = UsePortalFeatureServices();
 
-  if(isLoading) return <Header className="text-center text-gray-800">Loading...</Header>
+  if (isLoading) return <PropagateLoader className="text-center" />
 
 
   return (
