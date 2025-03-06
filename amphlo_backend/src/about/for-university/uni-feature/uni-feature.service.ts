@@ -1,41 +1,51 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUniFeatureDto } from './dto/create-uni-feature.dto';
 import { UpdateUniFeatureDto } from './dto/update-uni-feature.dto';
 import { UniFeature } from './entities/uni-feature.entity';
 import { Repository, IsNull, Not } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
+import { FileUploadService } from 'src/file-upload/file-upload.service';
 
 @Injectable()
 export class UniFeatureService {
   constructor(
     @InjectRepository(UniFeature)
-
     private readonly uniFeatureRepository: Repository<UniFeature>,
-  ) {}
+    private readonly fileUploadService: FileUploadService,
+  ) { }
 
-  async set(createUniFeatureDto: CreateUniFeatureDto) {
+  async set(dto: CreateUniFeatureDto) {
+
+    const image = await this.fileUploadService.getAllByIds([dto.image])
+
     const existing = await this.get();
-    if(!existing) {
-      const newUniFeature = this.uniFeatureRepository.create({
-
-        title: createUniFeatureDto.title,
-        description: createUniFeatureDto.description,
-      });
-      return this.uniFeatureRepository.save(newUniFeature);
+    if (!existing) {
+      return await this.createNewFeature(dto, image[0])
     }
 
-    return await this.updateFeature( existing, createUniFeatureDto);
+    await this.updateFeature(existing, dto, image[0]);
   }
 
-  async updateFeature(existing: UniFeature, dto: CreateUniFeatureDto) {
+  async createNewFeature(dto: CreateUniFeatureDto, image: FileUpload) {
+    const newUniFeature = this.uniFeatureRepository.create({
+      title: dto.title,
+      description: dto.description,
+      image,
+    });
+    return this.uniFeatureRepository.save(newUniFeature);
+  }
+
+  async updateFeature(existing: UniFeature, dto: CreateUniFeatureDto, image: FileUpload) {
     Object.assign(existing, {
       ...dto,
+      image,
     })
     return await this.uniFeatureRepository.save(existing)
   }
 
   async get() {
-    return await this.uniFeatureRepository.findOne({where: {id: Not(IsNull())}});
+    return await this.uniFeatureRepository.findOne({ where: { id: Not(IsNull()) }, relations: ['image'] });
   }
 
   // findAll() {

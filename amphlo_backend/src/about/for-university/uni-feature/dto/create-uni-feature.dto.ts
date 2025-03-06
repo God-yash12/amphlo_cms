@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateUniFeatureDto {
     @IsString()
@@ -8,4 +8,8 @@ export class CreateUniFeatureDto {
     @IsString()
     @IsNotEmpty()
     description: string;
+
+    @IsNumber()
+    @IsOptional()
+    image: number;
 }

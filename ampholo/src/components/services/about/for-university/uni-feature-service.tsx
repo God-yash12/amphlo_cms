@@ -48,14 +48,16 @@ export const UniFeatureService = () => {
       form.reset({
         title: data.title,
         description: data.description,
+        image: data?.image,
       })
     }
-  }, [data, form])
+  }, [data])
 
   return {
     form,
     onSubmit,
     isLoading,
     isPending,
+    image: data?.image,
   }
 }

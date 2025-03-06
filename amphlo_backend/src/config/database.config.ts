@@ -5,8 +5,8 @@ require('dotenv').config();
 export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
     type: 'mysql',
     // url: configService.get<string>('DB_URl'),
-    url: process.env.DB_URL,
+    url: process.env.DB_URL.trim(),
     autoLoadEntities: true,
-    synchronize: false,
+    synchronize: configService.get<string>('SYNCHRONIZE_VALUE')?.toLowerCase() === 'true'
    
 });

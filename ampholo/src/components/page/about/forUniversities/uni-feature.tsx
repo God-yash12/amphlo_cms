@@ -6,9 +6,10 @@ import { TextEditor } from "../../../../ui/editor/text-editor";
 import { UniFeatureService } from "../../../services/about/for-university/uni-feature-service";
 import { ErrorMessage } from "../../../../ui/typographs/error-message";
 import { BeatLoader, PropagateLoader } from "react-spinners";
+import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 
 export const UniAboutFeatures = () => {
-    const { form, onSubmit, isLoading, isPending } = UniFeatureService()
+    const { form, onSubmit, isLoading, isPending, image } = UniFeatureService()
     const errorMessage = form.formState.errors
     if (isLoading) return <PropagateLoader className="text-center" />
     return (
@@ -17,10 +18,10 @@ export const UniAboutFeatures = () => {
                 {/* Header Section */}
                 <div className="max-w-2xl mx-auto text-center mb-12">
                     <Header className="text-3xl font-bold text-gray-900 mb-4">
-                    What Makes Amphlo Different
+                        What Makes Amphlo Different
                     </Header>
                     <Paragraph className="text-gray-600">
-                        Customize and manage your website'sWhat Makes Amphlo Different section  
+                        Customize and manage your website'sWhat Makes Amphlo Different section
                     </Paragraph>
                 </div>
 
@@ -50,16 +51,25 @@ export const UniAboutFeatures = () => {
                                 <TextEditor
                                     placeholder="Describe your key features in detail..."
                                     value={form.watch('description') ?? ""}
-                                    onChange={(content) => form.setValue('description', content)}                            
+                                    onChange={(content) => form.setValue('description', content)}
                                 />
                                 {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
+                            </div>
+                            <div>
+                                <FileUploadInput
+                                    onChange={(imageId) => form.setValue('image', imageId[0].id)}
+                                    initialFiles={image ? [{
+                                        id: image.id,
+                                        url: image.url,
+                                        originalName: image.filename
+                                    }] : []}
+                                />
                             </div>
                         </div>
 
                         {/* Submit Button */}
                         <div className="pt-6">
-                            
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+                            <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
                         </div>
                     </form>
                 </div>

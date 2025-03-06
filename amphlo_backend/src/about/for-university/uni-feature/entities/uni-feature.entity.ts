@@ -1,15 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { FileUpload } from "src/file-upload/entities/file-upload.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("universityFeature")
 export class UniFeature {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
 
-    @Column()       
-    title: string;
+  @Column()
+  title: string;
 
-    @Column()
-    description: string;
-  static image: any;
+  @Column()
+  description: string;
+  
+  @OneToOne(() => FileUpload, fileUpload => fileUpload.featureImageId, {nullable: true})
+  @JoinColumn({name: "imageId"})
+  image: FileUpload;
 }

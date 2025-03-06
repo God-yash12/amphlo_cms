@@ -20,6 +20,7 @@ import { PortalHero } from 'src/portal/portal-hero/entities/portal-hero.entity';
 import { PortalFeature } from 'src/portal/portal-feature/entities/portal-feature.entity';
 import { CountryHero } from 'src/countries/australia/entities/country.entity';
 import { Gallery } from 'src/about/for-partners/gallery/entities/gallery.entity';
+import { UniFeature } from 'src/about/for-university/uni-feature/entities/uni-feature.entity';
 
 
 
@@ -87,6 +88,9 @@ export class FileUpload {
   // relation with about for university why amphlo card section 
   @OneToOne(() => WhyamphloCard, whyAmphloCard => whyAmphloCard.image, { onDelete: 'CASCADE' })
   uniWhyAmphloCard: WhyamphloCard;
+
+  @OneToOne(() => UniFeature, unifeatureImage => unifeatureImage.image, {onDelete: "CASCADE"})
+  featureImageId: UniFeature;  
 
   // relation with about for univer feature card section 
   @OneToOne(() => WhyamphloCard, featureCardImage => featureCardImage.image, { onDelete: 'CASCADE' })

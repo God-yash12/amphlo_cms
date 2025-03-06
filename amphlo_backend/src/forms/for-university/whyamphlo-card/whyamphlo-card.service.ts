@@ -14,9 +14,6 @@ export class WhyamphloCardService {
   ) { }
   async create(dto: CreateWhyamphloCardDto) {
     const image = await this.fileUploadService.getAllByIds([dto.image])
-    if (!image) {
-      throw new NotFoundException("Card image not Found")
-    }
 
     const newCard = this.cardRepo.create({
       title: dto.title,
