@@ -38,17 +38,22 @@ const Counters = () => {
           </h2>
           <div className="space-y-4">
             <InputField
-              label="Title"
+              label="Title *"
               size="lg"
               placeholder="Enter Counter Title"
               {...form.register("title")}
             />
             {errorMessage.title && <ErrorMessage className="text-red-500">{errorMessage.title.message}</ErrorMessage>}
-            <TextEditor
-              value={form.watch("description")}
-              onChange={(content) => form.setValue("description", content)}
-            />
-            {errorMessage.description && <ErrorMessage className="text-red-500">{errorMessage.description.message}</ErrorMessage>}
+            <div className="space-y-2 w-auto">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Feature Description *
+              </label>
+              <TextEditor
+                value={form.watch("description")}
+                onChange={(content) => form.setValue("description", content)}
+              />
+              {errorMessage.description && <ErrorMessage className="text-red-500">{errorMessage.description.message}</ErrorMessage>}
+            </div>
           </div>
         </div>
 
@@ -126,7 +131,7 @@ const Counters = () => {
 
         {/* Submit Button */}
 
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
 
       </form>
     </div>

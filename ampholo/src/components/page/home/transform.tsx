@@ -29,7 +29,7 @@ export const Transform = () => {
         {/* Title Input */}
         <div>
           <InputField
-            label="Title"
+            label="Title *"
             variant="outlined"
             size="lg"
             placeholder="Title"
@@ -39,13 +39,13 @@ export const Transform = () => {
         </div>
 
         {/* Description Editor */}
-        <div className="w-auto">
+        <div className="space-y-2 w-auto">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Feature Description *
+          </label>
           <TextEditor
-            placeholder="Write Hero Description"
-            value={form.watch("description") ?? ""}
-            onChange={(content) => {
-              form.setValue("description", content);
-            }}
+            value={form.watch("description")}
+            onChange={(content) => form.setValue("description", content)}
           />
         </div>
         <FileUploadInput
@@ -105,7 +105,7 @@ export const Transform = () => {
           )
         }
         {/* Submit Button */}
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
       </form>
     </div>
   );

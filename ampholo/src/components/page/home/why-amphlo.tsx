@@ -24,7 +24,7 @@ const WhyAmphlo = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-1 gap-4">
           <InputField
-            label="Why AMPHLO"
+            label="Why AMPHLO *"
             placeholder="Enter reasons for choosing AMPHLO"
             size="lg"
             {...form.register("title")}
@@ -33,7 +33,7 @@ const WhyAmphlo = () => {
           {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
 
           <InputField
-            label="Main Title"
+            label="Main Title *"  
             placeholder="Enter the main title"
             size="lg"
             {...form.register("mainTitle")}
@@ -42,12 +42,15 @@ const WhyAmphlo = () => {
           {form.formState.errors.mainTitle && <ErrorMessage>{form.formState.errors.mainTitle.message}</ErrorMessage>}
         </div>
         <div>
-          <TextEditor
-            value={form.watch('description') ?? ""}
-            onChange={(content) => {
-              form.setValue("description", content);
-            }}
-          />
+          <div className="space-y-2 w-auto">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Feature Description *
+            </label>
+            <TextEditor
+              value={form.watch("description")}
+              onChange={(content) => form.setValue("description", content)}
+            />
+          </div>
           {form.formState.errors.description && <ErrorMessage>{form.formState.errors.description.message}</ErrorMessage>}
         </div>
 
@@ -79,7 +82,7 @@ const WhyAmphlo = () => {
                 <SecondaryButton
                   onClick={(e) => {
                     e.preventDefault();
-                    append({ listTitle: ''});
+                    append({ listTitle: '' });
                   }}
                 >
                   + Add List
@@ -89,7 +92,7 @@ const WhyAmphlo = () => {
           }
         </section>
 
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
       </form>
     </div>
   )

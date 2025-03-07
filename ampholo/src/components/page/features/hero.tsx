@@ -41,7 +41,7 @@ const Hero = () => {
           {/* Title Input */}
           <div>
             <InputField
-              label="Title"
+              label="Title *"
               variant="outlined"
               size="lg"
               placeholder="Title"
@@ -54,14 +54,14 @@ const Hero = () => {
           {/* Description Editor */}
           <div className="w-auto">
             <InputField
-              label="SubTitle"
+              label="SubTitle *"
               variant="outlined"
               size="lg"
               placeholder="Subtitle"
               {...form.register("description")}
             />
+            {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
           </div>
-          {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
           <FileUploadInput
             accept="image/*"
             onChange={(files) => form.setValue('image', files[0].id)}

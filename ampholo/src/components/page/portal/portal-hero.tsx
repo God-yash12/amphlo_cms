@@ -31,7 +31,7 @@ export const PortalHeroSection = () => {
                 {/* Title Input */}
                 <div>
                     <InputField
-                        label="Title"
+                        label="Title *"
                         variant="outlined"
                         size="lg"
                         placeholder="Title"
@@ -44,7 +44,7 @@ export const PortalHeroSection = () => {
                 {/* subtitle Editor */}
                 <div className="w-auto">
                     <InputField
-                        label="SubTitle"
+                        label="SubTitle *"
                         variant="outlined"
                         size="lg"
                         placeholder="Subtitle"

@@ -37,7 +37,7 @@ export const JourneyUniversity = () => {
                         <div className="space-y-4">
                             <div className="relative">
                                 <InputField
-                                    label="Showcase Your Feature's Headline"
+                                    label="Showcase Your Feature's Headline *"
                                     placeholder="Enter a compelling title for your features section"
                                     className="w-full transition-all duration-200"
                                     size="lg"
@@ -49,7 +49,7 @@ export const JourneyUniversity = () => {
                             {/* Description Editor Section */}
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Feature Description
+                                  Description *
                                 </label>
                                 <TextEditor
                                     value={form.watch('description') ?? ''}

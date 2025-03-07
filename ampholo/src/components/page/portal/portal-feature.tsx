@@ -32,7 +32,7 @@ export const PortalFeature = () => {
         <div>
           {/* Title and Main Title */}
           <InputField
-            label="Portal Feature Title"
+            label="Portal Feature Title *"
             placeholder="Enter Portal Feature Title"
             className="w-full"
             {...form.register("title")}
@@ -42,7 +42,7 @@ export const PortalFeature = () => {
         <div>
           {/* Main Title */}
           <InputField
-            label="Portal Feature Main Title"
+            label="Portal Feature Main Title *"
             placeholder="Enter Portal Feature Main Title"
             className="w-full"
             {...form.register("mainTitle")}
@@ -51,26 +51,33 @@ export const PortalFeature = () => {
         </div>
 
         {/* Description */}
-        <div className="w-full">
+        <div className="w-auto space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Feature Description *
+          </label>
           <TextEditor
             value={form.watch("description") ?? ""}
-            onChange={(content: string) => {
+            onChange={(content) => {
               form.setValue("description", content);
             }}
-            placeholder="Write about Portal Feature"
           />
           {form.formState.errors.description && <ErrorMessage>{form.formState.errors.description.message}</ErrorMessage>}
         </div>
 
         {/* File Upload */}
-        <FileUploadInput
-          onChange={(files) => form.setValue("imageId", files ? files[0].id : null)} 
-          initialFiles={image ? [{
-            id: image.id,
-            url: image.url,
-            originalName: image.filename
-          }] : []}
-        />
+        <div className="w-auto space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Feature Image *
+          </label>
+          <FileUploadInput
+            onChange={(files) => form.setValue("imageId", files ? files[0].id : null)}
+            initialFiles={image ? [{
+              id: image.id,
+              url: image.url,
+              originalName: image.filename
+            }] : []}
+          />
+        </div>
         {/* List Title and List Items */}
         <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-6">
           <InputField

@@ -37,7 +37,10 @@ const Hero = () => {
         </div>
 
         {/* Description Editor */}
-        <div className="w-auto">
+        <div className="w-auto space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Feature Description *
+          </label>
           <TextEditor
             value={form.watch("description") ?? ""}
             onChange={(content) => {

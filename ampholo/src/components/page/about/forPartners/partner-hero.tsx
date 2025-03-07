@@ -32,7 +32,7 @@ export const PartnersHeroSection = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {/* Title Input */}
           <InputField
-            label="Title"
+            label="Title *"
             variant="outlined"
             size="lg"
             placeholder="Enter Hero Title"
@@ -42,23 +42,35 @@ export const PartnersHeroSection = () => {
 
 
           {/* Description Editor */}
-          <TextEditor
-            value={form.watch("description") ?? ""}
-            onChange={(content) => form.setValue("description", content)}
-          />
-          {errorMessage && <ErrorMessage>{errorMessage.description?.message}</ErrorMessage>}
+          <div className="w-auto space-y-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Description *
+            </label>
+            <TextEditor
+              value={form.watch("description") ?? ""}
+              onChange={(content) => {
+                form.setValue("description", content);
+              }}
+            />
+            {errorMessage && <ErrorMessage>{errorMessage.description?.message}</ErrorMessage>}
+          </div>
 
           {/* File Upload */}
-          <FileUploadInput
-            accept="image/*"
-            onChange={(files) => form.setValue('image', files[0].id)}
-            initialFiles={image ? [{
-              id: image?.id,
-              url: image?.url,
-              originalName: image?.filename
-            }] : []}
-          />
-          {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+          <div className="w-auto space-y-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Image *
+            </label>
+            <FileUploadInput
+              accept="image/*"
+              onChange={(files) => form.setValue('image', files[0].id)}
+              initialFiles={image ? [{
+                id: image?.id,
+                url: image?.url,
+                originalName: image?.filename
+              }] : []}
+            />
+            {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+          </div>
 
           {/* Button Configuration Section */}
           <div className="space-y-4">
@@ -101,8 +113,8 @@ export const PartnersHeroSection = () => {
           </div>
 
           {/* Submit Button */}
-          
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+
+          <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
         </form>
       </div>
     </div>

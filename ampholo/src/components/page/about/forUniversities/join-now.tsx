@@ -35,7 +35,7 @@ export const JoinNow = () => {
         {/* Title Input */}
         <div>
           <InputField
-            label="Title"
+            label="Title *"
             variant="outlined"
             size="lg"
             placeholder="Enter the section title"
@@ -45,13 +45,16 @@ export const JoinNow = () => {
         </div>
 
         {/* Description Editor */}
-        <div>
+        <div className="w-auto space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Description *
+          </label>
           <TextEditor
-            placeholder="Write the section description"
             value={form.watch("description") ?? ""}
-            onChange={(content) => form.setValue("description", content)}
+            onChange={(content) => {
+              form.setValue("description", content);
+            }}
           />
-          {errorMessage?.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
         </div>
 
         {/* Button Configuration */}

@@ -32,14 +32,14 @@ const HomeAbout = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Title and Main Title */}
           <InputField
-            label="About Amphlo"
+            label="About Amphlo *"
             placeholder="Enter about Amphlo"
             {...form.register("title")}
           />
           {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
 
           <InputField
-            label="Main Title"
+            label="Main Title *"
             placeholder="Enter main title"
             {...form.register("mainTitle")}
           />
@@ -47,13 +47,13 @@ const HomeAbout = () => {
         </div>
 
         {/* Description */}
-        <div className="w-full">
+        <div className="w-auto space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Feature Description *
+          </label>
           <TextEditor
-            value={form.watch("description") ?? ""}
-            onChange={(content: string) => {
-              form.setValue("description", content);
-            }}
-            placeholder="Write about AMPHLO"
+            value={form.watch("description")}
+            onChange={(content) => form.setValue("description", content)}
           />
           {form.formState.errors.description && <ErrorMessage>{form.formState.errors.description.message}</ErrorMessage>}
         </div>
@@ -102,7 +102,7 @@ const HomeAbout = () => {
           </div>
         ))}
 
-<PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
       </form>
     </div>
   );

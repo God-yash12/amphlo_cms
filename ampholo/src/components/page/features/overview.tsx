@@ -47,7 +47,7 @@ export const FeatureOverview = () => {
                                 {/* Title Input */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <InputField
-                                        label="Title"
+                                        label="Title *"
                                         placeholder="Enter feature title"
                                         className="w-full"
                                         {...form.register(`overview.${index}.title`)}
@@ -71,7 +71,7 @@ export const FeatureOverview = () => {
                                 {/* Description Editor */}
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Feature Description
+                                        Feature Description *
                                     </label>
                                     <TextEditor
                                         placeholder="Describe your feature in detail..."

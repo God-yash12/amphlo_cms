@@ -49,7 +49,7 @@ export const PartnerFeatureSection = () => {
                     <div className="space-y-4">
                         <div className="relative">
                             <InputField
-                                label="Showcase Your Feature's Headline"
+                                label="Showcase Your Feature's Headline *"
                                 placeholder="Enter a compelling title for your features section"
                                 className="w-full transition-all duration-200"
                                 size="lg"
@@ -61,7 +61,7 @@ export const PartnerFeatureSection = () => {
                         {/* Description Editor Section */}
                         <div className="space-y-2">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Feature Description
+                                Feature Description *
                             </label>
                             <TextEditor
                                 value={form.watch('featureDescription') ?? ""}
@@ -69,16 +69,22 @@ export const PartnerFeatureSection = () => {
                             />
                             {errorMessage.featureDescription && <ErrorMessage>{errorMessage.featureDescription.message}</ErrorMessage>}
                         </div>
-                        <FileUploadInput
-                            accept="image/*"
-                            onChange={(files) => form.setValue('image', files[0].id)}
-                            initialFiles={image ? [{
-                                id: image.id,
-                                url: image.url,
-                                originalName: image.filename
-                            }] : []}
-                        />
-                        {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+
+                        <div className="w-auto space-y-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Image *
+                            </label>
+                            <FileUploadInput
+                                accept="image/*"
+                                onChange={(files) => form.setValue('image', files[0].id)}
+                                initialFiles={image ? [{
+                                    id: image.id,
+                                    url: image.url,
+                                    originalName: image.filename
+                                }] : []}
+                            />
+                            {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+                        </div>
 
                     </div>
 
@@ -90,7 +96,7 @@ export const PartnerFeatureSection = () => {
                                 {/* Title Input */}
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <InputField
-                                        label="Title"
+                                        label="Title *"
                                         placeholder="Enter feature title"
                                         className="w-full"
                                         {...register(`feature.${index}.title`)}
@@ -114,6 +120,9 @@ export const PartnerFeatureSection = () => {
                                 {/* Description Editor */}
                                 <div className="flex flex-col space-y-2">
 
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Description *
+                                    </label>
                                     <TextEditor
                                         placeholder="Describe your feature in detail..."
                                         value={field.description}

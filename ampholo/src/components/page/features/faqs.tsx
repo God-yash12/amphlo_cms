@@ -58,11 +58,11 @@ export const FeatureFAQs = () => {
             {/* Form Section */}
             <form onSubmit={form.handleSubmit(handleFormSubmit)} className="rounded-xl shadow-lg p-8 space-y-8">
                 <div className="space-y-5 mb-4">
-                    <InputField label="FAQ Question" {...form.register("question")} />
+                    <InputField label="FAQ Question *" {...form.register("question")} />
                     {errors.question && <ErrorMessage>{errors.question.message}</ErrorMessage>}
                     {/* @ts-ignore */}
                     <Textarea
-                        label="FAQ Answer"
+                        label="FAQ Answer *"
                         variant="outlined"
                         {...form.register("answer")}
                     />

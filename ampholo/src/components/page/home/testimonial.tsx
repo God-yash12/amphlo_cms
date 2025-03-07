@@ -45,7 +45,7 @@ export const Testimonials = () => {
                     {/* Person Name Field */}
                     <div className="space-y-2">
                         <InputField
-                            label="Person Name"
+                            label="Person Name *"
                             {...form.register("personName")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg transition-all"
                         />
@@ -59,7 +59,7 @@ export const Testimonials = () => {
                     {/* Workplace Field */}
                     <div className="space-y-2">
                         <InputField
-                            label="Person Workplace"
+                            label="Person Workplace *"
                             {...form.register("workPlace")}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg transition-all"
                         />
@@ -73,7 +73,7 @@ export const Testimonials = () => {
                     {/* Feedback Editor */}
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Your Feedback
+                            Your Feedback *
                         </label>
                         <div className="border border-gray-300 rounded-lg overflow-hidden">
                             <TextEditor
@@ -110,7 +110,7 @@ export const Testimonials = () => {
                     {/* Rating Section */}
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Rate Your Experience
+                            Rate Your Experience *
                         </label>
                         <div className="bg-gray-50 rounded-lg p-4">
                             <ReactStars

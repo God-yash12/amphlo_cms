@@ -24,16 +24,22 @@ export const PartnerGallery = () => {
       </div>
 
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FileUploadInput
-          multiple={true}
-          maxFiles={5}
-          accept="image/*"
-          onChange={(files) => {
-            form.setValue("galleryIds", files.map((file) => file.id));
+
+        <div className="w-auto space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Images *
+          </label>
+          <FileUploadInput
+            multiple={true}
+            maxFiles={5}
+            accept="image/*"
+            onChange={(files) => {
+              form.setValue("galleryIds", files.map((file) => file.id));
             }}
-        />
-        
-        <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+          />
+        </div>
+
+        <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
       </form>
     </div>
   );

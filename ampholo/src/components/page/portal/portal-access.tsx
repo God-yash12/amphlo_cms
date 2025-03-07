@@ -25,7 +25,7 @@ export const PortalAccessProcess = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <div>
                     <InputField
-                        label="Title"
+                        label="Title *"
                         placeholder="Title of Portal Access Porcess"
                         size="lg"
                         {...form.register("title")}
@@ -34,14 +34,16 @@ export const PortalAccessProcess = () => {
                     {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
 
                 </div>
-                <div>
+                <div className="w-auto space-y-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Feature Description *
+                    </label>
                     <TextEditor
-                        value={form.watch('description') ?? ""}
+                        value={form.watch("description") ?? ""}
                         onChange={(content) => {
                             form.setValue("description", content);
                         }}
                     />
-                    {form.formState.errors.description && <ErrorMessage>{form.formState.errors.description.message}</ErrorMessage>}
                 </div>
 
                 {/* List Item Process */}
@@ -50,10 +52,10 @@ export const PortalAccessProcess = () => {
                     {fields.map((field, index) => (
                         <div key={field.id} className="space-y-5">
                             <InputField
-                            type="number"
+                                type="number"
                                 label="Process Count"
                                 placeholder="Process Count"
-                                {...form.register(`process.${index}.processCount`, {valueAsNumber: true})}
+                                {...form.register(`process.${index}.processCount`, { valueAsNumber: true })}
                             />
                             {form.formState.errors.process?.[index]?.processCount && (
                                 <ErrorMessage>
@@ -96,7 +98,7 @@ export const PortalAccessProcess = () => {
                                 <SecondaryButton
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        append({ processCount: 0,  processTitle: '', processDescription: '' });
+                                        append({ processCount: 0, processTitle: '', processDescription: '' });
                                     }}
                                 >
                                     Add List
@@ -106,8 +108,8 @@ export const PortalAccessProcess = () => {
                     }
                 </section>
 
-                
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+
+                <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
             </form>
         </div>
     )

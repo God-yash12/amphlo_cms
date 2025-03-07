@@ -35,7 +35,7 @@ export const JoinNowPartnerSection = () => {
         {/* Title Input */}
         <div>
           <InputField
-            label="Title"
+            label="Title *"
             variant="outlined"
             size="lg"
             placeholder="Enter the section title"
@@ -45,7 +45,10 @@ export const JoinNowPartnerSection = () => {
         </div>
 
         {/* Description Editor */}
-        <div>
+        <div className="w-auto space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Description *
+          </label>
           <TextEditor
             value={form.watch("description") ?? ""}
             onChange={(content) => form.setValue("description", content)}
@@ -116,8 +119,8 @@ export const JoinNowPartnerSection = () => {
         )}
 
         {/* Submit Button */}
-        
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+
+        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
       </form>
     </div>
   );

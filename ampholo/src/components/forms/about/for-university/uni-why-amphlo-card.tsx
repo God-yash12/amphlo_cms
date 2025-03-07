@@ -36,7 +36,7 @@ export const UniAboutWhyAmphloCard = () => {
                         <div className="space-y-4">
                             <div className="relative">
                                 <InputField
-                                    label="Showcase Your Feature's Card Headline"
+                                    label="Showcase Your Feature's Card Headline *"
                                     placeholder="Enter a compelling title for your features section"
                                     className="w-full transition-all duration-200"
                                     size="lg"
@@ -48,7 +48,7 @@ export const UniAboutWhyAmphloCard = () => {
                             {/* Description Editor Section */}
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Card Description
+                                    Card Description *
                                 </label>
                                 <TextEditor
                                     placeholder="Describe your key features in detail..."
@@ -59,16 +59,21 @@ export const UniAboutWhyAmphloCard = () => {
                                 />
                                 {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
                             </div>
-                            <FileUploadInput
-                                onChange={(files) => form.setValue('image', files[0].id)}
-                            />
-                            {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
-                            {imagePreview && (
-                                <div>
-                                    <label>Current Image</label>
-                                    <img src={imagePreview} alt="Current Hero" width="200" />
-                                </div>
-                            )}
+                            <div className="w-auto space-y-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Image *
+                                </label>
+                                <FileUploadInput
+                                    onChange={(files) => form.setValue('image', files[0].id)}
+                                />
+                                {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+                                {imagePreview && (
+                                    <div>
+                                        <label>Current Image</label>
+                                        <img src={imagePreview} alt="Current Hero" width="200" />
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         {/* Submit Button */}
