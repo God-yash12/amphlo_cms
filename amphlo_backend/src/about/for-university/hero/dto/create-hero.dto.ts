@@ -9,5 +9,5 @@ export class CreateHeroDto {
      
     @IsNumber()
     @IsOptional()
-    image: number;              
+    image: number | null;              
 }

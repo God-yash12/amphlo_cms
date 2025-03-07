@@ -9,7 +9,7 @@ export class HomeTransform {
     @Column()
     title: string;
 
-    @Column({type: 'longtext'})
+    @Column({ type:'longtext', nullable: true})
     description: string;
 
     

@@ -99,19 +99,24 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
     },
 
   ]
-  // Toggle dropdown
-  const toggleDropdown = (id: number) => {
-    setOpenDropdownId((prevId) => (prevId === id ? null : id));
-  };
-
+  
   // Check if the current path matches the item or any of its children
   const isActive = (element: NavElement) => {
+    if(element.path==="/about" && location.pathname.startsWith("/about")){
+      return true;
+    }
     return (
       location.pathname === element.path ||
       (element.children &&
         element.children.some((child) => location.pathname === child.path))
     );
   };
+
+  // Toggle dropdown
+  const toggleDropdown = (id: number) => {
+    setOpenDropdownId((prevId) => (prevId === id ? null : id));
+  };
+
 
   return (
     <div className="no-scroolbar relative p-4 h-full overflow-y-scroll">
@@ -131,7 +136,7 @@ const SideNavBar: React.FC<SideNavBarProps> = ({ toggleSidebar }) => {
         {navElements.map((data) => {
           const IconComponent = data.icon;
           const isItemActive = isActive(data);
-          const isDropdownOpen = openDropdownId === data.id;
+          const isDropdownOpen = openDropdownId === data.id || (data.path === "/about" && isItemActive);
 
           return (
             <div key={data.id}>

@@ -7,7 +7,7 @@ import { PartnersHeroSection } from "./partner-hero"
 
 const ForPertners = () => {
   return (
-    <div>
+    <div className="space-y-14">
       <PartnersHeroSection />
       <PartnerBenefitSection />
       <JoinNowPartnerSection />

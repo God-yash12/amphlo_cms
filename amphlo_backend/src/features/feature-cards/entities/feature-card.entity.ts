@@ -10,7 +10,7 @@ export class FeatureCard {
     @Column()
     title: string;
 
-    @Column()
+    @Column({ type:'longtext', nullable: true})
     description: string;
 
     @OneToOne(() => FileUpload, fileUpload => fileUpload.featureCardImage, { nullable: true })

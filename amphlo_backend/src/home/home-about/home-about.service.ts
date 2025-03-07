@@ -15,14 +15,15 @@ export class HomeAboutService {
     private readonly fileUploadService: FileUploadService,
   ) { }
   async set(dto: CreateHomeAboutDto) {
-    const image = await this.fileUploadService.getAllByIds([dto.image])
-    if (!image) throw new NotFoundException("Home About does not Found")
-
+    let image = null;
+    if (dto.image) {
+      image = await this.fileUploadService.getAllByIds([dto.image]);
+    }
     const existing = await this.get();
 
-    if (!existing) return await this.createNew(dto, image[0]);
+    if (!existing) return await this.createNew(dto, image ? image[0] : null);
 
-    return await this.update(existing, dto, image[0]);
+    return await this.update(existing, dto, image ? image[0] : null);
   }
 
   async createNew(dto: CreateHomeAboutDto, image: FileUpload) {
@@ -31,7 +32,7 @@ export class HomeAboutService {
       description: dto.description,
       listTitle: dto.listTitle,
       listItem: dto.listItem,
-      image: image[0],
+      image: image,
     })
     await this.homeAboutRepository.save(newHomeAbout)
 
@@ -41,7 +42,7 @@ export class HomeAboutService {
   async update(existing: HomeAbout, dto: CreateHomeAboutDto, image: FileUpload) {
     Object.assign(existing, {
       ...dto,
-      image,
+      image: image,
     });
 
     await this.homeAboutRepository.save(existing);

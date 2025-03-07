@@ -26,6 +26,6 @@ export class CreatePartnerHeroDto {
 
     @IsNumber()
     @IsOptional()
-    image: number;
+    image: number | null;
 
 }

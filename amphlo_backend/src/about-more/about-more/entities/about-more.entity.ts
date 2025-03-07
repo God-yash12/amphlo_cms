@@ -9,7 +9,7 @@ export class AboutMore {
     @Column({ type: 'varchar', length: 255 })
     title: string;
 
-    @Column({ type: 'text' })
+    @Column({ type:'longtext', nullable: true})
     description: string;
 
     @Column({ type: 'date', nullable: true})

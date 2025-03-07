@@ -11,7 +11,7 @@ export class FeatureCard {
     @IsNotEmpty()
     title: string;
 
-    @Column()
+    @Column({ type:'longtext', nullable: true})
     @IsNotEmpty()
     description: string;
 

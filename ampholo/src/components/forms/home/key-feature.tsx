@@ -73,7 +73,7 @@ export const HomeKeyFeatureCard = () => {
 
                         {/* Submit Button */}
                         <div className="pt-6">
-                        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Submit</div> }</PrimaryButton>
+                            <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Submit</div>}</PrimaryButton>
                         </div>
                     </form>
                 </div>

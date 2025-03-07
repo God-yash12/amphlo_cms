@@ -19,7 +19,7 @@ export class CreateWhyAmphloDto {
 
     @IsNumber()
     @IsOptional()
-    imageId: number;
+    imageId: number | null;
 
     @IsArray()
     @ValidateNested({each: true})

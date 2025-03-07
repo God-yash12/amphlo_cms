@@ -9,7 +9,7 @@ export class PortalAccess {
     @Column({ nullable: true })
     title: string;
 
-    @Column({ nullable: true })
+    @Column({ type:'longtext', nullable: true})
     description: string;
 
     @Column({ type: 'json', nullable: true })

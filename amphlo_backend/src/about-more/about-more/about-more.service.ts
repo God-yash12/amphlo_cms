@@ -17,7 +17,6 @@ export class AboutMoreService {
   async set(createAboutMoreDto: CreateAboutMoreDto): Promise<AboutMore[]> {
     await this.aboutMoreRepository.clear();
     
-    // Map the entries and resolve the image field with FileUpload entity
     const newEntries = this.aboutMoreRepository.create(
       await Promise.all(
         createAboutMoreDto.aboutMore.map(async (dto) => {

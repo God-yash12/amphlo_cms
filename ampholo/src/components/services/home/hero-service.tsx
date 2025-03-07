@@ -34,6 +34,7 @@ export const HeroService = () => {
       toast.success("Hero section customized successfully!", {
         position: "top-right",
       });
+      
     },
     onError: (error) => {
       console.error("Error submitting form:", error);
@@ -57,10 +58,7 @@ export const HeroService = () => {
       form.reset({
         title: data.title,
         description: data.description,
-        buttons: data?.buttons?.map((button: any) => ({
-          name: button.name,
-          route: button.route,
-        })),
+        buttons: data?.buttons
       });
     }
   }, [data]);

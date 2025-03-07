@@ -64,7 +64,8 @@ export const PortalFeature = () => {
 
         {/* File Upload */}
         <FileUploadInput
-          onChange={(files) => form.setValue("imageId", files[0].id)} initialFiles={image ? [{
+          onChange={(files) => form.setValue("imageId", files ? files[0].id : null)} 
+          initialFiles={image ? [{
             id: image.id,
             url: image.url,
             originalName: image.filename

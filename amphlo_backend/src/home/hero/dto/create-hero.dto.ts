@@ -22,9 +22,9 @@ export class CreateHeroDto {
 
     @IsArray()
     @IsOptional()
-    buttons?: HeroButtonDto[];
+    buttons?: HeroButtonDto[] = [];
 
     @IsNumber()
     @IsOptional()
-    imageId?: number;
+    imageId?: number | null;
 }

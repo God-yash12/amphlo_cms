@@ -7,7 +7,7 @@ import { JoinNow } from "./join-now"
 
 const ForUniverisities = () => {
   return (
-    <div>
+    <div className="space-y-10">
       <HeroUniversity />
       <WhyChooseAmphloCard />
       <JourneyUniversity />

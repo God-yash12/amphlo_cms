@@ -39,7 +39,7 @@ export class CreateBannerDto {
     })
     @IsOptional()
     @IsNumber()
-    imageId: number;
+    imageId: number | null;
 
     @ApiProperty({ 
         type: [ButtonDto], 

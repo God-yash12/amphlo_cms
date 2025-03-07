@@ -28,7 +28,7 @@ const Hero = () => {
         {/* Title Input */}
         <div>
           <InputField
-            label="Title"
+            label="Title *"
             variant="outlined"
             size="lg"
             placeholder="Title"
@@ -49,7 +49,7 @@ const Hero = () => {
         <FileUploadInput
           accept="image/*"
           onChange={(files) => {
-            form.setValue("imageId", files[0].id);
+            form.setValue("imageId", files.length > 0 ? files[0].id : null);
           }}
           initialFiles={image ? [{
             id: image.id,
@@ -100,11 +100,11 @@ const Hero = () => {
 
         {
           fields.length < 2 && (
-            <SecondaryButton onClick={() => append({ name: '', route: '' })}>Add Button</SecondaryButton>
+            <SecondaryButton onClick={() => append({ name: "", route: '' })}>Add Button</SecondaryButton>
           )
         }
         {/* Submit Button */}
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
       </form>
     </div>
   );

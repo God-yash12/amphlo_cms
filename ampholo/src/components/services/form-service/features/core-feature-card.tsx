@@ -123,5 +123,6 @@ export const CoreFeaturesFormService = () => {
         setSelectedCoreFeatureCard,
         deleteCoreFeatureCard,
         isPending,
+        image: selectedCoreFeatureCard?.image,
     }
 }

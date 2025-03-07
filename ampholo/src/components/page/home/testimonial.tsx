@@ -1,3 +1,4 @@
+import { useRef } from "react";
 // @ts-ignore
 import ReactStars from "react-rating-stars-component";
 import InputField from "../../../ui/input/input";
@@ -10,19 +11,25 @@ import Paragraph from "../../../ui/typographs/paragraph";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 import PropagateLoader from "react-spinners/PropagateLoader";
-import { BeatLoader } from "react-spinners";
+import { BeatLoader, PulseLoader } from "react-spinners";
 
 
 export const Testimonials = () => {
-    const { form, onSubmit, testimonials, isLoading, isError, error, deleteMutation, selectedTestimonial, setSelectedTestimonial, mutation } = UseTestimonialService();
+    const { form, onSubmit, testimonials, isLoading, isError, error, handleDeleteClick, deleteMutation, selectedTestimonial, setSelectedTestimonial, mutation } = UseTestimonialService();
     const errorMessage = form.formState.errors;
+    const formRef = useRef<HTMLDivElement>(null);
+    const scrollToForm = () => {
+        if (formRef.current) {
+            formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    };
 
-    console.log(selectedTestimonial?.image?.url, "imae urllll")
+   
 
 
     return (
         <div>
-            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
+            <div ref={formRef} className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
                 {/* Header Section */}
                 <div className="mb-8 text-center">
                     <Header className="text-3xl font-bold text-gray-800 mb-2">
@@ -125,7 +132,7 @@ export const Testimonials = () => {
                     </div>
 
                     {/* Submit Button */}
-                    <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div> }</PrimaryButton>
+                    <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Submit</div>}</PrimaryButton>
                 </form>
             </div>
 
@@ -143,9 +150,9 @@ export const Testimonials = () => {
                         />
                         <div>
                             <Header className="text-lg font-medium text-gray-700">
-                                {testimonial.personName} - {testimonial.workPlace}
+                                {testimonial.personName} - <span className="text-xl"> {testimonial.workPlace}</span>
                             </Header>
-                            <Paragraph className="text-gray-600">{testimonial.feedback}</Paragraph>
+                            <Paragraph className="text-gray-600 ">{testimonial.feedback}</Paragraph>
                             <ReactStars
                                 count={5}
                                 size={20}
@@ -156,8 +163,8 @@ export const Testimonials = () => {
                             />
                         </div>
                         <div className="flex space-x-6">
-                            <SecondaryButton onClick={() => setSelectedTestimonial(testimonial)}>Update</SecondaryButton>
-                            <SecondaryButton onClick={() => deleteMutation.mutate(testimonial.id)}>Delete</SecondaryButton>
+                            <SecondaryButton onClick={() => { setSelectedTestimonial(testimonial), scrollToForm() }}>Update</SecondaryButton>
+                            <SecondaryButton onClick={() => (handleDeleteClick(testimonial))}>{deleteMutation.isPending ? <div className="w-full"><PulseLoader /></div> : "Delete" }</SecondaryButton>
                         </div>
                     </div>
                 ))}

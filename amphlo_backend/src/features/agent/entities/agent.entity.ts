@@ -8,7 +8,7 @@ export class Agent {
     @Column()
     title: string;
 
-    @Column()
+    @Column({ type:'longtext', nullable: true})
     description: string;
 
     @Column({ type: 'json', nullable: true })

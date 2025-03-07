@@ -14,14 +14,15 @@ export class PartnerFeaturesService {
     private readonly fileUploadService: FileUploadService
   ) { }
   async set(dto: CreatePartnerFeatureDto) {
-    const image = await this.fileUploadService.getAllByIds([dto.image])
-    if (!image) throw new NotFoundException('Image Not Found')
-
+    let image = null;
+    if (dto.image) {
+      image = await this.fileUploadService.getAllByIds([dto.image]);
+    }
     const existing = await this.get();
 
-    if (!existing) return this.createNew(dto, image[0])
+    if (!existing) return this.createNew(dto, image ? image[0] : null)
 
-    return this.updateFeature(existing, dto, image[0])
+    return this.updateFeature(existing, dto, image ? image[0] : null)
   }
 
   async createNew(dto: CreatePartnerFeatureDto, image: FileUpload) {
@@ -29,7 +30,7 @@ export class PartnerFeaturesService {
       featureTitle: dto.featureTitle,
       featureDescription: dto.featureDescription,
       feature: dto.feature,
-      image: image[0],
+      image: image,
     })
     await this.partnerFeatureRepo.save(newFeature)
     return { message: "Partner Feature Created" }

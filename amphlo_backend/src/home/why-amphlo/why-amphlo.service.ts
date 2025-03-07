@@ -14,23 +14,39 @@ export class WhyAmphloService {
     private readonly fileUploadService: FileUploadService,
   ) { }
   async set(dto: CreateWhyAmphloDto) {
-    const image = await this.fileUploadService.getAllByIds([dto.imageId])
-      if (!image) throw new NotFoundException("Image not found")
-
+    let image = null;
+    if (dto.imageId) {
+      image = await this.fileUploadService.getAllByIds([dto.imageId]);
+    }
     const existing = await this.get()
 
-    if (!existing) return await this.createNew(dto, image[0])
+    if (!existing) return await this.createNew(dto,image ? image[0] : null)
 
-    return await this.update(existing, dto, image[0])
+    return await this.update(existing, dto,image ? image[0] : null)
   }
 
   async createNew (dto: CreateWhyAmphloDto, image: FileUpload) {
+
+    // const cleanListTitle = dto.lists.map((title) => {
+    //   const cleanTitle = title.listTitle.replace(/[\/,:;?!&%$#@(){}[\]<>]/g, '');
+    //   return {
+    //     ...title,
+    //     listTitle: cleanTitle,
+    //   }
+    // })
+
     const newWhyAmphlo = this.whyAmplhoRepository.create({
       title: dto.title,
       mainTitle: dto.mainTitle,
       description: dto.description,
-      lists: dto.lists,
-      image,
+      lists: dto.lists.map((item) => {
+        const cleanTitle = item.listTitle.replace(/[\/,:;?!&%$#@(){}[\]<>]/g, '');
+        return {
+          ...item,
+          cleanTitle
+        }
+      }),
+      image: image,
     })
     return await this.whyAmplhoRepository.save(newWhyAmphlo)
   }
@@ -38,7 +54,7 @@ export class WhyAmphloService {
   async update(existing: WhyAmphlo, dto: CreateWhyAmphloDto, image: FileUpload){
      Object.assign(existing, {
       ...dto,
-      image
+      image: image,
      })
      return await this.whyAmplhoRepository.save(existing)
   }

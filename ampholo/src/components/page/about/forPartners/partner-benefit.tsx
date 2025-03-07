@@ -25,7 +25,7 @@ export const PartnerBenefitSection = () => {
   const errorMessage = form.formState.errors
   if (isLoading) return <PropagateLoader className="text-center" />
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className=" bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 py-12">
         {/* Header Section */}
         <div className="max-w-2xl mx-auto text-center mb-12">

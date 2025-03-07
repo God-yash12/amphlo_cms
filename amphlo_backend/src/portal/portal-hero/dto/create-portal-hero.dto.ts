@@ -11,5 +11,6 @@ export class CreatePortalHeroDto {
     subTitle?: string;
 
     @IsNumber()
-    imageId: number;
+    @IsOptional()
+    imageId: number | null;
 }

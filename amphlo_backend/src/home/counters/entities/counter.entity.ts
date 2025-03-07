@@ -8,7 +8,7 @@ export class Counter {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ type:'longtext', nullable: true})
   description: string;
 
   @Column()

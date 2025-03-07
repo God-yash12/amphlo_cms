@@ -53,6 +53,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // app.setGlobalPrefix('api')
+  console.log( configService.get<number>('PORT'))
   const PORT = configService.get<number>('PORT') ?? 8080;
   app.listen(PORT);
   console.log(`server is running on http://localhost:${PORT}`);

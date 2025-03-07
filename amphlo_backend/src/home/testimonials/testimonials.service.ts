@@ -6,6 +6,7 @@ import { Testimonial } from './entities/testimonial.entity';
 import { Repository } from 'typeorm';
 import { FileUploadService } from 'src/file-upload/file-upload.service';
 
+
 @Injectable()
 export class TestimonialsService {
   constructor(
@@ -16,41 +17,46 @@ export class TestimonialsService {
     const image = await this.fileUploadService.getAllByIds([dto.imageId])
     if (!image) throw new NotFoundException("Testimonials Image Not Found")
 
+    const stripHtmlFeedback = dto.feedback.replace(/<\/?[^>]+(>|$)/g, "")
+
     const newTestimonial = await this.testimonialsRepository.create({
       personName: dto.personName,
       workPlace: dto.workPlace,
-      feedback: dto.workPlace,
+      feedback: stripHtmlFeedback,
       ratings: dto.ratings,
       createdDate: dto.createdAt,
       image: image[0],
     })
-
+    console.log(stripHtmlFeedback, "hanojdoi")
     await this.testimonialsRepository.save(newTestimonial)
 
-    return { message: "Testimonial Created " }
+    return { newTestimonial, message: "Testimonial Created " }
   }
 
-  findAll() {
-    return this.testimonialsRepository.find({ relations: ['image'] })
+  async findAll() {
+    const testimonials = await this.testimonialsRepository.find({ relations: ['image'] });
+
+    return await this.testimonialsRepository.find()
   }
-
-
 
   async update(id: number, dto: UpdateTestimonialDto) {
     const testimonial = await this.testimonialsRepository.findOne({ where: { id }, relations: ['image'] })
     if (!testimonial) throw new NotFoundException("Testimonial does not Found");
+    const stripHtmlFeedback = dto.feedback.replace(/<\/?[^>]+(>|$)/g, "")
 
     if (dto.imageId) {
       const image = await this.fileUploadService.getAllByIds([dto.imageId])
-      if (!image) throw new NotFoundException("Image doesn't Found")
       testimonial.image = image[0]
     }
 
-    Object.assign(testimonial, dto)
+    testimonial.personName = dto.personName
+    testimonial.workPlace = dto.workPlace
+    testimonial.feedback = stripHtmlFeedback
+    testimonial.ratings = dto.ratings
 
     await this.testimonialsRepository.save(testimonial)
 
-    return { message: " Testimonial Updated successfully" }
+    return { testimonial, message: " Testimonial Updated successfully" }
   }
 
   async remove(id: number) {

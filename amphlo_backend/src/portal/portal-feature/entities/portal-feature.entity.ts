@@ -23,6 +23,6 @@ export class PortalFeature {
 
     @OneToOne(() => FileUpload, fileUpload => fileUpload.PortalFeatureImage, { nullable: false })
     @JoinColumn({ name: 'portalfeatureImageId' })
-    image: FileUpload
+    image: FileUpload | null;
 
-}
+}   

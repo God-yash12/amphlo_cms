@@ -8,6 +8,6 @@ export class KeyFeature {
     @Column({ nullable: true })
     title: string;
 
-    @Column({ nullable: true })
+    @Column({ type:'longtext', nullable: true})
     description: string;
 }

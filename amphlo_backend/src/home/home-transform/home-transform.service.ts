@@ -17,13 +17,15 @@ export class HomeTransformService {
 
 
     async set(dto: CreateHomeTransformDto, file: Express.Multer.File) {
-    const image = await this.fileUploadService.getAllByIds([dto.imageId])
-    if(!image) throw new NotFoundException("Image Not Found")
+      let image = null;
+      if (dto.imageId) {
+        image = await this.fileUploadService.getAllByIds([dto.imageId]);
+      }
     
     const existing = await this.get();  
-    if(!existing) return await this.createNew(dto, image[0])
+    if(!existing) return await this.createNew(dto, image ? image[0] : null)
 
-      return this.updateTransform(existing, dto, image[0]) 
+      return this.updateTransform(existing, dto, image ? image[0] : null) 
   }
 
   async createNew(dto: CreateHomeTransformDto, image: FileUpload){
@@ -31,7 +33,7 @@ export class HomeTransformService {
       title: dto.title,
       description: dto.description,
       buttons: dto.buttons,
-      image,
+      image: image,
 
     })
     return await this.homeTransformRepository.save(newHomeTransform)
@@ -41,7 +43,7 @@ export class HomeTransformService {
   async updateTransform(existing: HomeTransform, dto: CreateHomeTransformDto, image: FileUpload){
     Object.assign(existing, {
       ...dto,
-      image
+      image: image,
     })
     return await this.homeTransformRepository.save(existing)
 

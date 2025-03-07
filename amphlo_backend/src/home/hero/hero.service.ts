@@ -15,28 +15,40 @@ export class HeroService {
   ) { }
 
   async set(dto: CreateHeroDto) {
-    const image = await this.fileUploadService.getAllByIds([dto.imageId])
+    let image = null;
+    if (dto.imageId) {
+      image = await this.fileUploadService.getAllByIds([dto.imageId]);
+    }
+
 
     const existing = await this.get();
-    if (!existing) return await this.createNew(dto, image[0]);
+    if (!existing) return await this.createNew(dto, image ? image[0] : null);
 
-    return await this.update(existing, dto, image[0])
+    const uodatedto = await this.update(existing, dto, image ? image[0] : null)
+    console.log(uodatedto)
+    return (uodatedto)
   }
 
+
   async createNew(dto: CreateHeroDto, image: FileUpload) {
+    console.log("hero item", dto)
     const newHero = this.heroRepository.create({
       title: dto.title,
       description: dto.description,
-      buttons: dto.buttons,
-      image: image[0],
+      buttons: dto.buttons || null,
+      image: image,
     })
-    return this.heroRepository.save(newHero)
+    
+    const heroItem = await this.heroRepository.save(newHero)
+    console.log(heroItem)
+    return{heroItem}
   }
 
   async update(existing: Hero, dto: CreateHeroDto, image: FileUpload) {
     Object.assign(existing, {
-      ...dto,
-      image,
+      ...dto, 
+      buttons: dto.buttons || null,  
+      image: image,
     })
     return await this.heroRepository.save(existing)
   }

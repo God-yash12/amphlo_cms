@@ -9,42 +9,42 @@ import { FileUploadService } from 'src/file-upload/file-upload.service';
 @Injectable()
 export class PortalHeroService {
   constructor(
-     @InjectRepository(PortalHero) private readonly portalHeroRepository: Repository<PortalHero>,
-     private readonly fileUploadService: FileUploadService,
-   ){ }
-   async set(dto: CreatePortalHeroDto) {
-     const image = await this.fileUploadService.getAllByIds([dto.imageId])
-     if(!image) throw new NotFoundException("Hero Image does not Found")
- 
-       const existing = await this.get();
-       if(!existing) return await this.createNew(dto, image[0]);
- 
-       return await this.update(existing, dto, image[0])
-   }
- 
-   async createNew(dto: CreatePortalHeroDto, image: FileUpload){
-     const newHero = this.portalHeroRepository.create({
-       title: dto.title,
-       subTitle: dto.subTitle,
-       image,
-     })
-     return this.portalHeroRepository.save(newHero)
-   }
- 
-   async update(existing:PortalHero, dto: CreatePortalHeroDto, image:FileUpload){
-     Object.assign(existing, {       
-       ...dto,
-       image
-     })
-     return await this.portalHeroRepository.save(existing)
-   }
-   
- 
-   get(): Promise<PortalHero | null> {
-     return this.portalHeroRepository.findOne({
-       where: { id: Not(IsNull())}, 
-       relations: ['image'],
-     })
-   }
-   
+    @InjectRepository(PortalHero) private readonly portalHeroRepository: Repository<PortalHero>,
+    private readonly fileUploadService: FileUploadService,
+  ) { }
+  async set(dto: CreatePortalHeroDto) {
+
+    const image = dto.imageId ? await this.fileUploadService.getAllByIds([dto.imageId]) : null
+
+    const existing = await this.get();
+    if (!existing) return await this.createNew(dto, image ? image[0] : null);
+
+    return await this.update(existing, dto, image ? image[0] : null)
+  }
+
+  async createNew(dto: CreatePortalHeroDto, image: FileUpload) {
+    const newHero = this.portalHeroRepository.create({
+      title: dto.title,
+      subTitle: dto.subTitle,
+      image: image,
+    })
+    return this.portalHeroRepository.save(newHero)
+  }
+
+  async update(existing: PortalHero, dto: CreatePortalHeroDto, image: FileUpload) {
+    Object.assign(existing, {
+      ...dto,
+      image: image
+    })
+    return await this.portalHeroRepository.save(existing)
+  }
+
+
+  get(): Promise<PortalHero | null> {
+    return this.portalHeroRepository.findOne({
+      where: { id: Not(IsNull()) },
+      relations: ['image'],
+    })
+  }
+
 }

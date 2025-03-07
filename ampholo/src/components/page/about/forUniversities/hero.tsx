@@ -15,7 +15,7 @@ export const HeroUniversity = () => {
 
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <div className="bg-gradient-to-b from-gray-50 to-white">
             <div className="container mx-auto px-4 py-4">
                 {/* Header Section */}
                 <div className="max-w-2xl mx-auto text-center mb-12">
@@ -58,7 +58,7 @@ export const HeroUniversity = () => {
                             </div>
                             <FileUploadInput
                                 accept="image/*"
-                                onChange={(files) => form.setValue('image', files[0].id)}
+                                onChange={(files) => form.setValue('image', files ? files[0].id : null)}
                                 initialFiles={image ? [{
                                     id: image.id,
                                     url: image.url,

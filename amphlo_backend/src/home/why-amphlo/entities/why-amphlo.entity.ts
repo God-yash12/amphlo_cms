@@ -12,7 +12,7 @@ export class WhyAmphlo {
     @Column({ nullable: true })
     mainTitle: string;
 
-    @Column({ nullable: true })
+    @Column({ type:'longtext', nullable: true})
     description: string;
 
     @OneToOne(() => FileUpload, imageUpload => imageUpload.whyAmphloImage, { nullable: true })

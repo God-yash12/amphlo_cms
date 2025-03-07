@@ -46,10 +46,9 @@ export class KeyFeatureCardService {
       keyFeatureCard.image = image[0];
     }
 
-    keyFeatureCard.title = dto.title || keyFeatureCard.title;
-    keyFeatureCard.description = dto.title || keyFeatureCard.description
+    keyFeatureCard.title = dto.title
+    keyFeatureCard.description = dto.description
     
-
     return this.keyFeatureCardRepo.save(keyFeatureCard)
   }
 

@@ -15,13 +15,15 @@ export class BannerService {
     private readonly fileUploadService: FileUploadService,
   ) { }
   async set(createBannerDto: CreateBannerDto) {
-    const image = await this.fileUploadService.getAllByIds([createBannerDto.imageId])
-    if (!image) throw new NotFoundException("Banner Image Not Found")
+    let image = null;
+    if (createBannerDto.imageId) {
+      image = await this.fileUploadService.getAllByIds([createBannerDto.imageId]);
+    }
 
     const existing = await this.get();
-    if (!existing) return await this.createNew(createBannerDto, image[0])
+    if (!existing) return await this.createNew(createBannerDto, image ? image[0] : null)
 
-    return await this.updateBanner(existing, createBannerDto, image[0])
+    return await this.updateBanner(existing, createBannerDto, image ? image[0] : null)
   }
 
   async createNew(dto: CreateBannerDto, image: FileUpload) {
@@ -29,7 +31,7 @@ export class BannerService {
       title: dto.title,
       description: dto.description,
       buttons: dto.buttons,
-      image: image[0]
+      image: image
     })
     return await this.bannerRepository.save(newBanner)
   }
@@ -37,7 +39,7 @@ export class BannerService {
   async updateBanner(existing: Banner, dto: CreateBannerDto, image: FileUpload) {
     Object.assign(existing, {
       ...dto,
-      image
+      image: image,
     })
     return await this.bannerRepository.save(existing)
   }

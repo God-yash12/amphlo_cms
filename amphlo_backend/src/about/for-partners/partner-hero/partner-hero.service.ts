@@ -15,16 +15,15 @@ export class PartnerHeroService {
   ) {}
 
   async set(dto: CreatePartnerHeroDto) {
-    const image = await this.fileUploadService.getAllByIds([dto.image])
-
-    if (!image) {
-      throw new NotFoundException("Image not found");
+    let image = null;
+    if (dto.image) {
+      image = await this.fileUploadService.getAllByIds([dto.image]);
     }
 
     const existing = await this.get();
 
-    if (!existing) return this.createNewPartnerHero(dto, image[0])
-      return this.updateHero(existing, dto, image[0]);
+    if (!existing) return this.createNewPartnerHero(dto, image ? image[0] : null)
+      return this.updateHero(existing, dto, image ? image[0] : null);
     
   }
 
@@ -32,7 +31,7 @@ export class PartnerHeroService {
     const newHero = this.partnerHeroRepo.create({
       title: dto.title,
       description: dto.description,
-      image: image[0],
+      image: image,
       buttons: dto.buttons,
     });
     await this.partnerHeroRepo.save(newHero);
@@ -41,7 +40,7 @@ export class PartnerHeroService {
   }
 
   async updateHero(existing: PartnerHero, dto: CreatePartnerHeroDto, image: FileUpload) {
-    Object.assign(existing, { ...dto, image});
+    Object.assign(existing, { ...dto, image: image});
     await this.partnerHeroRepo.save(existing);
     return { message: 'Partner Hero updated' };
   }

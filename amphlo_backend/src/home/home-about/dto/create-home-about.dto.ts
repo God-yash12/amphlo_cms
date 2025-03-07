@@ -49,6 +49,6 @@ export class CreateHomeAboutDto {
     })
     @IsOptional()
     @IsNumber()
-    image: number
+    image: number | null;
 
 }

@@ -39,6 +39,7 @@ export const UseTestimonialService = () => {
         onSuccess: () => {
             form.reset();
             toast.success("Feedback submitted successfully");
+            queryClient.invalidateQueries({ queryKey: ['testimonials'] }); 
         },
         onError: (error) => {
             toast.error(`Please try Again Later!! ${error.message}`);
@@ -59,8 +60,7 @@ export const UseTestimonialService = () => {
         },
         onSuccess: () => {
             toast.success("Testimonials Deleted Successfully");
-            {/* @ts-ignore */ }
-            queryClient.invalidateQueries(["testimonials"]);
+            queryClient.invalidateQueries({ queryKey: ['testimonials'] }); // Refetch after deletion
         },
         onError: (error) => {
             toast.error(`Failed to Delete Testimonial: ${error.message}`);
@@ -75,15 +75,13 @@ export const UseTestimonialService = () => {
         onSuccess: () => {
             form.reset();
             toast.success("Testimonial updated successfully");
-            {/* @ts-ignore */ }
-            queryClient.invalidateQueries(["testimonials"]);
+            queryClient.invalidateQueries({ queryKey: ['testimonials'] }); // Refetch after updating
             setSelectedTestimonial(null);
         },
         onError: (error) => {
             toast.error(`Failed to update testimonial: ${error.message}`);
         }
     });
-
 
     const onSubmit = (data: TestimonialsValidationData) => {
         try {
@@ -93,7 +91,7 @@ export const UseTestimonialService = () => {
                 mutation.mutate(data);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     };
 
@@ -107,13 +105,18 @@ export const UseTestimonialService = () => {
                     imageId: selectedTestimonial?.image?.id,
                     ratings: Number(selectedTestimonial.ratings),
                 });
-
             }
-            console.log(selectedTestimonial?.image.url, "image url")
         } catch (error) {
             console.error("Error resetting form:", error);
         }
     }, [selectedTestimonial, form]);
+
+    const handleDeleteClick = (testimonial: any) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete this testimonial?");
+        if (isConfirmed) {
+            deleteMutation.mutate(testimonial.id);
+        }
+    };
 
     return {
         form,
@@ -128,7 +131,6 @@ export const UseTestimonialService = () => {
         updateTestimonial,
         image: selectedTestimonial?.image,
         mutation,
+        handleDeleteClick
     };
-
-
 };

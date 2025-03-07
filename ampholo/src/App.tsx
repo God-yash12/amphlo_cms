@@ -2,7 +2,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminLayout from "./layouts/layout";
 import Home from "./components/page/home/home";
-import About from "./components/page/about/about";
 import ForUniverisities from "./components/page/about/forUniversities/for-universities";
 import ForPertners from "./components/page/about/forPartners/for-partners";
 import { ToastContainer } from "react-toastify";
@@ -36,6 +35,7 @@ import { Adminsignup } from "./components/admin-signup/admin-signup";
 import { ResetPassword } from "./components/login/reset-password/reset-password";
 import { VerifyOTP } from "./components/login/reset-password/verify-otp";
 import { NewPasswordForm } from "./components/login/reset-password/reset-password-form";
+import About from "./components/page/about/about";
 
 
 function App() {
@@ -57,22 +57,18 @@ function App() {
               <Route element={<AdminLayout />}>
                 {/* home route  */}
                 <Route index element={<Home />} />
-                {/* <Route index element={<Home />}>
-                  <Route path="hero" element={<Hero />} />
-                  <Route path="key-features" element={<KeyFeatures />} />
-                  <Route path="banner" element={<Banner />} />
-                  <Route path="why-amphlo" element={<WhyAmphlo />} />
-                  <Route path="counters" element={<Counters />} />
-                  <Route path="home-about" element={<HomeAbout />} />
-                  <Route path="transform" element={<Transform />} />
-                  <Route path="testimonials" element={<Testimonials />} /> */}
-                {/* </Route> */}
+
                 {/* About route  */}
                 <Route path="about" element={<About />}>
+                  {/* This is the index route for the About page, making ForUniversities the default */}
+                  <Route index element={<ForUniverisities />} />
+
+                  {/* Child routes under About */}
                   <Route path="for-universities" element={<ForUniverisities />} />
                   <Route path="for-partners" element={<ForPertners />} />
                   <Route path="our-journey" element={<OurJourney />} />
                 </Route>
+
                 {/* Feature Route */}
                 <Route path="features" element={<Features />} >
                   <Route path="hero" element={<FeatureHero />} />

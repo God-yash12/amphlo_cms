@@ -10,7 +10,7 @@ export class KeyFeatureCard {
     @Column()
     title: string;
 
-    @Column()
+    @Column({ type:'longtext', nullable: true})
     description: string;
 
     @OneToOne(() => FileUpload, fileUpload => fileUpload.keyFeatureImage, { nullable: true })

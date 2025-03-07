@@ -21,7 +21,7 @@ export class CreatePartnerFeatureDto {
 
     @IsNumber()
     @IsOptional()
-    image: number;
+    image: number | null;
 
     @IsArray()
     @ValidateNested({ each: true })

@@ -55,7 +55,7 @@ export const PortalHeroSection = () => {
                 <FileUploadInput
                     accept="image/*"
                     onChange={(files) => {
-                        form.setValue("imageId", files[0].id);
+                        form.setValue("imageId", files ? files[0].id : null);
                     }}
                     initialFiles={image ? [{
                         id: image.id,

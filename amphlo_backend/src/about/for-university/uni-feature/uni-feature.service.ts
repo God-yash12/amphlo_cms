@@ -17,8 +17,10 @@ export class UniFeatureService {
 
   async set(dto: CreateUniFeatureDto) {
 
-    const image = await this.fileUploadService.getAllByIds([dto.image])
-
+    let image = null;
+    if (dto.image) {
+      image = await this.fileUploadService.getAllByIds([dto.image]);
+    }
     const existing = await this.get();
     if (!existing) {
       return await this.createNewFeature(dto, image[0])
@@ -31,7 +33,7 @@ export class UniFeatureService {
     const newUniFeature = this.uniFeatureRepository.create({
       title: dto.title,
       description: dto.description,
-      image,
+      image: image ? image[0] : null,
     });
     return this.uniFeatureRepository.save(newUniFeature);
   }
@@ -39,7 +41,7 @@ export class UniFeatureService {
   async updateFeature(existing: UniFeature, dto: CreateUniFeatureDto, image: FileUpload) {
     Object.assign(existing, {
       ...dto,
-      image,
+      image: image,
     })
     return await this.uniFeatureRepository.save(existing)
   }
@@ -48,20 +50,4 @@ export class UniFeatureService {
     return await this.uniFeatureRepository.findOne({ where: { id: Not(IsNull()) }, relations: ['image'] });
   }
 
-  // findAll() {
-  //   return `This action returns all uniFeature`;
-  // }
-
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} uniFeature`;
-  // }
-
-  // update(id: number, updateUniFeatureDto: UpdateUniFeatureDto) {
-  //   return `This action updates a #${id} uniFeature`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} uniFeature`;
-  // }
 }

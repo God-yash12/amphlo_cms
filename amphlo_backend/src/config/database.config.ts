@@ -7,6 +7,7 @@ export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptio
     // url: configService.get<string>('DB_URl'),
     url: process.env.DB_URL.trim(),
     autoLoadEntities: true,
-    synchronize: configService.get<string>('SYNCHRONIZE_VALUE')?.toLowerCase() === 'true'
+    // synchronize: configService.get<string>('SYNCHRONIZE_VALUE')?.toLowerCase() === 'true'
+    synchronize: true
    
 });

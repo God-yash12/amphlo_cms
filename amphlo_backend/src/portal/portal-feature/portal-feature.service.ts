@@ -14,34 +14,33 @@ constructor(
     private readonly fileUploadService: FileUploadService,
   ) { }
   async set(dto: CreatePortalFeatureDto) {
-    const image = await this.fileUploadService.getAllByIds([dto.imageId])
-    if (!image) throw new NotFoundException("Home About does not Found")
+    const image = dto.imageId ? await this.fileUploadService.getAllByIds([dto.imageId]) : null
 
     const existing = await this.get();
 
-    if (!existing) return await this.createNew(dto, image[0]);
+    if (!existing) return await this.createNew(dto, image ? image[0] : null);
 
-    return await this.update(existing, dto, image[0]);
+    return await this.update(existing, dto, image ? image[0] : null);
   }
 
-  async createNew(dto: CreatePortalFeatureDto, image: FileUpload) {
+  async createNew(dto: CreatePortalFeatureDto, image: FileUpload | null) {
     const newPortalFeature = this.PortalFeatureRepository.create({
       title: dto.title,
       mainTitle: dto.mainTitle,
       description: dto.description,
       listTitle: dto.listTitle,
       listItem: dto.listItem,
-      image,
+      image: image,
     })
     await this.PortalFeatureRepository.save(newPortalFeature)
 
     return { message: "Portal Feature Updated successfully" }
   }
 
-  async update(existing: PortalFeature, dto: CreatePortalFeatureDto, image: FileUpload) {
+  async update(existing: PortalFeature, dto: CreatePortalFeatureDto, image: FileUpload | null) {
     Object.assign(existing, {
       ...dto,
-      image: image[0]
+      image: image
     });
 
     await this.PortalFeatureRepository.save(existing);

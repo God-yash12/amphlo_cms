@@ -10,7 +10,7 @@ export const PortalFeatureValidation = z.object({
             list: z.string().optional(),
         })
     ).optional(),
-    imageId: z.number().min(1, {message: "Image is Required"}),
+    imageId: z.number().nullable().optional(),
 });
 
 export type PortalFeatureValidationData = z.infer<typeof PortalFeatureValidation>;

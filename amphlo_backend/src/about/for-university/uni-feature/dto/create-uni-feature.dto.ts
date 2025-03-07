@@ -11,5 +11,5 @@ export class CreateUniFeatureDto {
 
     @IsNumber()
     @IsOptional()
-    image: number;
+    image: number | null;
 }

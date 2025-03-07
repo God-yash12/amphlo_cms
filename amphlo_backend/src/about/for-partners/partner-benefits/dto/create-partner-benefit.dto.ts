@@ -13,5 +13,5 @@ export class CreatePartnerBenefitDto {
 
     @IsNumber()
     @IsOptional()
-    image: number;
+    image: number | null;
 }

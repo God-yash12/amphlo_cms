@@ -23,7 +23,7 @@ export const JoinNow = () => {
   if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
-    <div id="hero" className="container mx-auto min-h-screen p-8 bg-gradient-to-b from-gray-50 to-white">
+    <div id="hero" className="container mx-auto p-8 bg-gradient-to-b from-gray-50 to-white">
       {/* Header Section */}
       <div className="text-center mb-6">
         <Header className="text-gray-800">University Join Network Section</Header>

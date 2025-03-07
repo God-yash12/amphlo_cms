@@ -28,7 +28,7 @@ export class CreateHomeTransformDto {
     @ApiProperty({ description: 'The ID of the image associated with the home transform', required: false })
     @IsOptional()
     @IsNumber()
-    imageId: number;
+    imageId: number | null;
 
     @ApiProperty({ type: [ButtonDto], description: 'An array of buttons associated with the home transform' })
     @IsArray()

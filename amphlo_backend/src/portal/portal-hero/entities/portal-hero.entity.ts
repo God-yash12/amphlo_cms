@@ -14,5 +14,5 @@ export class PortalHero {
 
     @OneToOne(() => FileUpload, portalHero => portalHero.portalHeroImage, {nullable: true})
     @JoinColumn({name: "portalHeroImageId"})
-    image: FileUpload;
+    image: FileUpload | null;
 }

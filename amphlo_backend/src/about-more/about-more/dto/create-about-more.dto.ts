@@ -17,7 +17,7 @@ export class AboutMoreData {
 
   @IsNumber()
   @IsOptional()
-  image: number;
+  image: number | null;
 }
 
 export class CreateAboutMoreDto {
