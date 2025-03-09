@@ -6,16 +6,16 @@ export class Hero {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     title: string;
 
-    @Column({ type:'longtext', nullable: true})
+    @Column({ type: 'longtext', nullable: true })
     description: string;
 
-    @Column({type: 'json',  nullable: true})
-    buttons: {name: string, route: string}[];
+    @Column({ type: 'json' })
+    buttons: { name: string, route: string }[];
 
-    @OneToOne(() => FileUpload, fileUpload => fileUpload.heroImage, {nullable: true})
-    @JoinColumn({name: 'ImageId'})
+    @OneToOne(() => FileUpload, fileUpload => fileUpload.heroImage, { nullable: true })
+    @JoinColumn({ name: 'ImageId' })
     image: FileUpload
 }

@@ -10,7 +10,7 @@ export class OverviewData{
 
     @IsNumber()
     @IsOptional()
-    image: number;
+    image: number | null;
 }
 
 export class CreateOverviewDto {

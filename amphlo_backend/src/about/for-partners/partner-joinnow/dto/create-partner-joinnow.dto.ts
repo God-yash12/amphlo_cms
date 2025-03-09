@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsString, IsOptional, IsArray } from "class-validator";
+import { Type } from "class-transformer";
+import { IsNotEmpty, IsString, IsOptional, IsArray, ValidateNested } from "class-validator";
+
 
 export class ButtonDto {
     @IsNotEmpty()
@@ -22,5 +24,7 @@ export class CreatePartnerJoinnowDto {
 
     @IsArray()
     @IsOptional()
+    @ValidateNested({ each: true })
+    @Type(() => ButtonDto)
     buttons?: ButtonDto[];
 }

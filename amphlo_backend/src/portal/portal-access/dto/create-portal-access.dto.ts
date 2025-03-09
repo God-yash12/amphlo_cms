@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class listDto {
 
@@ -21,6 +21,7 @@ export class CreatePortalAccessDto {
     description: string;
 
     @IsArray()
+    @IsOptional()
     @ValidateNested({ each: true })
     @Type(() => listDto)
     process: listDto[];

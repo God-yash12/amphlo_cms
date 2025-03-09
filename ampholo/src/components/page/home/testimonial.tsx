@@ -12,19 +12,21 @@ import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { BeatLoader, PulseLoader } from "react-spinners";
+import DOMPurify from 'dompurify';
 
 
 export const Testimonials = () => {
-    const { form, onSubmit, testimonials, isLoading, isError, error, handleDeleteClick, deleteMutation, selectedTestimonial, setSelectedTestimonial, mutation } = UseTestimonialService();
+    const { form, onSubmit, testimonials, isLoading, isError, error, handleDeleteClick, deleteMutation, selectedTestimonial, setSelectedTestimonial, mutation, image } = UseTestimonialService();
     const errorMessage = form.formState.errors;
     const formRef = useRef<HTMLDivElement>(null);
+
     const scrollToForm = () => {
         if (formRef.current) {
             formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
         }
     };
 
-   
+
 
 
     return (
@@ -97,10 +99,10 @@ export const Testimonials = () => {
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
                             <FileUploadInput
                                 onChange={(fileId) => form.setValue('imageId', fileId[0].id)}
-                                initialFiles={selectedTestimonial?.image ? [{
-                                    id: selectedTestimonial?.image.id,
-                                    url: selectedTestimonial?.image.url,
-                                    originalName: selectedTestimonial?.image.filename
+                                initialFiles={image ? [{
+                                    id: image.id,
+                                    url: image.url,
+                                    originalName: image.filename
                                 }] : []}
                             />
                         </div>
@@ -152,7 +154,9 @@ export const Testimonials = () => {
                             <Header className="text-lg font-medium text-gray-700">
                                 {testimonial.personName} - <span className="text-xl"> {testimonial.workPlace}</span>
                             </Header>
-                            <Paragraph className="text-gray-600 ">{testimonial.feedback}</Paragraph>
+                            <Paragraph className="text-gray-600 ">
+                                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(testimonial.feedback) }} />
+                            </Paragraph>
                             <ReactStars
                                 count={5}
                                 size={20}
@@ -164,7 +168,7 @@ export const Testimonials = () => {
                         </div>
                         <div className="flex space-x-6">
                             <SecondaryButton onClick={() => { setSelectedTestimonial(testimonial), scrollToForm() }}>Update</SecondaryButton>
-                            <SecondaryButton onClick={() => (handleDeleteClick(testimonial))}>{deleteMutation.isPending ? <div className="w-full"><PulseLoader /></div> : "Delete" }</SecondaryButton>
+                            <SecondaryButton onClick={() => (handleDeleteClick(testimonial))}>{deleteMutation.isPending ? <div className="w-full"><PulseLoader /></div> : "Delete"}</SecondaryButton>
                         </div>
                     </div>
                 ))}

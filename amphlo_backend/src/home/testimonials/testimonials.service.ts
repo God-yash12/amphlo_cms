@@ -17,17 +17,14 @@ export class TestimonialsService {
     const image = await this.fileUploadService.getAllByIds([dto.imageId])
     if (!image) throw new NotFoundException("Testimonials Image Not Found")
 
-    const stripHtmlFeedback = dto.feedback.replace(/<\/?[^>]+(>|$)/g, "")
-
     const newTestimonial = await this.testimonialsRepository.create({
       personName: dto.personName,
       workPlace: dto.workPlace,
-      feedback: stripHtmlFeedback,
+      feedback: dto.feedback,
       ratings: dto.ratings,
       createdDate: dto.createdAt,
       image: image[0],
     })
-    console.log(stripHtmlFeedback, "hanojdoi")
     await this.testimonialsRepository.save(newTestimonial)
 
     return { newTestimonial, message: "Testimonial Created " }
@@ -42,7 +39,6 @@ export class TestimonialsService {
   async update(id: number, dto: UpdateTestimonialDto) {
     const testimonial = await this.testimonialsRepository.findOne({ where: { id }, relations: ['image'] })
     if (!testimonial) throw new NotFoundException("Testimonial does not Found");
-    const stripHtmlFeedback = dto.feedback.replace(/<\/?[^>]+(>|$)/g, "")
 
     if (dto.imageId) {
       const image = await this.fileUploadService.getAllByIds([dto.imageId])
@@ -51,7 +47,7 @@ export class TestimonialsService {
 
     testimonial.personName = dto.personName
     testimonial.workPlace = dto.workPlace
-    testimonial.feedback = stripHtmlFeedback
+    testimonial.feedback = dto.feedback,
     testimonial.ratings = dto.ratings
 
     await this.testimonialsRepository.save(testimonial)

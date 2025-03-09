@@ -105,11 +105,12 @@ export const UseTestimonialService = () => {
                     imageId: selectedTestimonial?.image?.id,
                     ratings: Number(selectedTestimonial.ratings),
                 });
+                console.log(selectedTestimonial.image)
             }
         } catch (error) {
             console.error("Error resetting form:", error);
         }
-    }, [selectedTestimonial, form]);
+    }, [selectedTestimonial]);
 
     const handleDeleteClick = (testimonial: any) => {
         const isConfirmed = window.confirm("Are you sure you want to delete this testimonial?");
@@ -129,8 +130,8 @@ export const UseTestimonialService = () => {
         selectedTestimonial,
         setSelectedTestimonial,
         updateTestimonial,
-        image: selectedTestimonial?.image,
         mutation,
-        handleDeleteClick
+        handleDeleteClick,
+        image: selectedTestimonial?.image,
     };
 };

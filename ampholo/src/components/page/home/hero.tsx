@@ -7,11 +7,13 @@ import { HeroService } from "../../services/home/hero-service";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 import { BeatLoader, PropagateLoader } from "react-spinners";
+import { ErrorMessage } from "../../../ui/typographs/error-message";
 
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 const Hero = () => {
   const { form, onSubmit, fields, append, remove, image, isLoading, isPending } = HeroService();
+  const errorMessage = form.formState.errors;
 
   if (isLoading) return <PropagateLoader className="text-center" />
 
@@ -34,6 +36,7 @@ const Hero = () => {
             placeholder="Title"
             {...form.register("title", { required: "Title is required" })}
           />
+          {errorMessage.title && <ErrorMessage className="text-red-500">{errorMessage.title.message}</ErrorMessage>}
         </div>
 
         {/* Description Editor */}
@@ -47,19 +50,26 @@ const Hero = () => {
               form.setValue("description", content);
             }}
           />
+          {errorMessage.description && <ErrorMessage className="text-red-500">{errorMessage.description.message}</ErrorMessage>}
         </div>
 
-        <FileUploadInput
-          accept="image/*"
-          onChange={(files) => {
-            form.setValue("imageId", files.length > 0 ? files[0].id : null);
-          }}
-          initialFiles={image ? [{
-            id: image.id,
-            url: image?.url,
-            originalName: image.filename
-          }] : []}
-        />
+
+        <div className="w-auto space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Image
+          </label>
+          <FileUploadInput
+            accept="image/*"
+            onChange={(files) => {
+              form.setValue("imageId", files.length > 0 ? files[0].id : null);
+            }}
+            initialFiles={image ? [{
+              id: image.id,
+              url: image?.url,
+              originalName: image.filename
+            }] : []}
+          />
+        </div>
 
         {/* Button Configuration */}
         <div className="flex flex-col gap-4 ">

@@ -14,6 +14,7 @@ export class CreateHeroDto {
     image: number;
 
     @IsArray()
+    @IsOptional()
     @ValidateNested({each: true})
     @Type(() => ButtonDto)
     buttons: ButtonDto[]

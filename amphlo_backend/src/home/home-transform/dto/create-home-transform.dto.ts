@@ -32,6 +32,7 @@ export class CreateHomeTransformDto {
 
     @ApiProperty({ type: [ButtonDto], description: 'An array of buttons associated with the home transform' })
     @IsArray()
+    @IsOptional()
     @ValidateNested({ each: true })
     @Type(() => ButtonDto)
     buttons: ButtonDto[];

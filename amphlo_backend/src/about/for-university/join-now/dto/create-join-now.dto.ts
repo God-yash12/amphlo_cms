@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString, IsOptional, IsArray } from "class-validator";
+import { Type } from "class-transformer";
+import { IsNotEmpty, IsString, IsOptional, IsArray, ValidateNested } from "class-validator";
 
 export class HeroButtonDto {
     @IsNotEmpty()
@@ -22,5 +23,7 @@ export class CreateJoinNowDto {
 
     @IsArray()
     @IsOptional()
+    @ValidateNested({ each: true })
+    @Type(() => HeroButtonDto)
     buttons?: HeroButtonDto[];
 }

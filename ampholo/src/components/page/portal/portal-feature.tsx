@@ -12,7 +12,7 @@ import { BeatLoader, PropagateLoader } from "react-spinners";
 
 export const PortalFeature = () => {
   const { form, onSubmit, append, remove, fields, image, isLoading, isPending } = UsePortalFeatureServices();
-
+   const errorMessage = form.formState.errors ;
   if (isLoading) return <PropagateLoader className="text-center" />
 
 
@@ -37,7 +37,7 @@ export const PortalFeature = () => {
             className="w-full"
             {...form.register("title")}
           />
-          {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
+          {errorMessage.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}
         </div>
         <div>
           {/* Main Title */}
@@ -47,7 +47,7 @@ export const PortalFeature = () => {
             className="w-full"
             {...form.register("mainTitle")}
           />
-          {form.formState.errors.mainTitle && <ErrorMessage>{form.formState.errors.mainTitle.message}</ErrorMessage>}
+          {errorMessage.mainTitle && <ErrorMessage>{errorMessage.mainTitle.message}</ErrorMessage>}
         </div>
 
         {/* Description */}
@@ -61,7 +61,7 @@ export const PortalFeature = () => {
               form.setValue("description", content);
             }}
           />
-          {form.formState.errors.description && <ErrorMessage>{form.formState.errors.description.message}</ErrorMessage>}
+          {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
         </div>
 
         {/* File Upload */}
@@ -85,7 +85,7 @@ export const PortalFeature = () => {
             placeholder="Enter list title"
             {...form.register("listTitle")}
           />
-          {form.formState.errors.listTitle && <ErrorMessage>{form.formState.errors.listTitle.message}</ErrorMessage>}
+          {errorMessage.listTitle && <ErrorMessage>{errorMessage.listTitle.message}</ErrorMessage>}
 
           <SecondaryButton
             onClick={(e) => {

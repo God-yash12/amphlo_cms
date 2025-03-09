@@ -8,11 +8,13 @@ import { BannerService } from "../../services/home/banner-service";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { BeatLoader } from "react-spinners";
+import { ErrorMessage } from "../../../ui/typographs/error-message";
 
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 export const Banner = () => {
   const { form, onSubmit, image, isLoading, fields, append, remove, isPending } = BannerService();
+  const errorMessage = form.formState.errors;
 
   if (isLoading) return <PropagateLoader className="text-center" />
 
@@ -35,7 +37,7 @@ export const Banner = () => {
             placeholder="Title"
             {...form.register("title")}
           />
-
+          {errorMessage.title && <ErrorMessage className="text-red-500">{errorMessage.title.message}</ErrorMessage>}
         </div>
 
         {/* Description Editor */}
@@ -47,15 +49,23 @@ export const Banner = () => {
             value={form.watch("description")}
             onChange={(content) => form.setValue("description", content)}
           />
+          {errorMessage.description && <ErrorMessage className="text-red-500">{errorMessage.description.message}</ErrorMessage>}
         </div>
-        <FileUploadInput
-          onChange={(files) => form.setValue('imageId', files[0].id)}
-          initialFiles={image ? [{
-            id: image.id,
-            url: image.url,
-            originalName: image.filename
-          }] : []}
-        />
+
+        <div className="space-y-2 w-auto">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Feature Description *
+          </label>
+          <FileUploadInput
+            onChange={(files) => form.setValue('imageId', files[0].id)}
+            initialFiles={image ? [{
+              id: image.id,
+              url: image.url,
+              originalName: image.filename
+            }] : []}
+          />
+           {errorMessage.imageId && <ErrorMessage className="text-red-500">{errorMessage.imageId.message}</ErrorMessage>}
+        </div>
 
 
         {/* Button Configuration */}

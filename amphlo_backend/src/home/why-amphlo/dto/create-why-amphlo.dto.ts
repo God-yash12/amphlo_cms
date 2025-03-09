@@ -22,6 +22,7 @@ export class CreateWhyAmphloDto {
     imageId: number | null;
 
     @IsArray()
+    @IsOptional()
     @ValidateNested({each: true})
     @Type(() => listDto)
     lists: listDto[];

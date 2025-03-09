@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from "@nestjs/common";
+import { BadRequestException, ValidationPipe } from "@nestjs/common";
 import cookieParser from 'cookie-parser'
 
 async function bootstrap() {
@@ -19,10 +19,12 @@ async function bootstrap() {
   app.enableCors({
     origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => {
       const allowOrigins: string[] = ['https://amphlo.com', 'https://cms.amphlo.com', 'http://192.168.1.86:5173', 'http://localhost:5173',]
+      if (configService.get('NODE_ENV') === 'development') return callback(null, true);
+
       if (allowOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("Requet Blocked by Cors"))
+        callback(new BadRequestException("Requet Blocked by Cors"), false)
       }
     },
     allowedHeaders: [
@@ -52,8 +54,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // app.setGlobalPrefix('api')
-  console.log( configService.get<number>('PORT'))
   const PORT = configService.get<number>('PORT') ?? 8080;
   app.listen(PORT);
   console.log(`server is running on http://localhost:${PORT}`);

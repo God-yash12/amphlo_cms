@@ -12,6 +12,7 @@ import { BeatLoader, PropagateLoader } from "react-spinners"
 
 export const PortalAccessProcess = () => {
     const { form, onSubmit, fields, append, remove, isLoading, isPending } = PortalAccessService()
+    const errorMessage = form.formState.errors;
 
     if (isLoading) return <PropagateLoader className="text-center" />
 
@@ -29,9 +30,9 @@ export const PortalAccessProcess = () => {
                         placeholder="Title of Portal Access Porcess"
                         size="lg"
                         {...form.register("title")}
-                        aria-invalid={form.formState.errors.title ? "true" : "false"}
+                        aria-invalid={errorMessage.title ? "true" : "false"}
                     />
-                    {form.formState.errors.title && <ErrorMessage>{form.formState.errors.title.message}</ErrorMessage>}
+                    {errorMessage.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}
 
                 </div>
                 <div className="w-auto space-y-2">
@@ -44,6 +45,8 @@ export const PortalAccessProcess = () => {
                             form.setValue("description", content);
                         }}
                     />
+                    {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
+
                 </div>
 
                 {/* List Item Process */}
@@ -57,9 +60,9 @@ export const PortalAccessProcess = () => {
                                 placeholder="Process Count"
                                 {...form.register(`process.${index}.processCount`, { valueAsNumber: true })}
                             />
-                            {form.formState.errors.process?.[index]?.processCount && (
+                            {errorMessage.process?.[index]?.processCount && (
                                 <ErrorMessage>
-                                    {form.formState.errors.process[index].processCount.message}
+                                    {errorMessage.process[index].processCount.message}
                                 </ErrorMessage>
                             )}
 
@@ -68,9 +71,9 @@ export const PortalAccessProcess = () => {
                                 placeholder="Process Title"
                                 {...form.register(`process.${index}.processTitle`)}
                             />
-                            {form.formState.errors.process?.[index]?.processTitle && (
+                            {errorMessage.process?.[index]?.processTitle && (
                                 <ErrorMessage>
-                                    {form.formState.errors.process[index].processTitle.message}
+                                    {errorMessage.process[index].processTitle.message}
                                 </ErrorMessage>
                             )}
 
@@ -80,9 +83,9 @@ export const PortalAccessProcess = () => {
                                 placeholder="Process De cription"
                                 {...form.register(`process.${index}.processDescription`)}
                             />
-                            {form.formState.errors.process?.[index]?.processDescription && (
+                            {errorMessage.process?.[index]?.processDescription && (
                                 <ErrorMessage>
-                                    {form.formState.errors.process[index].processDescription.message}
+                                    {errorMessage.process[index].processDescription.message}
                                 </ErrorMessage>
                             )}
 

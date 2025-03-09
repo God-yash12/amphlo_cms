@@ -8,6 +8,5 @@ export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptio
     url: process.env.DB_URL.trim(),
     autoLoadEntities: true,
     // synchronize: configService.get<string>('SYNCHRONIZE_VALUE')?.toLowerCase() === 'true'
-    synchronize: true
-   
+    synchronize: false,
 });

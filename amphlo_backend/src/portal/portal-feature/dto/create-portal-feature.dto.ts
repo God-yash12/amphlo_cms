@@ -38,6 +38,7 @@ export class CreatePortalFeatureDto {
         description: "Lists of the About AMPHLO"
     })
     @IsArray()
+    @IsOptional()
     @ValidateNested({ each: true })
     @Type(() => listDto)
     listItem: listDto[];

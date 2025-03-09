@@ -47,6 +47,7 @@ export class CreateBannerDto {
         example: [{ name: 'Learn More', route: '/learn-more' }]
     })
     @IsArray()
+    @IsOptional()
     @ValidateNested({ each: true })
     @Type(() => ButtonDto)
     buttons: ButtonDto[];

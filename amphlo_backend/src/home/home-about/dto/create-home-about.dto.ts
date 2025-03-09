@@ -40,6 +40,7 @@ export class CreateHomeAboutDto {
         description: "Lists of the About AMPHLO"
     })
     @IsArray()
+    @IsOptional()
     @ValidateNested({ each: true })
     @Type(() => ListItemDto)
     listItem: ListItemDto[];

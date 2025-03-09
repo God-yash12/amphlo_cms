@@ -8,12 +8,13 @@ import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { TransformService } from "../../services/home/transform-service";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { BeatLoader } from "react-spinners";
+import { ErrorMessage } from "../../../ui/typographs/error-message";
 
 const routes = ["/about", "/countries", "/features", "/contact-us"] as const;
 
 export const Transform = () => {
   const { form, onSubmit, image, fields, append, remove, isLoading, isPending } = TransformService();
-
+  const errorMessage = form.formState.errors;
   if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
@@ -35,7 +36,7 @@ export const Transform = () => {
             placeholder="Title"
             {...form.register("title", { required: "Title is required" })}
           />
-
+           {errorMessage.title && <ErrorMessage className="text-red-500">{errorMessage.title.message}</ErrorMessage>}
         </div>
 
         {/* Description Editor */}
@@ -47,7 +48,12 @@ export const Transform = () => {
             value={form.watch("description")}
             onChange={(content) => form.setValue("description", content)}
           />
+           {errorMessage.description && <ErrorMessage className="text-red-500">{errorMessage.description.message}</ErrorMessage>}
         </div>
+        <div className="space-y-2 w-auto">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Image *
+          </label>
         <FileUploadInput
           onChange={(files) => form.setValue("imageId", files[0].id)}
           initialFiles={image ? [{
@@ -56,6 +62,8 @@ export const Transform = () => {
             originalName: image.filename
           }] : []}
         />
+         {errorMessage.imageId && <ErrorMessage className="text-red-500">{errorMessage.imageId.message}</ErrorMessage>}
+        </div>
 
 
 

@@ -10,7 +10,7 @@ export class AuthService {
     private readonly adminService: AdminSignupService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   async login(email: string, password: string) {
     const admin = await this.adminService.findByEmail(email);
