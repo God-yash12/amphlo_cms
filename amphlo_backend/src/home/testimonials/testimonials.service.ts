@@ -32,8 +32,7 @@ export class TestimonialsService {
 
   async findAll() {
     const testimonials = await this.testimonialsRepository.find({ relations: ['image'] });
-
-    return await this.testimonialsRepository.find()
+    return testimonials
   }
 
   async update(id: number, dto: UpdateTestimonialDto) {

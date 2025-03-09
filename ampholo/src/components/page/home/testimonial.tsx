@@ -20,6 +20,8 @@ export const Testimonials = () => {
     const errorMessage = form.formState.errors;
     const formRef = useRef<HTMLDivElement>(null);
 
+    console.log(image, "image")
+
     const scrollToForm = () => {
         if (formRef.current) {
             formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -101,8 +103,8 @@ export const Testimonials = () => {
                                 onChange={(fileId) => form.setValue('imageId', fileId[0].id)}
                                 initialFiles={image ? [{
                                     id: image.id,
-                                    url: image.url,
-                                    originalName: image.filename
+                                    originalName: image.filename,
+                                    url: image.url
                                 }] : []}
                             />
                         </div>
