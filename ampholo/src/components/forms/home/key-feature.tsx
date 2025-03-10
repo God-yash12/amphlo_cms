@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import InputField from "../../../ui/input/input";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import Header from "../../../ui/typographs/header/header";
@@ -8,10 +9,24 @@ import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { KeyFeaturesFormService } from "../../services/form-service/home/key-features";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 import { BeatLoader } from "react-spinners";
+import DOMPurify from "dompurify";
 
 export const HomeKeyFeatureCard = () => {
-    const { form, onSubmit, imagePreview, selectedKeyFeatureCard, setSelectedKeyFeatureCard, deleteKeyFeatureCard, data, isPending } = KeyFeaturesFormService()
-    const errorMessage = form.formState.errors
+    const { form, onSubmit, imagePreview, selectedKeyFeatureCard, setSelectedKeyFeatureCard, loading, deleteKeyFeatureCard, data, isPending } = KeyFeaturesFormService()
+    const errorMessage = form.formState.errors;
+
+    const [isImageLoading, setIsImageLoading] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (selectedKeyFeatureCard) {
+            setIsImageLoading(true)
+            setTimeout(() => {
+                setIsImageLoading(false)
+            }, 500)
+        } else {
+            setIsImageLoading(false)
+        }
+    })
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -60,19 +75,24 @@ export const HomeKeyFeatureCard = () => {
                                 {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
                             </div>
                             <div className="w-auto space-y-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-            Image *
-            </label>
-                            <FileUploadInput
-                                onChange={(files) => form.setValue('image', files[0].id)}
-                            />
-                            {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
-                            {imagePreview && (
-                                <div>
-                                    <label>Current Image</label>
-                                    <img src={imagePreview} alt="Current Hero" width="200" />
-                                </div>
-                            )}
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Image *
+                                </label>
+                                {isImageLoading ? (
+                                    <div><BeatLoader /></div>
+                                ) : (
+                                    <FileUploadInput
+                                        onChange={(files) => form.setValue('image', files[0].id)}
+                                        initialFiles={imagePreview ? [{
+                                            id: imagePreview?.id,
+                                            url: imagePreview?.url,
+                                            originalName: imagePreview?.filename
+                                        }] : []}
+                                    />
+                                )
+                                }
+                                {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+
                             </div>
                         </div>
 
@@ -86,27 +106,31 @@ export const HomeKeyFeatureCard = () => {
 
                 <div className="mt-12">
                     <h2 className="text-2xl font-bold mb-4">Existing Feature Cards</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {data && data?.map((card: any) => (
-                            <div key={card.id} className="p-6 bg-white shadow-md rounded-lg">
-                                <h3 className="text-lg font-semibold">{card.title}</h3>
-                                <p className="text-sm text-gray-600">{card.description}</p>
-                                {card.image?.url && <img src={card.image.url} alt="Feature Image" className="w-20 h-20 object-cover mt-2" />}
-                                <div className="flex space-x-4 mt-4">
-                                    <SecondaryButton
-                                        onClick={() => setSelectedKeyFeatureCard(card)}
-                                    >
-                                        Edit
-                                    </SecondaryButton>
-                                    <SecondaryButton
-                                        onClick={() => deleteKeyFeatureCard.mutate(card.id)}
-                                    >
-                                        Delete
-                                    </SecondaryButton>
+
+                    {loading ? (
+                        <BeatLoader />
+                    ) : data && data.length > 0 ? (
+                        // Show cards if data exists
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {data.map((card: any) => (
+                                <div key={card.id} className="p-6 bg-white shadow-md rounded-lg">
+                                    <h3 className="text-lg font-semibold">{card.title}</h3>
+                                    <p className="text-sm text-gray-600" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(card.description) }}></p>
+                                    {card.image?.url && <img src={card.image.url} alt="Feature Image" className="w-20 h-20 object-cover mt-2" />}
+                                    <div className="flex space-x-4 mt-4">
+                                        <SecondaryButton onClick={() => setSelectedKeyFeatureCard(card)}>
+                                            Edit
+                                        </SecondaryButton>
+                                        <SecondaryButton onClick={() => deleteKeyFeatureCard.mutate(card.id)}>
+                                            Delete
+                                        </SecondaryButton>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <Paragraph>No Data Found</Paragraph>
+                    )}
                 </div>
 
             </div>

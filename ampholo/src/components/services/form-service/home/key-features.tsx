@@ -21,14 +21,19 @@ interface FormDataProps {
 
 export const KeyFeaturesFormService = () => {
     const axiosPrivate = useAxios()
-    const [imagePreview, setImagePreview] = useState<string | null>(null)
+   
     const [selectedKeyFeatureCard, setSelectedKeyFeatureCard] = useState<FormDataProps | null>(null)
     const queryClient = useQueryClient()
-    
+    const [imagePreview, setImagePreview] = useState<{
+        id: number;
+        url: string;
+        filename: string;
+      } | null>(null);
 
-      const form = useForm<WhyAmphloCardData>({
+
+    const form = useForm<WhyAmphloCardData>({
         resolver: zodResolver(WhyAmphloCardValidation)
-      })
+    })
 
     const { mutateAsync, isPending } = useMutation({
         mutationFn: async (data: FormDataProps) => {
@@ -37,6 +42,7 @@ export const KeyFeaturesFormService = () => {
         },
         onSuccess: () => {
             form.reset()
+            queryClient.invalidateQueries({ queryKey: ['key-feature-card'] })
             toast.success("Key Feature Card Updated successfully")
         },
         onError: (error) => {
@@ -44,32 +50,33 @@ export const KeyFeaturesFormService = () => {
         }
     })
 
-    
-    const { data } = useQuery({
+
+    const { data, isPending: loading } = useQuery({
         queryKey: ['key-feature-card'],
         queryFn: async () => {
             const response = await axiosPrivate.get('key-feature-card')
             return response.data
         }
-    })   
+    })
 
     const updateKeyFeatureCard = useMutation({
         mutationFn: async ({ id, updatedData }: { id: number; updatedData: WhyAmphloCardData }) => {
-          const response = await axiosPrivate.patch(`key-feature-card/${id}`, updatedData);
-          return response;
+            const response = await axiosPrivate.patch(`key-feature-card/${id}`, updatedData);
+            return response;
         },
         onSuccess: () => {
-          form.reset();
-          toast.success("Key Feature Card updated successfully!");
-        queryClient.invalidateQueries({ queryKey: ["key-feature-card"] });
-          setSelectedKeyFeatureCard(null);
+            form.reset();
+            toast.success("Key Feature Card updated successfully!");
+            queryClient.invalidateQueries({ queryKey: ["key-feature-card"] });
+            setImagePreview(null)
+            setSelectedKeyFeatureCard(null);
         },
         onError: (error: Error) => {
-          toast.error(`Error updating why amphlo card: ${error.message}`);
+            toast.error(`Error updating why amphlo card: ${error.message}`);
         },
-      })  
+    })
 
-      
+
     const deleteKeyFeatureCard = useMutation({
         mutationFn: async (id: number) => {
             const response = await axiosPrivate.delete(`key-feature-card/${id}`)
@@ -77,12 +84,13 @@ export const KeyFeaturesFormService = () => {
         },
         onSuccess: () => {
             toast.success("Key Feature Card Deleted successfully")
+            queryClient.invalidateQueries({queryKey: ['key-feature-card']})
         },
         onError: (error) => {
             toast.error(`Failed to delete the Card ${error.message}`)
         }
     })
-    
+
     useEffect(() => {
         if (selectedKeyFeatureCard) {
             try {
@@ -91,8 +99,14 @@ export const KeyFeaturesFormService = () => {
                     description: selectedKeyFeatureCard.description,
                     image: selectedKeyFeatureCard.image?.id
                 });
-                if (selectedKeyFeatureCard.image?.url) {
-                    setImagePreview(selectedKeyFeatureCard.image.url);
+                if(selectedKeyFeatureCard?.image){
+                    setImagePreview({
+                        id: selectedKeyFeatureCard?.image?.id,
+                        url: selectedKeyFeatureCard?.image?.url,
+                        filename: selectedKeyFeatureCard?.image?.filename
+                    })
+                }else{
+                    setImagePreview(null)
                 }
             } catch (error) {
                 console.error("Error resetting form:", error);
@@ -101,7 +115,7 @@ export const KeyFeaturesFormService = () => {
     }, [selectedKeyFeatureCard, form]);
 
 
-    const onSubmit = async (data:any) => {
+    const onSubmit = async (data: any) => {
         try {
             if (selectedKeyFeatureCard) {
                 await updateKeyFeatureCard.mutateAsync({
@@ -127,5 +141,6 @@ export const KeyFeaturesFormService = () => {
         selectedKeyFeatureCard,
         setSelectedKeyFeatureCard,
         isPending,
+        loading,    
     }
 }

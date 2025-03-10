@@ -23,7 +23,11 @@ export const UniWhyAmphloCardService = () => {
   const axiosPrivate = useAxios();
   const queryClient = useQueryClient();
   const [selectedWhyAmphloCard, setSelectedWhyAmphloCard] = useState<WhyAmphloCard | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<{
+    id: number;
+    url: string;
+    filename: string;
+  } | null>(null);
   
 
   const form = useForm<WhyAmphloCardData>({
@@ -38,6 +42,8 @@ export const UniWhyAmphloCardService = () => {
     },
     onSuccess: () => {
       form.reset();
+      setImagePreview(null);
+      queryClient.invalidateQueries({queryKey: ['whyamphlo-card']})
       toast.success("University Why Amphlo Card added successfully!", {
         position: "top-right",
       });
@@ -56,16 +62,17 @@ export const UniWhyAmphloCardService = () => {
     },
     onSuccess: () => {
       form.reset();
+      setImagePreview(null);
+      setSelectedWhyAmphloCard(null);
       toast.success("University Why Amphlo Card updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["whyamphlo-card"] });
-      setSelectedWhyAmphloCard(null);
     },
     onError: (error: Error) => {
       toast.error(`Error updating why amphlo card: ${error.message}`);
     },
   })  
 
-  const { data } = useQuery({
+  const { data, isPending: loading } = useQuery({
     queryKey: ["whyamphlo-card"],
     queryFn: async () => {
       const response = await axiosPrivate.get("whyamphlo-card");
@@ -81,8 +88,14 @@ export const UniWhyAmphloCardService = () => {
           description: selectedWhyAmphloCard.description,
           image: selectedWhyAmphloCard.image?.id,
         });
-        if (selectedWhyAmphloCard.image?.url) {
-          setImagePreview(selectedWhyAmphloCard.image.url);
+        if(selectedWhyAmphloCard.image){
+          setImagePreview({
+            id: selectedWhyAmphloCard?.image?.id,
+            url: selectedWhyAmphloCard?.image?.url,
+            filename: selectedWhyAmphloCard?.image?.filename
+          })
+        }else{
+          setImagePreview(null)
         }
       }
     } catch (error) {
@@ -96,6 +109,7 @@ export const UniWhyAmphloCardService = () => {
     },
     onSuccess: () => {
       toast.success("University Why Amphlo Card deleted successfully!");
+      queryClient.invalidateQueries({queryKey: ["whyamphlo-card"]});
     },
     onError: (error: Error) => {
       toast.error(`Error deleting why amphlo card: ${error.message}`);
@@ -113,6 +127,14 @@ export const UniWhyAmphloCardService = () => {
     }
   };
 
+  const deleteCard = (id: number) => {
+    const confirmDelete = window.confirm("Are you sure want to delete this item?")
+    if(confirmDelete){
+      deleteWhyAmphloCard.mutate(id)
+    }
+    queryClient.invalidateQueries({queryKey: ['whyamphlo-card']})
+  }
+
   return {
     form,
     onSubmit,
@@ -122,5 +144,7 @@ export const UniWhyAmphloCardService = () => {
     deleteWhyAmphloCard,
     data,
     isPending,
+    deleteCard,
+    loading,
   };
 };

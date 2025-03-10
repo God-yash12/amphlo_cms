@@ -14,7 +14,9 @@ export const WhyAmphloValidation = z.object({
     imageId: z.number().optional(),
     lists: z.array(
         z.object({
-            listTitle: z.string().optional()
+            listTitle: z.string().min(5, { message: "list itle must be at least 10 characters long" })
+            .max(100, { message: "list Title cannot exceed 100 characters" })
+            .nonempty({ message: "list Title is required" }),
         })
     )
 

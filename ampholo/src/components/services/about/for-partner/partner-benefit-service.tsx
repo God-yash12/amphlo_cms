@@ -1,27 +1,32 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useAxios } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PartnerBenefitValidation, PartnerBenefitValidationData } from "../../../validations/about/for-partner/partner-benefit-validation";
 
-
 interface ItemProps {
     id: number;
     title: string;
     description: string;
     image: {
-      id: number;
-      url: string;
-      filename: string;
-      mimetype: string;
+        id: number;
+        url: string;
+        filename: string;
+        mimetype: string;
     };
-  }
+}
 
 export const PartnerBenefitService = () => {
     const axiosPrivate = useAxios();
-    const [selectedItem, setSelectedItem] = useState<PartnerBenefitValidationData | null>(null)
+    const queryClient = useQueryClient();
+    const [selectedItem, setSelectedItem] = useState<ItemProps | null>(null);
+    const [imagePreview, setImagePreview] = useState<{
+        id: number,
+        url: string,
+        filename: string
+    } | null>(null);
 
     const form = useForm<PartnerBenefitValidationData>({
         resolver: zodResolver(PartnerBenefitValidation),
@@ -35,37 +40,39 @@ export const PartnerBenefitService = () => {
         },
         onSuccess: () => {
             form.reset();
-            toast.success("partner Benefits Section Customized Successfully!", {
+            queryClient.invalidateQueries({ queryKey: ['partner-benefits'] }); // Invalidate the query to refetch data
+            toast.success("Partner Benefits Section Customized Successfully!", {
                 position: "top-right",
             });
         },
         onError: (error: any) => {
-            toast.error(`Failed to Update the Partner Benefits Section ${error.message}`)
+            toast.error(`Failed to Update the Partner Benefits Section ${error.message}`);
         },
-
     });
 
     const UpdateItem = useMutation({
         mutationFn: async ({ id, updateData }: { id: number, updateData: PartnerBenefitValidationData }) => {
-            const response = await axiosPrivate.patch(`partner-benefits/${id}`, updateData)
+            const response = await axiosPrivate.patch(`partner-benefits/${id}`, updateData);
             return response;
         },
         onSuccess: () => {
-            form.reset()
-            toast.success("Item Update successfully")
-            setSelectedItem(null)
+            form.reset();
+            queryClient.invalidateQueries({ queryKey: ['partner-benefits'] }); // Invalidate the query to refetch data
+            toast.success("Item Updated successfully");
+            setSelectedItem(null);
+            setImagePreview(null);
         },
         onError: (error: Error) => {
-            toast.error(error?.message || "Failed to Update the Item")
+            toast.error(error?.message || "Failed to Update the Item");
         }
-    })
+    });
 
     const onSubmit = async (data: PartnerBenefitValidationData) => {
         if (selectedItem) {
             await UpdateItem.mutateAsync({
                 id: (selectedItem as any).id,
                 updateData: data,
-            })
+            });
             setSelectedItem(null);
         } else {
             await mutateAsync(data);
@@ -73,7 +80,7 @@ export const PartnerBenefitService = () => {
     };
 
     const { data, isLoading } = useQuery<ItemProps[]>({
-        queryKey: ["partner-benefits"],
+        queryKey: ["partner-benefits"], // Ensure this key matches the one used in invalidateQueries
         queryFn: async () => {
             const response = await axiosPrivate.get("partner-benefits");
             return response.data;
@@ -82,23 +89,23 @@ export const PartnerBenefitService = () => {
 
     const deleteMutation = useMutation({
         mutationFn: async (id: number) => {
-            const response = await axiosPrivate.delete(`partner-benefits/${id}`)
-            return response
+            const response = await axiosPrivate.delete(`partner-benefits/${id}`);
+            return response;
         },
         onSuccess: () => {
-            toast.success("Item Deleted successfully")
+            queryClient.invalidateQueries({ queryKey: ['partner-benefits'] }); // Invalidate the query to refetch data
+            toast.success("Item Deleted successfully");
         },
         onError: (error: any) => {
-            toast.error(error?.message || 'Failed to Delete the Item')
+            toast.error(error?.message || 'Failed to Delete the Item');
         }
-    })
+    });
 
     const deleteItem = (id: number) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
             deleteMutation.mutate(id);
         }
     };
-    
 
     useEffect(() => {
         if (selectedItem) {
@@ -106,9 +113,18 @@ export const PartnerBenefitService = () => {
                 form.reset({
                     title: selectedItem.title,
                     description: selectedItem.description,
-                    image: selectedItem?.image,
+                    image: selectedItem?.image?.id,
                 });
-                // console.log(selectedItem.image, "image")
+
+                if (selectedItem?.image) {
+                    setImagePreview({
+                        id: selectedItem?.image?.id,
+                        url: selectedItem?.image?.url,
+                        filename: selectedItem?.image?.filename,
+                    });
+                } else {
+                    setImagePreview(null);
+                }
             } catch (error) {
                 console.error("Error resetting form:", error);
             }
@@ -123,7 +139,7 @@ export const PartnerBenefitService = () => {
         deleteItem,
         setSelectedItem,
         selectedItem,
-        image: selectedItem?.image,
+        imagePreview,
         isPending,
     };
 };

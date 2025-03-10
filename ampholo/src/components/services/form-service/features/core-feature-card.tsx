@@ -23,7 +23,11 @@ export const CoreFeaturesFormService = () => {
     const axiosPrivate = useAxios()
     const queryClient = useQueryClient()
     const [selectedCoreFeatureCard, setSelectedCoreFeatureCard] = useState<CoreFeatureCardData | null>(null)
-    const [imagePreview, setImagePreview] = useState<string | null>(null)
+    const [imagePreview, setImagePreview] = useState<{
+        id: number,
+        url: string,
+        filename: string
+    } | null>(null)
 
     const form = useForm<FeatureCardData>({
         resolver: zodResolver(FeatureCardValidation),
@@ -37,6 +41,7 @@ export const CoreFeaturesFormService = () => {
         },
         onSuccess: () => {
             form.reset()
+            queryClient.invalidateQueries({ queryKey: ['core-feature-card'] })
             toast.success("Key Feature Card Updated successfully")
         },
         onError: (error) => {
@@ -44,7 +49,7 @@ export const CoreFeaturesFormService = () => {
         }
     })
 
-    const { data } = useQuery({
+    const { data, isPending: loading } = useQuery({
         queryKey: ["core-feature-card"],
         queryFn: async () => {
             const response = await axiosPrivate.get("core-feature-card");
@@ -54,19 +59,21 @@ export const CoreFeaturesFormService = () => {
 
     const updateCoreFeatureCard = useMutation({
         mutationFn: async ({ id, updatedData }: { id: number; updatedData: FeatureCardData }) => {
-          const response = await axiosPrivate.patch(`core-feature-card/${id}`, updatedData);
-          return response;
+            const response = await axiosPrivate.patch(`core-feature-card/${id}`, updatedData);
+            return response;
         },
         onSuccess: () => {
-          form.reset();
-          toast.success("Key Feature Card updated successfully!");
-        queryClient.invalidateQueries({ queryKey: ["core-feature-card"] });
-          setSelectedCoreFeatureCard(null);
+            form.reset();
+            toast.success("Key Feature Card updated successfully!");
+            queryClient.invalidateQueries({ queryKey: ["core-feature-card"] });
+            setImagePreview(null)
+            setSelectedCoreFeatureCard(null);
+
         },
         onError: (error: Error) => {
-          toast.error(`Error updating why amphlo card: ${error.message}`);
+            toast.error(`Error updating why amphlo card: ${error.message}`);
         },
-      })  
+    })
 
 
 
@@ -81,13 +88,14 @@ export const CoreFeaturesFormService = () => {
         }
     }
 
-         
+
     const deleteCoreFeatureCard = useMutation({
         mutationFn: async (id: number) => {
             const response = await axiosPrivate.delete(`core-feature-card/${id}`)
             return response
         },
         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["core-feature-card"] });
             toast.success("Core Feature Card Deleted successfully")
         },
         onError: (error) => {
@@ -95,7 +103,7 @@ export const CoreFeaturesFormService = () => {
         }
     })
 
-     
+
     useEffect(() => {
         if (selectedCoreFeatureCard) {
             try {
@@ -104,8 +112,12 @@ export const CoreFeaturesFormService = () => {
                     description: selectedCoreFeatureCard.description,
                     image: selectedCoreFeatureCard.image?.id
                 });
-                if (selectedCoreFeatureCard.image?.url) {
-                    setImagePreview(selectedCoreFeatureCard.image.url);
+                if (selectedCoreFeatureCard.image) {
+                    setImagePreview({
+                        id: selectedCoreFeatureCard?.image.id,
+                        url: selectedCoreFeatureCard?.image?.url,
+                        filename: selectedCoreFeatureCard?.image.filename
+                    })
                 }
             } catch (error) {
                 console.error("Error resetting form:", error);
@@ -123,6 +135,6 @@ export const CoreFeaturesFormService = () => {
         setSelectedCoreFeatureCard,
         deleteCoreFeatureCard,
         isPending,
-        image: selectedCoreFeatureCard?.image,
+        loading,
     }
 }

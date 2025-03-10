@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useAxios } from "../../../../auth/home_auth";
 import { toast } from "react-toastify";
@@ -24,7 +24,13 @@ interface FeatureCard {
 export const UniFeatureCardService = () => {
   const axiosPrivate = useAxios();
   const [selectedFeatureCard, setSelectedFeatureCard] = useState<FeatureCard | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<{
+    id: number;
+    url: string;
+    filename: string;
+  } | null>(null);
+  
+  const queryClient = useQueryClient();
 
   const form = useForm<UniFeatureCardValidationData>({
     resolver: zodResolver(UniFeatureCardValidation),
@@ -56,9 +62,9 @@ export const UniFeatureCardService = () => {
     onSuccess: () => {
       form.reset();
       toast.success("Feature card updated successfully");
-      {/* @ts-ignore */ }
-      queryClient.invalidateQueries(["uni-feature-card"]);
+      queryClient.invalidateQueries({queryKey:["uni-feature-card"]});
       setSelectedFeatureCard(null);
+      setImagePreview(null);
     },
     onError: (error) => {
       console.error("Error updating feature card:", error);
@@ -68,7 +74,7 @@ export const UniFeatureCardService = () => {
   const onSubmit = (data: UniFeatureCardValidationData) => {
     if (selectedFeatureCard) {
       updateFeatureCard.mutate({
-        id: (selectedFeatureCard as any).id,
+        id: selectedFeatureCard.id,
         updatedData: data
       });
     } else {
@@ -76,7 +82,7 @@ export const UniFeatureCardService = () => {
     }
   };
 
-  const { data } = useQuery<FeatureCard[]>({
+  const { data, isPending: loading } = useQuery<FeatureCard[]>({
     queryKey: ['uni-feature-card'],
     queryFn: async () => {
       const response = await axiosPrivate.get('uni-feature-card')
@@ -91,9 +97,17 @@ export const UniFeatureCardService = () => {
         form.reset({
           title: selectedFeatureCard.title,
           description: selectedFeatureCard.description,
-          image: selectedFeatureCard.image?.id,
+          image: selectedFeatureCard?.image?.id
         });
-        setImagePreview(selectedFeatureCard.image?.url);
+        if(selectedFeatureCard.image){
+          setImagePreview({
+            id: selectedFeatureCard?.image?.id,
+            filename: selectedFeatureCard?.image?.filename,
+            url: selectedFeatureCard?.image?.url
+          })
+        }else{
+          setImagePreview(null)
+        }
       }
     } catch (error) {
       console.error("Error resetting form:", error);
@@ -107,17 +121,14 @@ export const UniFeatureCardService = () => {
     },
     onSuccess: () => {
       toast.success("Feature Card Deleted Successfully");
-      {/* @ts-ignore */ }
-      queryClient.invalidateQueries(["uni-feature-card"]);
+      queryClient.invalidateQueries({queryKey: ["uni-feature-card"]});
     },
     onError: (error) => {
       console.error("Error deleting feature card:", error);
     }
   });
 
-
-
-
+  
 
   return {
     form,
@@ -129,5 +140,6 @@ export const UniFeatureCardService = () => {
     setImagePreview,
     deleteMutation,
     isPending,
+    loading,
   };
 };

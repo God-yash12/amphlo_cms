@@ -69,7 +69,7 @@ const WhyAmphlo = () => {
           {fields.map((field, index) => (
             <div key={field.id} className="space-y-5">
               <InputField
-                label="Process Title"
+                label="Process Title *"
                 placeholder="Process Title"
                 {...form.register(`lists.${index}.listTitle`)}
               />

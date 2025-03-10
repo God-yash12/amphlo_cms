@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 // @ts-ignore
 import ReactStars from "react-rating-stars-component";
 import InputField from "../../../ui/input/input";
@@ -14,22 +14,30 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 import { BeatLoader, PulseLoader } from "react-spinners";
 import DOMPurify from 'dompurify';
 
-
 export const Testimonials = () => {
-    const { form, onSubmit, testimonials, isLoading, isError, error, handleDeleteClick, deleteMutation, selectedTestimonial, setSelectedTestimonial, mutation, image } = UseTestimonialService();
+    const { form, onSubmit, testimonials, isLoading, isError, error, selectedImage, handleDeleteClick, deleteMutation, selectedTestimonial, setSelectedTestimonial, mutation } = UseTestimonialService();
     const errorMessage = form.formState.errors;
     const formRef = useRef<HTMLDivElement>(null);
 
-    console.log(image, "image")
+    const [isImageLoading, setIsImageLoading] = useState(false);
+    const [isRatingLoading, setIsRatingLoading] = useState(false);
+
+    useEffect(() => {
+        if (selectedTestimonial) {
+            setIsImageLoading(true);
+            setIsRatingLoading(true);
+            setTimeout(() => {
+                setIsImageLoading(false);
+                setIsRatingLoading(false);
+            }, 500);
+        }
+    }, [selectedTestimonial]);
 
     const scrollToForm = () => {
         if (formRef.current) {
             formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
         }
     };
-
-
-
 
     return (
         <div>
@@ -99,16 +107,20 @@ export const Testimonials = () => {
                             Profile Picture
                         </label>
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
-                            <FileUploadInput
-                                onChange={(fileId) => form.setValue('imageId', fileId[0].id)}
-                                initialFiles={image ? [{
-                                    id: image.id,
-                                    originalName: image.filename,
-                                    url: image.url
-                                }] : []}
-                            />
-                        </div>
+                            {isImageLoading ? (
+                                <div><PulseLoader /></div> 
+                            ) : (
+                                <FileUploadInput
+                                    onChange={(fileId) => form.setValue('imageId', fileId[0].id)}
+                                    initialFiles={selectedImage ? [{
+                                        id: selectedImage?.id,
+                                        originalName: selectedImage.filename,
+                                        url: selectedImage?.url
+                                    }] : []}
+                                />
+                            )}
 
+                        </div>
                     </div>
 
                     {/* Rating Section */}
@@ -116,18 +128,21 @@ export const Testimonials = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                             Rate Your Experience *
                         </label>
-                        <div className="bg-gray-50 rounded-lg p-4">
+                        {isRatingLoading ? (
+                            <div><PulseLoader /></div>
+                        ) : (
                             <ReactStars
+                                key={selectedTestimonial ? selectedTestimonial.id : "default"} 
                                 count={5}
                                 size={32}
                                 isHalf={true}
-                                value={Number(form.watch("ratings")) || 0}
+                                value={Number(form.watch("ratings")) || 0} 
                                 onChange={(newRating: number) => {
                                     form.setValue("ratings", newRating);
                                 }}
                                 activeColor="#fbbf24"
                             />
-                        </div>
+                        )}
                         {errorMessage.ratings && (
                             <ErrorMessage className="text-red-500 text-sm">
                                 {errorMessage.ratings.message}
@@ -136,7 +151,10 @@ export const Testimonials = () => {
                     </div>
 
                     {/* Submit Button */}
-                    <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Submit</div>}</PrimaryButton>
+                    <PrimaryButton type="submit" className="w-full text-center">
+                        {mutation.isPending ? <div><BeatLoader /></div> :
+                            <div>{selectedTestimonial ? "Update" : "Submit"}</div>}
+                    </PrimaryButton>
                 </form>
             </div>
 
@@ -159,7 +177,7 @@ export const Testimonials = () => {
                             <Paragraph className="text-gray-600 ">
                                 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(testimonial.feedback) }} />
                             </Paragraph>
-                            <ReactStars
+                            <ReactStars 
                                 count={5}
                                 size={20}
                                 isHalf={true}
@@ -169,8 +187,12 @@ export const Testimonials = () => {
                             />
                         </div>
                         <div className="flex space-x-6">
-                            <SecondaryButton onClick={() => { setSelectedTestimonial(testimonial), scrollToForm() }}>Update</SecondaryButton>
-                            <SecondaryButton onClick={() => (handleDeleteClick(testimonial))}>{deleteMutation.isPending ? <div className="w-full"><PulseLoader /></div> : "Delete"}</SecondaryButton>
+                            <SecondaryButton onClick={() => { setSelectedTestimonial(testimonial); scrollToForm(); }}>
+                                Update
+                            </SecondaryButton>
+                            <SecondaryButton onClick={() => handleDeleteClick(testimonial)}>
+                                {deleteMutation.isPending ? <div className="w-full"><PulseLoader /></div> : "Delete"}
+                            </SecondaryButton>
                         </div>
                     </div>
                 ))}

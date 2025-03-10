@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAxios } from "../../../auth/home_auth";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +26,11 @@ export const UseTestimonialService = () => {
     const axiosPrivate = useAxios();
     const queryClient = useQueryClient();
     const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
+    const [selectedImage, setSelectedImage] = useState<{
+        id: number;
+        url: string;
+        filename: string;
+      } | null>(null);
 
     const form = useForm<TestimonialsValidationData>({
         resolver: zodResolver(TestimonialsValidation)
@@ -38,6 +43,7 @@ export const UseTestimonialService = () => {
         },
         onSuccess: () => {
             form.reset();
+            setSelectedImage(null);
             toast.success("Feedback submitted successfully");
             queryClient.invalidateQueries({ queryKey: ['testimonials'] }); 
         },
@@ -74,9 +80,10 @@ export const UseTestimonialService = () => {
         },
         onSuccess: () => {
             form.reset();
-            toast.success("Testimonial updated successfully");
-            queryClient.invalidateQueries({ queryKey: ['testimonials'] }); // Refetch after updating
+            setSelectedImage(null);
             setSelectedTestimonial(null);
+            toast.success("Testimonial updated successfully");
+            queryClient.invalidateQueries({ queryKey: ['testimonials'] });
         },
         onError: (error) => {
             toast.error(`Failed to update testimonial: ${error.message}`);
@@ -95,28 +102,56 @@ export const UseTestimonialService = () => {
         }
     };
 
-    useEffect(() => {
-        try {
-            if (selectedTestimonial) {
-                form.reset({
-                    personName: selectedTestimonial.personName,
-                    workPlace: selectedTestimonial.workPlace,
-                    feedback: selectedTestimonial.feedback,
-                    imageId: selectedTestimonial?.image?.id,
-                    ratings: Number(selectedTestimonial.ratings),
-                });
-                console.log(selectedTestimonial.image)
-            }
-        } catch (error) {
-            console.error("Error resetting form:", error);
-        }
-    }, [selectedTestimonial]);
+    // useEffect(() => {
+    //     try {
+    //         if (selectedTestimonial) {
+    //             form.reset({
+    //                 personName: selectedTestimonial.personName,
+    //                 workPlace: selectedTestimonial.workPlace,
+    //                 feedback: selectedTestimonial.feedback,
+    //                 ratings: Number(selectedTestimonial.ratings),
+    //                 imageId: selectedTestimonial?.image.id
+    //             });
+    //             if (selectedTestimonial.image) {
+    //                 setSelectedImage(selectedTestimonial.image);
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error("Error resetting form:", error);
+    //     }
+    // }, [selectedTestimonial, form]);
+
 
     const handleDeleteClick = (testimonial: any) => {
         const isConfirmed = window.confirm("Are you sure you want to delete this testimonial?");
         if (isConfirmed) {
             deleteMutation.mutate(testimonial.id);
         }
+    };
+
+    const handleSetSelectedTestimonial = (testimonial: Testimonial) => {
+        // Set form values first
+        form.reset({
+            personName: testimonial.personName,
+            workPlace: testimonial.workPlace,
+            feedback: testimonial.feedback,
+            ratings: Number(testimonial.ratings),
+            imageId: testimonial.image?.id
+        });
+        
+        if (testimonial.image) {
+            setSelectedImage({
+                id: testimonial.image.id,
+                url: testimonial.image.url,
+                filename: testimonial.image.filename
+            });
+        }else {
+            // console.log("image render null")
+            setSelectedImage(null); 
+        }
+        
+        // Finally set the selected testimonial
+        setSelectedTestimonial(testimonial);
     };
 
     return {
@@ -128,10 +163,12 @@ export const UseTestimonialService = () => {
         error,
         deleteMutation,
         selectedTestimonial,
-        setSelectedTestimonial,
+        setSelectedTestimonial: handleSetSelectedTestimonial,
         updateTestimonial,
         mutation,
         handleDeleteClick,
         image: selectedTestimonial?.image,
+        selectedImage,
+        setSelectedImage,
     };
 };

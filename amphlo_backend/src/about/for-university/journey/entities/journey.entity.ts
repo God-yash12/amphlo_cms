@@ -7,7 +7,7 @@ export class Journey {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()       
+    @Column()
     title: string;
 
     @Column()
@@ -15,7 +15,27 @@ export class Journey {
 
     @Column({ type: 'json' })
     @ValidateNested({ each: true })
-    @Type(() => Array)
-    cardDetail: {count: number, cardTitle: string, cardDescription: string}[]; 
+    @Type(() => CardDetail)
+    cardDetail: { count: number, cardTitle: string, cardDescription: string }[];
 
+    toJSON() {
+        return {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            cardDetail: this.cardDetail
+        };
+    }
+
+}
+
+class CardDetail {
+    @Column()
+    count: number;
+
+    @Column()
+    cardTitle: string;
+
+    @Column()
+    cardDescription: string;
 }

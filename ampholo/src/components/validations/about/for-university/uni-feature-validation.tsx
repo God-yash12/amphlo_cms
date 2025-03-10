@@ -11,7 +11,7 @@ export const UniAboutFeatures = z.object({
         .min(10, { message: "Description must be at least 10 characters long" })
         .max(500, { message: "Description cannot exceed 500 characters" })
         .nonempty({ message: "Description is required" }),
-    image: z.number().nullable().optional()
+    image: z.number().min(1, {message: "Please upload 1 image"})
 })
 
 export type UniAboutFeaturesData = z.infer<typeof UniAboutFeatures>
