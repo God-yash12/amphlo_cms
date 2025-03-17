@@ -5,10 +5,12 @@ import { AdminSignupService } from "../services/admin-signup/admin-signup-servic
 import Header from "../../ui/typographs/header/header";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import BeatLoader from "react-spinners/BeatLoader";
+import { ErrorMessage } from "../../ui/typographs/error-message";
 
 export const Adminsignup = () => {
 
     const { form, submitLogin, loginMutation } = AdminSignupService()
+    const errorMessage  = form.formState.errors;
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -34,16 +36,19 @@ export const Adminsignup = () => {
                             {...form.register('name')}
                         />
                     </div>
+                    {errorMessage.name && <ErrorMessage>{errorMessage.name.message}</ErrorMessage>}
                     {/* Email Input */}
                     <div>
                         <InputField
-                            label="email"
+                            label="Email"
                             variant="outlined"
                             placeholder="Enter your email"
                             className="w-full"
                             {...form.register('email')}
                         />
+                    {errorMessage.email && <ErrorMessage>{errorMessage.email.message}</ErrorMessage>}
                     </div>
+
 
                     {/* Password Input */}
                     <div className="relative">
@@ -62,7 +67,9 @@ export const Adminsignup = () => {
                         >
                             {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
                         </button>
+
                     </div>
+                    {errorMessage.password && <ErrorMessage>{errorMessage.password.message}</ErrorMessage>}
 
                     {/* Button */}
                     <PrimaryButton type="submit" className="w-full py-2 text-lg">

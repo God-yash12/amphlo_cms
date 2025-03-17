@@ -49,7 +49,7 @@ export const UsePortalHeroService = () => {
                 })
                 
             } catch (error) {
-                toast.error("Failed to fetch data")
+                console.log("Failed to fetch data")
             }
         }
     }, [data, form]);

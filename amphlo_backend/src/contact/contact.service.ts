@@ -13,6 +13,7 @@ export class ContactService {
   ) {}
   create(createContactDto: CreateContactDto) {
     const contact = this.contactRepository.create(createContactDto);
+    console.log(contact)
     return this.contactRepository.save(contact);
 
   }

@@ -15,6 +15,7 @@ const signupSchema = z.object({
 type signupSchemaData = z.infer<typeof signupSchema>
 
 
+
 export const AdminSignupService = () => {
 
     const form = useForm<signupSchemaData>({
@@ -28,11 +29,12 @@ export const AdminSignupService = () => {
             return response.data;
         },
         onSuccess: () => {
+            form.reset()
           toast.success("Admin Added successfully")
         },
         onError: (error: any) => {
             console.log("failed to login", error)
-            const errorMessage = error?.response?.data?.message || "Login Failed";
+            const errorMessage = error?.response?.data?.message || "Failed to add Admin";
             toast.error(errorMessage)
         }
     });

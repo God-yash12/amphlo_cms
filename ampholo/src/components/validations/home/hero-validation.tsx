@@ -19,4 +19,4 @@ export const HeroSectionValidation = z.object({
     
 });
 
-export type THeroSectionValidation = z.infer<typeof HeroSectionValidation>;
+export type     THeroSectionValidation = z.infer<typeof HeroSectionValidation>;

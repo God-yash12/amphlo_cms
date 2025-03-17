@@ -29,7 +29,7 @@ export const LoginForm = () => {
                     {/* Email Input */}
                     <div>
                         <InputField
-                            label="email"
+                            label="Email"
                             variant="outlined"
                             placeholder="Enter your email"
                             className="w-full"
@@ -58,7 +58,7 @@ export const LoginForm = () => {
                     </div>
 
                     {/* Login Button */}
-                    <PrimaryButton type="submit" className="w-full py-2 text-lg">
+                    <PrimaryButton type="submit" disabled={loginMutation.isPending} className="w-full py-2 text-lg">
                         {loginMutation.isPending ? <div><BeatLoader /></div> : "Login Now"}
                     </PrimaryButton>
                 </form>

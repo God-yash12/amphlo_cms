@@ -44,7 +44,6 @@ export const HeroService = () => {
   const onSubmit = async (data: THeroSectionValidation) => {
     const payload = {
       ...data,
-      image: data?.imageId || null
     }
     await mutateAsync(payload);
   };
