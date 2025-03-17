@@ -7,28 +7,14 @@ import { UpdateOverviewDto } from './dto/update-overview.dto';
 export class OverviewController {
   constructor(private readonly overviewService: OverviewService) { }
 
-  @Post()
-  create(@Body() createOverviewDto: CreateOverviewDto) {
-    return this.overviewService.create(createOverviewDto);
+  @Patch()
+  set (@Body() createOverviewDto: CreateOverviewDto) {
+    return this.overviewService.set(createOverviewDto);
   }
 
   @Get()
   findAll() {
-    return this.overviewService.findAll();
+    return this.overviewService.get();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.overviewService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOverviewDto: UpdateOverviewDto) {
-    return this.overviewService.update(+id, updateOverviewDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.overviewService.remove(+id);
-  }
 }

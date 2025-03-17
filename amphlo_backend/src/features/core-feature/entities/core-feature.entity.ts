@@ -8,8 +8,8 @@ export class CoreFeature {
     @Column()
     title: string;
 
-    @Column({ type:'longtext', nullable: true})
-    description: string
+    @Column({ type:'longtext', nullable: false})
+    description: string;
 
     @Column({ nullable: true })
     mainTitle: string;

@@ -11,14 +11,14 @@ export class FileUploadService {
     @InjectRepository(FileUpload)
     private readonly fileUploadRepo: Repository<FileUpload>,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   async create(createFileUploadDto: CreateFileUploadDto) {
     if (!createFileUploadDto.files || createFileUploadDto.files.length === 0) {
       throw new BadRequestException('No files provided for upload.');
     }
 
-    const backendUrl = this.configService.get('BACKEND_URL').replace(/\/$/, ''); // Remove trailing slash if present
+    const backendUrl = this.configService.get('BACKEND_URL').replace(/\/$/, '');
 
     const files = createFileUploadDto.files.map(file => {
       if (!file.path) {
@@ -54,5 +54,9 @@ export class FileUploadService {
       where: { id: In(ids) },
       select: ['id', 'url', 'filename'],
     });
+  }
+
+  async removeFile(id: number) {
+    this.fileUploadRepo.delete({ id });
   }
 }

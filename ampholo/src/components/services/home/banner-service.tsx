@@ -59,6 +59,7 @@ export const BannerService = () => {
             form.reset({
                 title: data?.title,
                 description: data?.description,
+                imageId: data?.image,
                 buttons: data?.buttons?.map((button: any) => ({
                     name: button.name,
                     route: button.route,

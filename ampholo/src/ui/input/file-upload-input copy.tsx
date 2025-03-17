@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Upload, X } from 'lucide-react';
 import { UseFileSubmit } from '../../components/services/file-upload/file-upload-service';
+import { useFormContext } from 'react-hook-form';
 
 interface FileEntry {
   id: number;
@@ -9,6 +10,7 @@ interface FileEntry {
 }
 
 interface FileUploadProps {
+  resetOnSuccess?: boolean,
   accept?: string;
   maxFiles?: number;
   maxFileSize?: number;
@@ -20,6 +22,7 @@ interface FileUploadProps {
 
 export const FileUploadInput: React.FC<FileUploadProps> = ({
   // accept = '*',
+  resetOnSuccess = true,
   maxFiles = 1,
   initialFiles = [],
   multiple,
@@ -27,6 +30,8 @@ export const FileUploadInput: React.FC<FileUploadProps> = ({
   onChange,
   className = '',
 }) => {
+  const form = useFormContext();
+
   const [files, setFiles] = useState<FileEntry[]>(initialFiles);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -79,7 +84,15 @@ export const FileUploadInput: React.FC<FileUploadProps> = ({
 
   useEffect(() => {
     setFiles(initialFiles);
-  }, [])
+  }, []);
+
+  // trigger reet file on form ubmit
+  useEffect(() => {
+    if (form?.formState?.isSubmitSuccessful && resetOnSuccess && !form?.formState?.isSubmitting) {
+      form.reset()
+      setFiles([]);
+    }
+  }, [form?.formState?.isSubmitSuccessful])
 
   return (
     <div className={`space-y-4 ${className}`}>

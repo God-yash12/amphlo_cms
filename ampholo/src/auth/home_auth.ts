@@ -10,6 +10,7 @@ export const useAxios = (): AxiosInstance => {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },
+        // withCredentials: true,
         
     });
     return axiosPrivate;

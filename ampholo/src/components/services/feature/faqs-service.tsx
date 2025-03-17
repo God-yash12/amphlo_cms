@@ -27,6 +27,7 @@ export const UseFAQService = () => {
         onSuccess: () => {
             form.reset()
             toast.success("FAQ Added Successfully")
+            queryClient.invalidateQueries({ queryKey: ["faqs"] });
         },
         onError: (error) => {
             toast.error(`Failed to Add FAQ ${error.message}`)
@@ -60,7 +61,13 @@ export const UseFAQService = () => {
         }
     });
 
-    const deleteFAQ = (id: number) => deleteMutation.mutate(id);
+    const deleteFAQ = (id: number) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this FAQ?");
+        if (confirmDelete) {
+            deleteMutation.mutate(id);
+        }
+    };
+    
 
      // update FAQ mutation
      const updateMutation = useMutation({
@@ -69,6 +76,7 @@ export const UseFAQService = () => {
             await axiosPrivate.patch(`faqs/${id}`, { question, answer });
         },
         onSuccess: () => {
+            form.reset()
             toast.success("FAQ Updated Successfully");
             queryClient.invalidateQueries({ queryKey: ["faqs"] });
         },

@@ -34,6 +34,7 @@ async function bootstrap() {
       'Origin',
       'X-Requested-With',
     ],
+    // credentials: true,
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
     preflightContinue: false,
     optionsSuccessStatus: 204,
@@ -43,6 +44,8 @@ async function bootstrap() {
     whitelist: true,
     stopAtFirstError: true,
     transform: true,
+    forbidNonWhitelisted: true,
+    validationError: {target: false, value: false},
   }));
 
   const config = new DocumentBuilder()

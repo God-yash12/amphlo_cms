@@ -2,6 +2,7 @@ import { Type } from "class-transformer";
 import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class OverviewData{
+
     @IsString()
     title: string;
 

@@ -42,7 +42,11 @@ export const HeroService = () => {
   });
 
   const onSubmit = async (data: THeroSectionValidation) => {
-    await mutateAsync(data);
+    const payload = {
+      ...data,
+      image: data?.imageId || null
+    }
+    await mutateAsync(payload);
   };
 
   const { data, isLoading } = useQuery({
@@ -58,7 +62,8 @@ export const HeroService = () => {
       form.reset({
         title: data.title,
         description: data.description,
-        buttons: data?.buttons
+        buttons: data?.buttons,
+        imageId: data?.image?.id,
       });
     }
   }, [data]);

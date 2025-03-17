@@ -8,7 +8,7 @@ import { UseOverviewService } from "../../services/feature/overview";
 import { FiPlus } from "react-icons/fi";
 import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
-import { BeatLoader } from "react-spinners";
+import { BeatLoader, PropagateLoader } from "react-spinners";
 
 export const FeatureOverview = () => {
     const {
@@ -18,13 +18,18 @@ export const FeatureOverview = () => {
         append,
         remove,
         mutation,
+        isLoading,
     } = UseOverviewService();
 
     if (fields.length === 0) {
         append({ title: "", description: "", image: 0 });
     }
+
+    if(isLoading) return <PropagateLoader className="text-center" />
+
+
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <div className="bg-gradient-to-b from-gray-50 to-white">
             <div className="container mx-auto px-4 py-12">
                 {/* Header Section */}
                 <div className="max-w-2xl mx-auto text-center mb-12">
@@ -116,7 +121,7 @@ export const FeatureOverview = () => {
                             )}
 
 
-                            <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+                            <PrimaryButton type="submit" disabled={mutation.isPending} className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
                         </div>
                     </form>
                 </div>

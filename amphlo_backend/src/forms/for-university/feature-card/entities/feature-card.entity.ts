@@ -14,8 +14,4 @@ export class FeatureCard {
     @Column({ type:'longtext', nullable: true})
     @IsNotEmpty()
     description: string;
-
-    @OneToOne(() => FileUpload, fileUpload => fileUpload.uniFeatureCardImage, { nullable: true })
-    @JoinColumn({ name: 'featureCardImgId' })
-    image: FileUpload
 }

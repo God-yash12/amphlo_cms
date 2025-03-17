@@ -50,7 +50,7 @@ export const UseHeroService = () => {
                     })),
                 })
             } catch (error) {
-                toast.error("Failed to fetch data")
+                console.error("Failed to fetch data")
             }
         }
     }, [data, form]);

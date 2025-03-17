@@ -15,8 +15,8 @@ export const HeroSectionValidation = z.object({
         name: z.string().optional(),
         route: z.string().optional(),
     })).optional(),
-
-    imageId: z.number().nullable().optional()
+    imageId: z.number().nullable().optional(),
+    
 });
 
 export type THeroSectionValidation = z.infer<typeof HeroSectionValidation>;

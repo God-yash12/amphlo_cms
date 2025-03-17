@@ -11,7 +11,6 @@ export const UniFeatureCardValidation = z.object({
         .min(10, { message: "Description must be at least 10 characters long" })
         .max(500, { message: "Description cannot exceed 500 characters" })
         .nonempty({ message: "Description is required" }),
-    image: z.number().optional()
 })
 
 export type UniFeatureCardValidationData = z.infer<typeof UniFeatureCardValidation>

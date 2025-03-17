@@ -60,7 +60,7 @@ export const UniAboutFeatures = () => {
                                     Image *
                                 </label>
                                 <FileUploadInput
-                                    onChange={(imageId) => form.setValue('image', imageId ? imageId[0].id : null)}
+                                    onChange={(imageId) => form.setValue('image', imageId[0].id )}
                                     initialFiles={image ? [{
                                         id: image.id,
                                         url: image.url,

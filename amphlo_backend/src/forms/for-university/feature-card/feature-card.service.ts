@@ -13,41 +13,28 @@ export class FeatureCardService {
     private readonly fileUploadService: FileUploadService
   ) { }
   async create(dto: CreateFeatureCardDto) {
-    const image = await this.fileUploadService.getAllByIds([dto.image])
-    if (!image) {
-      throw new NotFoundException("Feature Image Not Found")
-    } 
+
     const newCard = this.featureCardrepo.create({
       title: dto.title,
       description: dto.description,
-      image: image[0],
     })
-    await this.featureCardrepo.save(newCard)
-    return { mesage: "Card created" }
+    const cardData = await this.featureCardrepo.save(newCard)
+    return { mesage: "Card created", cardData }
   }
 
   findAll() {
-    return this.featureCardrepo.find({ relations: ['image'] })
+    return this.featureCardrepo.find()
   }
 
   async update(id: number, dto: UpdateFeatureCardDto) {
-      const keyFeatureCard = await this.featureCardrepo.findOne({ where: { id }, relations: ['image'] })
-      if (!keyFeatureCard) throw new NotFoundException("University Feature Card does not Found")
-  
-      if (dto.image) {
-        const image = await this.fileUploadService.getAllByIds([dto.image])
-  
-        if (!image) {
-          throw new NotFoundException("Image doesn't exist");
-        }
-        keyFeatureCard.image = image[0];
-      }
-  
-      keyFeatureCard.title = dto.title 
-      keyFeatureCard.description = dto.title 
-      
-      return this.featureCardrepo.save(keyFeatureCard)
-    }
+    const keyFeatureCard = await this.featureCardrepo.findOne({ where: { id } })
+    if (!keyFeatureCard) throw new NotFoundException("University Feature Card does not Found")
+
+    keyFeatureCard.title = dto.title
+    keyFeatureCard.description = dto.description
+
+    return this.featureCardrepo.save(keyFeatureCard)
+  }
 
   async remove(id: number) {
     const card = await this.featureCardrepo.findOne({ where: { id } })

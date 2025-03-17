@@ -21,6 +21,7 @@ interface FormDataProps {
 
 export const KeyFeaturesFormService = () => {
     const axiosPrivate = useAxios()
+    const [deletingCardId, setDeletingCardId] = useState<number | null>(null);
    
     const [selectedKeyFeatureCard, setSelectedKeyFeatureCard] = useState<FormDataProps | null>(null)
     const queryClient = useQueryClient()
@@ -42,8 +43,10 @@ export const KeyFeaturesFormService = () => {
         },
         onSuccess: () => {
             form.reset()
+            setImagePreview(null)
             queryClient.invalidateQueries({ queryKey: ['key-feature-card'] })
             toast.success("Key Feature Card Updated successfully")
+
         },
         onError: (error) => {
             toast.error(`Failed to update the Card ${error.message}`)
@@ -131,6 +134,19 @@ export const KeyFeaturesFormService = () => {
     };
 
 
+    const deleteCard = (id: number) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this item?");
+        if (confirmDelete) {
+            setDeletingCardId(id); 
+            deleteKeyFeatureCard.mutate(id, {
+                onSettled: () => {
+                    setDeletingCardId(null);
+                }
+            });
+        }
+    };
+    
+
     return {
         form,
         onSubmit,
@@ -141,6 +157,9 @@ export const KeyFeaturesFormService = () => {
         selectedKeyFeatureCard,
         setSelectedKeyFeatureCard,
         isPending,
-        loading,    
+        loading,  
+        deleteCard,
+        deletingCardId,
+        isLoading: isPending || updateKeyFeatureCard.isPending,
     }
 }

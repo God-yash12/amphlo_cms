@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useAxios } from "../../../auth/home_auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OverViewValidation, OverViewValidationData } from "../../validations/feature/overview-validation";
@@ -19,7 +20,7 @@ export const UseOverviewService = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: OverViewValidationData) => {
-      const response = await axiosPrivate.post('overview', data);
+      const response = await axiosPrivate.patch('overview', data);
       return response.data;
     },
     onSuccess: () => {
@@ -35,6 +36,30 @@ export const UseOverviewService = () => {
     mutation.mutate(data);
   };
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["overview"],
+    queryFn: async () => {
+      const response = await axiosPrivate.get("overview");
+      return response.data;
+    },
+   
+  });
+
+
+  useEffect(() => {
+    if(data) {
+      form.reset({
+        overview: [
+          {
+            title: data?.title,
+            description: data?.description,
+            image: data?.images
+          }
+        ]
+      })
+    }
+  }, [data, form])
+
   return {
     form,
     onSubmit,
@@ -42,5 +67,7 @@ export const UseOverviewService = () => {
     append,
     remove,
     mutation,
+    data, 
+    isLoading,
   };
 };

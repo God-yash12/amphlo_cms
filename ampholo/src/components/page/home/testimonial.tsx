@@ -13,9 +13,10 @@ import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { BeatLoader, PulseLoader } from "react-spinners";
 import DOMPurify from 'dompurify';
+import { FormProvider } from "react-hook-form";
 
 export const Testimonials = () => {
-    const { form, onSubmit, testimonials, isLoading, isError, error, selectedImage, handleDeleteClick, deleteMutation, selectedTestimonial, setSelectedTestimonial, mutation } = UseTestimonialService();
+    const { form, onSubmit, testimonials, isLoading, isError, error, selectedImage, deleteTestimonial, handleDeleteClick, selectedTestimonial, setSelectedTestimonial, mutation } = UseTestimonialService();
     const errorMessage = form.formState.errors;
     const formRef = useRef<HTMLDivElement>(null);
 
@@ -53,6 +54,7 @@ export const Testimonials = () => {
                 </div>
 
                 {/* Form Section */}
+                <FormProvider {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     {/* Person Name Field */}
                     <div className="space-y-2">
@@ -132,7 +134,6 @@ export const Testimonials = () => {
                             <div><PulseLoader /></div>
                         ) : (
                             <ReactStars
-                                key={selectedTestimonial ? selectedTestimonial.id : "default"} 
                                 count={5}
                                 size={32}
                                 isHalf={true}
@@ -156,6 +157,7 @@ export const Testimonials = () => {
                             <div>{selectedTestimonial ? "Update" : "Submit"}</div>}
                     </PrimaryButton>
                 </form>
+                </FormProvider>
             </div>
 
             {/* Testimonials Section */}
@@ -190,8 +192,8 @@ export const Testimonials = () => {
                             <SecondaryButton onClick={() => { setSelectedTestimonial(testimonial); scrollToForm(); }}>
                                 Update
                             </SecondaryButton>
-                            <SecondaryButton onClick={() => handleDeleteClick(testimonial)}>
-                                {deleteMutation.isPending ? <div className="w-full"><PulseLoader /></div> : "Delete"}
+                            <SecondaryButton onClick={() => handleDeleteClick(testimonial.id)}>
+                                { deleteTestimonial === testimonial.id ? <div className="w-full"><BeatLoader className="text-xl" /></div> : "Delete"}
                             </SecondaryButton>
                         </div>
                     </div>

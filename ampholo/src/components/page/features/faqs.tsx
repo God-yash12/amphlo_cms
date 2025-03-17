@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Accordion, AccordionBody, AccordionHeader, Textarea } from "@material-tailwind/react";
 import PrimaryButton from "../../../ui/buttons/primary-button";
 import InputField from "../../../ui/input/input";
@@ -19,6 +19,13 @@ export const FeatureFAQs = () => {
     const { form, onSubmit, faqs, isLoading, isError, deleteFAQ, updateFAQ, mutation } = UseFAQService();
     const [open, setOpen] = useState<number | null>(null);
     const [editingFAQ, setEditingFAQ] = useState<{ id: number, question: string, answer: string } | null>(null);
+    const formRef = useRef<HTMLDivElement>(null)
+
+    const scrollTOForm = () => {
+        if(formRef.current){
+            formRef.current.scrollIntoView({behavior: "smooth", block: "start"})
+        }
+    }
 
     const handleOpen = (value: number) => setOpen(open === value ? null : value);
     const {
@@ -42,7 +49,7 @@ export const FeatureFAQs = () => {
     };
 
     return (
-        <div className="container min-h-screen mx-auto py-8">
+        <div ref={formRef} className=" container  py-8">
             {/* Page Title Section */}
             <div className="text-center mb-8">
                 <Header className="text-gray-800 text-3xl font-extrabold">
@@ -72,31 +79,45 @@ export const FeatureFAQs = () => {
 
             </form>
 
-            {/* FAQs Section */}
-            <section className="my-12">
-                <Header className="text-gray-800 text-3xl font-extrabold mb-4">FAQs</Header>
+            <section className="my-12 px-4">
+            <h2 className="text-gray-800 text-3xl font-extrabold mb-6 text-center">FAQs</h2>
 
-                {isLoading && <p>Loading FAQs...</p>}
-                {isError && <p className="text-red-500">Error fetching FAQs. Please try again later.</p>}
+            {isLoading && <p className="text-center">Loading FAQs...</p>}
+            {isError && <p className="text-red-500 text-center">Error fetching FAQs. Please try again later.</p>}
 
-                <div className="space-y-4">
-                    {faqs?.map(({ id, question, answer }) => (
-
-                        <div key={id} className="flex flex-col lg:flex-row justify-center items-center space-x-6">
+            <div className="space-y-4">
+                {faqs?.map(({ id, question, answer }) => (
+                    <div key={id} className="bg-white shadow-md p-4 rounded-lg flex items-center justify-between">
+                        <div className="flex-1">
                             {/* @ts-ignore */}
                             <Accordion open={open === id} animate={CUSTOM_ANIMATION}>
                                 {/* @ts-ignore */}
-                                <AccordionHeader onClick={() => handleOpen(id)}>{question}</AccordionHeader>
-                                <AccordionBody>{answer}</AccordionBody>
+                                <AccordionHeader onClick={() => handleOpen(id)} className="text-lg font-semibold">
+                                    {question}
+                                </AccordionHeader>
+                                <AccordionBody className="text-gray-600">{answer}</AccordionBody>
                             </Accordion>
-                            <div className="flex flex-row gap-6 text-2xl cursor-pointer">
-                                <FaEdit onClick={() => handleEditClick({ id, question, answer })} />
-                                <MdDelete onClick={() => deleteFAQ(id)} />
-                            </div>
                         </div>
-                    ))}
-                </div>
-            </section>
+                        
+                        {/* Buttons */}
+                        <div className="flex gap-4 text-xl ml-4">
+                            <button
+                                className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition"
+                                onClick={() => {handleEditClick({ id, question, answer }), scrollTOForm()}}
+                            >
+                                <FaEdit />
+                            </button>
+                            <button
+                                className="p-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+                                onClick={() => deleteFAQ(id)}
+                            >
+                                <MdDelete />
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
         </div>
     );
 };

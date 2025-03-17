@@ -1,13 +1,11 @@
-import { IsString, IsNumber, IsOptional } from "class-validator";
+import { IsString, IsNumber, IsOptional, IsNotEmpty } from "class-validator";
 
 export class CreateFeatureCardDto {
-    @IsString()
+    @IsString({ message: "Title must be a string" })
+    @IsNotEmpty({ message: "Title is required" })
     title: string;
 
-    @IsString()
+    @IsString({ message: "Description must be a string" })
+    @IsNotEmpty({ message: "Description is required" })
     description: string;
-
-    @IsNumber()
-    @IsOptional()
-    image: number;
 }

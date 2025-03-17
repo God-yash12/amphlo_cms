@@ -53,6 +53,7 @@ export const UseHomeAboutServices = () => {
         mainTitle: data?.mainTitle,
         description: data?.description,
         listTitle: data?.listTitle,
+        image: data?.image,
         listItem: data?.listItem.map((item: any) => ({
           list: item.list
         })),

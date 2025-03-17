@@ -23,6 +23,7 @@ export const CoreFeaturesFormService = () => {
     const axiosPrivate = useAxios()
     const queryClient = useQueryClient()
     const [selectedCoreFeatureCard, setSelectedCoreFeatureCard] = useState<CoreFeatureCardData | null>(null)
+    const [deleteCardId, setDeletingCardId] = useState<number | null>()
     const [imagePreview, setImagePreview] = useState<{
         id: number,
         url: string,
@@ -63,7 +64,7 @@ export const CoreFeaturesFormService = () => {
             return response;
         },
         onSuccess: () => {
-            form.reset();
+            form.reset()
             toast.success("Key Feature Card updated successfully!");
             queryClient.invalidateQueries({ queryKey: ["core-feature-card"] });
             setImagePreview(null)
@@ -103,6 +104,19 @@ export const CoreFeaturesFormService = () => {
         }
     })
 
+    const deleteCard = (id: number) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this item?");
+        if (confirmDelete) {
+            setDeletingCardId(id); 
+            deleteCoreFeatureCard.mutate(id, {
+                onSettled: () => {
+                    setDeletingCardId(null);
+                }
+            });
+        }
+    };
+    
+
 
     useEffect(() => {
         if (selectedCoreFeatureCard) {
@@ -136,5 +150,8 @@ export const CoreFeaturesFormService = () => {
         deleteCoreFeatureCard,
         isPending,
         loading,
+        deleteCardId,
+        isLoading: isPending || updateCoreFeatureCard.isPending,
+        deleteCard
     }
 }

@@ -54,7 +54,7 @@ export const Banner = () => {
 
         <div className="space-y-2 w-auto">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Feature Description *
+            Image *
           </label>
           <FileUploadInput
             onChange={(files) => form.setValue('imageId', files[0].id)}
@@ -114,7 +114,7 @@ export const Banner = () => {
           )
         }
         {/* Submit Button */}
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+        <PrimaryButton type="submit" disabled={isPending} className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
       </form>
     </div>
   );

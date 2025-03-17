@@ -22,6 +22,7 @@ interface WhyAmphloCard {
 export const UniWhyAmphloCardService = () => {
   const axiosPrivate = useAxios();
   const queryClient = useQueryClient();
+  const [deletingCardId, setDeletingCardId] = useState<number | null>(null);
   const [selectedWhyAmphloCard, setSelectedWhyAmphloCard] = useState<WhyAmphloCard | null>(null);
   const [imagePreview, setImagePreview] = useState<{
     id: number;
@@ -37,23 +38,34 @@ export const UniWhyAmphloCardService = () => {
 
   const { mutateAsync, isPending } = useMutation<any, Error, WhyAmphloCardData>({
     mutationFn: async (data: WhyAmphloCardData) => {
-      const response = await axiosPrivate.post("whyamphlo-card", data);
-      return response;
+        const response = await axiosPrivate.post("whyamphlo-card", data);
+        return response;
     },
     onSuccess: () => {
-      form.reset();
-      setImagePreview(null);
-      queryClient.invalidateQueries({queryKey: ['whyamphlo-card']})
-      toast.success("University Why Amphlo Card added successfully!", {
-        position: "top-right",
-      });
+        form.reset();
+        queryClient.invalidateQueries({ queryKey: ["whyamphlo-card"] });
+        setImagePreview(null);
+        toast.success("University Why Amphlo Card added successfully!", {
+            position: "top-right",
+        });
     },
-    onError: (error: Error) => {
-      toast.error(`Error submitting form: ${error.message}`, {
-        position: "top-right",
-      });
+    onError: (error: any) => {
+        if (error.response?.data?.message) {
+            // If the error is an array of validation messages, show each message in a separate toast
+            if (Array.isArray(error.response.data.message)) {
+                error.response.data.message.forEach((msg: string) => {
+                    toast.error(msg, { position: "top-right" });
+                });
+            } else {
+                // If it's a single message, show it
+                toast.error(error.response.data.message, { position: "top-right" });
+            }
+        } else {
+            toast.error("An unexpected error occurred", { position: "top-right" });
+        }
     },
-  });
+});
+
 
   const updateWhyAmphloCard = useMutation({
     mutationFn: async ({ id, updatedData }: { id: number; updatedData: WhyAmphloCardData }) => {
@@ -62,10 +74,10 @@ export const UniWhyAmphloCardService = () => {
     },
     onSuccess: () => {
       form.reset();
-      setImagePreview(null);
       setSelectedWhyAmphloCard(null);
       toast.success("University Why Amphlo Card updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["whyamphlo-card"] });
+      setImagePreview(null);
     },
     onError: (error: Error) => {
       toast.error(`Error updating why amphlo card: ${error.message}`);
@@ -80,6 +92,8 @@ export const UniWhyAmphloCardService = () => {
     },  
   });
 
+
+  
   useEffect(() => {
     try {
       if (selectedWhyAmphloCard) {
@@ -102,6 +116,8 @@ export const UniWhyAmphloCardService = () => {
       console.error("Error resetting form:", error);
     }
   }, [selectedWhyAmphloCard, form]);
+
+
 
   const deleteWhyAmphloCard = useMutation({
     mutationFn: async (id: number) => {
@@ -127,13 +143,19 @@ export const UniWhyAmphloCardService = () => {
     }
   };
 
-  const deleteCard = (id: number) => {
-    const confirmDelete = window.confirm("Are you sure want to delete this item?")
-    if(confirmDelete){
-      deleteWhyAmphloCard.mutate(id)
+
+const deleteCard = (id: number) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this item?");
+    if (confirmDelete) {
+        setDeletingCardId(id); 
+        deleteWhyAmphloCard.mutate(id, {
+            onSettled: () => {
+                setDeletingCardId(null); 
+            }
+        });
     }
-    queryClient.invalidateQueries({queryKey: ['whyamphlo-card']})
-  }
+};
+
 
   return {
     form,
@@ -145,6 +167,8 @@ export const UniWhyAmphloCardService = () => {
     data,
     isPending,
     deleteCard,
+    isLoading: isPending || updateWhyAmphloCard.isPending,
     loading,
+    deletingCardId,
   };
 };

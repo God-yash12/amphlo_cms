@@ -1,13 +1,15 @@
-import { IsString, IsNumber, IsOptional } from "class-validator";
+import { IsString, IsNumber, IsNotEmpty } from "class-validator";
 
 export class CreateWhyamphloCardDto {
-    @IsString()
+    @IsString({ message: "Title must be a string" })
+    @IsNotEmpty({ message: "Title is required" })
     title: string;
 
-    @IsString()
+    @IsString({ message: "Description must be a string" })
+    @IsNotEmpty({ message: "Description is required" })
     description: string;
 
-    @IsNumber()
-    @IsOptional()
+    @IsNumber({}, { message: "Image ID must be a number" })
+    @IsNotEmpty({ message: "Image ID is required" })
     image: number;
 }

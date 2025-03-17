@@ -8,51 +8,37 @@ import { IsNull, Not, Repository } from 'typeorm';
 @Injectable()
 export class CoreFeatureService {
   constructor(
-  @InjectRepository(CoreFeature) private readonly coreFeaturerRepository: Repository<CoreFeature>
-  ){ }
+    @InjectRepository(CoreFeature) private readonly coreFeaturerRepository: Repository<CoreFeature>
+  ) { }
   async set(dto: CreateCoreFeatureDto) {
     const existing = await this.get()
 
-    if(!existing) return this.createNewCoreFeature(dto);
+    if (!existing) return this.createNewCoreFeature(dto);
 
     return this.updateCoreFeature(existing, dto)
   }
 
-  createNewCoreFeature(dto: CreateCoreFeatureDto){
+  async createNewCoreFeature(dto: CreateCoreFeatureDto) {
     const newFeatureData = this.coreFeaturerRepository.create({
       title: dto.title,
       description: dto.description,
       mainTitle: dto.mainTitle
     })
-    return this.coreFeaturerRepository.save(newFeatureData)
+    return await this.coreFeaturerRepository.save(newFeatureData)
   }
 
-  updateCoreFeature(existing:CoreFeature, dto: CreateCoreFeatureDto){
-    Object.assign({
+  async updateCoreFeature(existing: CoreFeature, dto: CreateCoreFeatureDto) {
+    Object.assign(existing, {
       ...dto
     })
+    const updatedData = await this.coreFeaturerRepository.save(existing)
+    return updatedData
   }
 
-  get(): Promise<CoreFeature>{
+  get(): Promise<CoreFeature> {
     return this.coreFeaturerRepository.findOne({
-      where: {id: Not(IsNull())}
+      where: { id: Not(IsNull()) }
     })
   }
 
-
-  findAll() {
-    return `This action returns all coreFeature`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} coreFeature`;
-  }
-
-  update(id: number, updateCoreFeatureDto: UpdateCoreFeatureDto) {
-    return `This action updates a #${id} coreFeature`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} coreFeature`;
-  }
 }

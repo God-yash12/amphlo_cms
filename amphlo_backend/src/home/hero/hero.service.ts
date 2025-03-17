@@ -35,9 +35,7 @@ export class HeroService {
       buttons: dto.buttons || null,
       image: image,
     })
-
     const heroItem = await this.heroRepository.save(newHero)
-    console.log(heroItem)
     return { heroItem }
   }
 

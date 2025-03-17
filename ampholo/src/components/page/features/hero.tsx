@@ -28,7 +28,7 @@ const Hero = () => {
   if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
-    <div id="hero" className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div id="hero" className="bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="flex flex-col gap-3">

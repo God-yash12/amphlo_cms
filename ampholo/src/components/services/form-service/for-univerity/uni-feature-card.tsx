@@ -24,11 +24,7 @@ interface FeatureCard {
 export const UniFeatureCardService = () => {
   const axiosPrivate = useAxios();
   const [selectedFeatureCard, setSelectedFeatureCard] = useState<FeatureCard | null>(null);
-  const [imagePreview, setImagePreview] = useState<{
-    id: number;
-    url: string;
-    filename: string;
-  } | null>(null);
+  const [deletingCardId, setDeletingCardId] = useState<number | null>(null);
   
   const queryClient = useQueryClient();
 
@@ -44,6 +40,7 @@ export const UniFeatureCardService = () => {
     },
     onSuccess: () => {
       form.reset();
+      queryClient.invalidateQueries({queryKey:["uni-feature-card"]});
       toast.success("University Why Amphlo Card added successfully!", {
         position: "top-right",
       });
@@ -64,7 +61,6 @@ export const UniFeatureCardService = () => {
       toast.success("Feature card updated successfully");
       queryClient.invalidateQueries({queryKey:["uni-feature-card"]});
       setSelectedFeatureCard(null);
-      setImagePreview(null);
     },
     onError: (error) => {
       console.error("Error updating feature card:", error);
@@ -97,17 +93,8 @@ export const UniFeatureCardService = () => {
         form.reset({
           title: selectedFeatureCard.title,
           description: selectedFeatureCard.description,
-          image: selectedFeatureCard?.image?.id
         });
-        if(selectedFeatureCard.image){
-          setImagePreview({
-            id: selectedFeatureCard?.image?.id,
-            filename: selectedFeatureCard?.image?.filename,
-            url: selectedFeatureCard?.image?.url
-          })
-        }else{
-          setImagePreview(null)
-        }
+       
       }
     } catch (error) {
       console.error("Error resetting form:", error);
@@ -128,7 +115,20 @@ export const UniFeatureCardService = () => {
     }
   });
 
-  
+
+
+const deleteCard = (id: number) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this item?");
+    if (confirmDelete) {
+        setDeletingCardId(id); 
+        deleteMutation.mutate(id, {
+            onSettled: () => {
+                setDeletingCardId(null);
+            }
+        });
+    }
+};
+
 
   return {
     form,
@@ -136,10 +136,11 @@ export const UniFeatureCardService = () => {
     data,
     selectedFeatureCard,
     setSelectedFeatureCard,
-    imagePreview,
-    setImagePreview,
     deleteMutation,
     isPending,
+    isLoading: isPending || updateFeatureCard.isPending,
     loading,
+    deleteCard,
+    deletingCardId
   };
 };

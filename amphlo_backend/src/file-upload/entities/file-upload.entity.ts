@@ -92,9 +92,6 @@ export class FileUpload {
   @OneToOne(() => UniFeature, unifeatureImage => unifeatureImage.image, {onDelete: "CASCADE"})
   featureImageId: UniFeature;  
 
-  // relation with about for univer feature card section 
-  @OneToOne(() => WhyamphloCard, featureCardImage => featureCardImage.image, { onDelete: 'CASCADE' })
-  uniFeatureCardImage: WhyamphloCard;
 
   // relation with partner
   //relation with partner hero 

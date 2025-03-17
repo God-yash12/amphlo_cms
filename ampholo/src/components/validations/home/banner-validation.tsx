@@ -14,7 +14,7 @@ export const BannerValidation = z.object({
     name: z.string().min(1, { message: "Button Name is Required" }),
     route: z.string().min(1, { message: "Route is Required" }),
   })),
-  imageId: z.number().optional(),
+  imageId: z.number().nullable().optional(),
 });
 
 export type BannerValidationType = z.infer<typeof BannerValidation>;

@@ -1,9 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOverviewDto } from './dto/create-overview.dto';
-import { UpdateOverviewDto } from './dto/update-overview.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Overview } from './entities/overview.entity';
-import { In, Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { FileUpload } from 'src/file-upload/entities/file-upload.entity';
 import { FileUploadService } from 'src/file-upload/file-upload.service';
 
@@ -12,42 +11,49 @@ export class OverviewService {
   constructor(
     @InjectRepository(Overview) private readonly overviewRepository: Repository<Overview>,
     private readonly fileUploadService: FileUploadService
-  ) { }
+  ) {}
 
-  async create(dto: CreateOverviewDto) {
+  async set(dto: CreateOverviewDto) {
     const overviewData = await Promise.all(
-      dto.overview.map(async item => {
-        const image = await this.fileUploadService.getAllByIds([item.image])
-        if (!image) {
-          throw new Error(`Image with ID ${item.image} not found`);
+      dto.overview.map(async (item) => {
+        const image = await this.fileUploadService.getAllByIds([item.image]);
+        if (!image || image.length === 0) {
+          throw new NotFoundException(`Image with ID ${item.image} not found`);
         }
-        return {
-          title: item.title,
-          description: item.description,
-          images: [image[0]],
-        };
+
+        const existingOverview = await this.get();
+        if (!existingOverview) {
+          return await this.createNew(item, image[0]);
+        }
+
+        return await this.update(existingOverview, item, image[0]);
       })
     );
 
-    const newOverviews = this.overviewRepository.create(overviewData);
-    return await this.overviewRepository.save(newOverviews);
+    return overviewData;
   }
 
-
-
-  findAll() {
-    return this.overviewRepository.find({relations: ['images']});
+  async createNew(dto: any, image: FileUpload) {
+    const newOverview = this.overviewRepository.create({
+      title: dto.title,
+      description: dto.description,
+      images: [image],
+    });
+    return await this.overviewRepository.save(newOverview);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} overview`;
+  async update(existing: Overview, dto: any, image: FileUpload) {
+    Object.assign(existing, {       
+      ...dto,
+      images: [image],
+    });
+    return await this.overviewRepository.save(existing);
   }
 
-  update(id: number, updateOverviewDto: UpdateOverviewDto) {
-    return `This action updates a #${id} overview`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} overview`;
+  async get(): Promise<Overview | null> {
+    return this.overviewRepository.findOne({
+      where: { id: Not(IsNull()) }, 
+      relations: ['images'],
+    });
   }
 }

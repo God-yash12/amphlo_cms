@@ -30,7 +30,8 @@ export const UseTestimonialService = () => {
         id: number;
         url: string;
         filename: string;
-      } | null>(null);
+    } | null>(null);
+    const [deleteTestimonial, isDeleteTestimonial] = useState<number | null>()
 
     const form = useForm<TestimonialsValidationData>({
         resolver: zodResolver(TestimonialsValidation)
@@ -42,10 +43,11 @@ export const UseTestimonialService = () => {
             return response;
         },
         onSuccess: () => {
-            form.reset();
-            setSelectedImage(null);
+            console.log(form.getValues())
+            form.reset({});
+            console.log(form.getValues())
             toast.success("Feedback submitted successfully");
-            queryClient.invalidateQueries({ queryKey: ['testimonials'] }); 
+            queryClient.invalidateQueries({ queryKey: ['testimonials'] });
         },
         onError: (error) => {
             toast.error(`Please try Again Later!! ${error.message}`);
@@ -122,10 +124,15 @@ export const UseTestimonialService = () => {
     // }, [selectedTestimonial, form]);
 
 
-    const handleDeleteClick = (testimonial: any) => {
+    const handleDeleteClick = (id: number) => {
         const isConfirmed = window.confirm("Are you sure you want to delete this testimonial?");
         if (isConfirmed) {
-            deleteMutation.mutate(testimonial.id);
+            isDeleteTestimonial(id)
+            deleteMutation.mutate(id, {
+                onSettled: () => {
+                    isDeleteTestimonial(null)
+                }
+            });
         }
     };
 
@@ -138,18 +145,18 @@ export const UseTestimonialService = () => {
             ratings: Number(testimonial.ratings),
             imageId: testimonial.image?.id
         });
-        
+
         if (testimonial.image) {
             setSelectedImage({
                 id: testimonial.image.id,
                 url: testimonial.image.url,
                 filename: testimonial.image.filename
             });
-        }else {
+        } else {
             // console.log("image render null")
-            setSelectedImage(null); 
+            setSelectedImage(null);
         }
-        
+
         // Finally set the selected testimonial
         setSelectedTestimonial(testimonial);
     };
@@ -170,5 +177,6 @@ export const UseTestimonialService = () => {
         image: selectedTestimonial?.image,
         selectedImage,
         setSelectedImage,
+        deleteTestimonial
     };
 };

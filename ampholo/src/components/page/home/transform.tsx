@@ -113,7 +113,7 @@ export const Transform = () => {
           )
         }
         {/* Submit Button */}
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+        <PrimaryButton type="submit" disabled={isPending} className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
       </form>
     </div>
   );

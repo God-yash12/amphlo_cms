@@ -1,4 +1,4 @@
-import { BeatLoader, PropagateLoader } from "react-spinners";
+import { BeatLoader } from "react-spinners";
 import PrimaryButton from "../../../../ui/buttons/primary-button";
 import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 import Header from "../../../../ui/typographs/header/header";
@@ -7,9 +7,13 @@ import { UseGalleryService } from "../../../services/about/for-partner/partner-g
 
 
 export const PartnerGallery = () => {
-  const { form, onSubmit, isLoading, mutation } = UseGalleryService();
+  const { form, onSubmit, data, mutation, handleRemoveImage } = UseGalleryService();
 
-  if (isLoading) return <PropagateLoader className="text-center" />
+
+  const galleryData = Array.isArray(data) ? data : data?.data || [];
+  const galleryImages = galleryData.flatMap((gallery: { files: any; }) => (
+    gallery.files
+  ) || []);
 
   return (
     <div>
@@ -23,8 +27,8 @@ export const PartnerGallery = () => {
         </Paragraph>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-
+      {/* Image Upload Form */}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mb-8">
         <div className="w-auto space-y-2">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Images *
@@ -39,8 +43,37 @@ export const PartnerGallery = () => {
           />
         </div>
 
-        <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full text-center">
+          {mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}
+        </PrimaryButton>
       </form>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {galleryImages.length > 0 ? (
+          galleryImages.map((image: any) => {
+            console.log(image.id)
+            return (
+              <div key={image.id} className="relative group">
+                <img
+                  src={image.url}
+                  alt={image.filename}
+                  className="w-full h-40 object-cover rounded-lg shadow-md"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(image.id)}
+                  className="absolute top-2 right-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center transition-opacity duration-200"
+                  aria-label="Remove image"
+                >
+                   x
+                </button>
+              </div>
+            )
+          })
+        ) : (
+          <p className="text-center text-gray-500 col-span-full">No images uploaded yet.</p>
+        )}
+      </div>
     </div>
   );
 };
