@@ -13,26 +13,29 @@ export const WhyChooseAmphloCard = () => {
     if (isLoading) return <PropagateLoader className="text-center" />
     return (
         <div className="bg-gradient-to-b from-gray-50 to-white">
-            <div className=" px-4 py-4">
+            <div className=" bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
                 {/* Header Section */}
-                <div className="max-w-2xl mx-auto text-center mb-12">
-                    <Header className="text-3xl font-bold text-gray-900 mb-4">
+                <div className="col-span-1 max-w-2xl mx-auto text-center mb-12">
+                    <Header className="text-3xl text-left font-bold text-gray-900 mb-4">
                         Why Choose Amphlo?
                     </Header>
-                    <Paragraph className="text-gray-600">
+                    <Paragraph className="text-gray-600 text-left">
                         Customize and manage your website's Why Choose Amphlo section to highlight your main offerings
                     </Paragraph>
                 </div>
 
                 {/* Form Section */}
-                <div className="mx-auto">
+                <div className=" col-span-2">
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="bg-white rounded-xl shadow-lg p-8 space-y-8"
                     >
                         {/* Title Input Section */}
                         <div className="space-y-4">
-                            <div className="relative">
+                            <div className="relative space-y-2">
+                                <label className="block text-sm md:text-base font-semibold text-gray-700">
+                                    Title <span className="text-red-500">*</span>
+                                </label>
                                 <InputField
                                     label="Showcase Your Headline *"
                                     className="w-full transition-all duration-200"
@@ -40,12 +43,12 @@ export const WhyChooseAmphloCard = () => {
                                     {...form.register('title')}
 
                                 />
-                            </div>
                             {errorMessage.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}
+                            </div>
 
                             {/* Description Editor Section */}
                             <div className="space-y-2">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Feature Description *
                                 </label>
                                 <TextEditor
@@ -58,9 +61,14 @@ export const WhyChooseAmphloCard = () => {
                         </div>
 
                         {/* Submit Button */}
-                        <div className="pt-6">
-
-                            <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+                        <div className="pt-4 border-t flex justify-center">
+                            <PrimaryButton
+                                type="submit"
+                                disabled={isPending}
+                                className="px-4 md:px-6 py-2"
+                            >
+                                {isPending ? <BeatLoader size={8} color="#ffffff" /> : "Save Changes"}
+                            </PrimaryButton>
                         </div>
                     </form>
                 </div>

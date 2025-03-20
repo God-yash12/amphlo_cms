@@ -23,17 +23,20 @@ export const JoinNow = () => {
   if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
-    <div id="hero" className="container mx-auto p-8 bg-gradient-to-b from-gray-50 to-white">
+    <div id="hero" className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
       {/* Header Section */}
-      <div className="text-center mb-6">
-        <Header className="text-gray-800">University Join Network Section</Header>
-        <Paragraph>Customize your join network section below.</Paragraph>
+      <div className="col-span-1 text-center mb-6">
+        <Header className="text-gray-800 text-left">University Join Network Section</Header>
+        <Paragraph className="text-left">Customize your join network section below.</Paragraph>
       </div>
 
       {/* Form Section */}
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 col-span-2 bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
         {/* Title Input */}
-        <div>
+        <div className="space-y-2">
+          <label className="block text-sm md:text-base font-semibold text-gray-700">
+            Title <span className="text-red-500">*</span>
+          </label>
           <InputField
             label="Title *"
             variant="outlined"
@@ -46,7 +49,7 @@ export const JoinNow = () => {
 
         {/* Description Editor */}
         <div className="w-auto space-y-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
             Description *
           </label>
           <TextEditor
@@ -58,7 +61,8 @@ export const JoinNow = () => {
         </div>
 
         {/* Button Configuration */}
-        <div className="space-y-4">
+        <div className="space-y-4 ">
+          <h3 className="font-semibold text-gray-800 text-sm md:text-base">Call-to-Action Buttons</h3>
           {fields.map((field, index) => (
             <div key={field.id} className="p-4 border rounded-md bg-gray-50">
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -120,8 +124,9 @@ export const JoinNow = () => {
         )}
 
         {/* Submit Button */}
-
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+        <div className="pt-4 border-t flex justify-center">
+        <PrimaryButton type="submit" className="w-full text-center px-4 md:px-6 py-2">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+        </div>
       </form>
     </div>
   );

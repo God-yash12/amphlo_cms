@@ -18,7 +18,7 @@ export class FileUploadService {
       throw new BadRequestException('No files provided for upload.');
     }
 
-    const backendUrl = this.configService.get('BACKEND_URL').replace(/\/$/, '');
+    const backendUrl = this.configService.get('BACKEND_URL');
 
     const files = createFileUploadDto.files.map(file => {
       if (!file.path) {

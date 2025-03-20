@@ -15,37 +15,41 @@ const Counters = () => {
   if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
-    <div className="flex flex-col gap-8  bg-gray-50 rounded-xl shadow-md ">
+    <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
       {/* Header Section */}
-      <div className="text-center">
-        <Header className="text-3xl font-extrabold text-gray-800 mb-2">
+      <div className="col-span-1 text-center">
+        <Header className="text-3xl text-left font-extrabold text-gray-800 mb-2">
           Home Counter Section
         </Header>
-        <Paragraph className="text-gray-600">
-          Customize the Counter section with accurate details and descriptions.
+        <Paragraph className="text-gray-600 text-left">
+          Customize the Counter section with accurate details and descriptions. Title,  Description, Counters numbers and Descriptions are required.
         </Paragraph>
       </div>
 
       {/* Form Section */}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-8"
+        className="w-full space-y-8 col-span-2"
       >
         {/* Counter Information */}
         <div className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Counter Information
-          </h2>
+
           <div className="space-y-4">
-            <InputField
-              label="Title *"
-              size="lg"
-              placeholder="Enter Counter Title"
-              {...form.register("title")}
-            />
-            {errorMessage.title && <ErrorMessage className="text-red-500">{errorMessage.title.message}</ErrorMessage>}
+            <div className="space-y-3">
+              <label className="block text-sm md:text-base text-gray-700 font-semibold">
+                Title <span className="text-red-500">*</span>
+              </label>
+              <InputField
+                label="Title *"
+                size="lg"
+                placeholder="Enter Counter Title"
+                {...form.register("title")}
+              />
+              {errorMessage.title && <ErrorMessage className="text-red-500">{errorMessage.title.message}</ErrorMessage>}
+            </div>
+
             <div className="space-y-2 w-auto">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Feature Description *
               </label>
               <TextEditor
@@ -131,7 +135,15 @@ const Counters = () => {
 
         {/* Submit Button */}
 
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+        <div className="pt-4 border-t flex justify-center">
+          <PrimaryButton
+            type="submit"
+            disabled={isPending}
+            className="px-4 md:px-6 py-2"
+          >
+            {isPending ? <BeatLoader size={8} color="#ffffff" /> : "Save Changes"}
+          </PrimaryButton>
+        </div>
 
       </form>
     </div>

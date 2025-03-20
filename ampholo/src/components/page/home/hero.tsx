@@ -23,21 +23,23 @@ const Hero = () => {
   );
 
   return (
-    <div id="hero" className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800">
+    <div id="hero" className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
       {/* Header */}
-      <div className="flex justify-between items-start mb-4 md:mb-6 pb-4 border-b">
-        <div>
-          <Header className="text-gray-800 font-bold text-xl md:text-2xl">Hero Section</Header>
-          <Paragraph className="text-gray-500 text-sm md:text-base">Customize your site's hero section</Paragraph>
-        </div>
+      <div className="col-span-1 flex flex-col">
+        <Header className="text-gray-800 font-bold text-xl md:text-2xl sm:text-left mb-4">
+          Hero Section
+        </Header>
+        <Paragraph className="text-gray-500 text-sm md:text-base text-left mb-4">
+          Customize your site's Landing section to enhance user engagement. Title, description are mandatory, Hero image and buttons are optional 
+        </Paragraph>
       </div>
 
       {/* Form */}
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6"   >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6 col-span-2 bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8 "   >
           {/* Title Input */}
           <div className="space-y-2">
-            <label className="block text-sm md:text-base font-medium text-gray-700">
+            <label className="block text-sm md:text-base text-gray-700 font-semibold">
               Title <span className="text-red-500">*</span>
             </label>
             <InputField
@@ -53,7 +55,7 @@ const Hero = () => {
 
           {/* Description Editor */}
           <div className="space-y-2">
-            <label className="block text-sm md:text-base font-medium text-gray-700">
+            <label className="block text-sm md:text-base  text-gray-700 font-semibold">
               Description <span className="text-red-500">*</span>
             </label>
             <div className="border rounded-md">
@@ -69,7 +71,7 @@ const Hero = () => {
 
           {/* Image Upload */}
           <div className="space-y-2">
-            <label className="block text-sm md:text-base font-medium text-gray-700">
+            <label className="block text-sm md:text-base font-semibold text-gray-700">
               Hero Image
             </label>
             <div className="bg-gray-50 border border-gray-200 rounded-md p-3 md:p-4">
@@ -90,7 +92,7 @@ const Hero = () => {
           {/* Buttons Section */}
           <div className="pt-4 border-t">
             <div className="flex justify-between items-center mb-3 md:mb-4">
-              <h3 className="font-medium text-gray-800 text-sm md:text-base">Call-to-Action Buttons</h3>
+              <h3 className="font-semibold text-gray-800 text-sm md:text-base">Call-to-Action Buttons</h3>
               {fields.length < 2 && (
                 <SecondaryButton
                   onClick={() => append({ name: "", route: '' })}

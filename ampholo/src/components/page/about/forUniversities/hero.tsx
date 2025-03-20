@@ -8,81 +8,95 @@ import { FileUploadInput } from "../../../../ui/input/file-upload-input copy";
 import { BeatLoader, PropagateLoader } from "react-spinners";
 
 export const HeroUniversity = () => {
-    const { form, onSubmit, image, isLoading, isPending } = UniHeroService()
-    const errorMessage = form.formState.errors
+    const { form, onSubmit, image, isLoading, isPending } = UniHeroService();
+    const errorMessage = form.formState.errors;
 
-    if (isLoading) return <PropagateLoader className="text-center" />
-
+    if (isLoading) return (
+        <div className="flex justify-center items-center h-64">
+            <PropagateLoader color="#6366F1" />
+        </div>
+    );
 
     return (
-        <div className="bg-gradient-to-b from-gray-50 to-white">
-            <div className="container mx-auto px-4 py-4">
-                {/* Header Section */}
-                <div className="max-w-2xl mx-auto text-center mb-12">
-                    <Header className="text-3xl font-bold text-gray-900 mb-4">
-                        For University Hero section Management
+        <div id="hero-university" className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
+            {/* Header Section */}
+            <div className="col-span-1 flex flex-col justify-between">
+                <div>
+                    <Header className="text-gray-800 font-bold text-xl md:text-2xl sm:text-left mb-4">
+                        For University Hero Section Management
                     </Header>
-                    <Paragraph className="text-gray-600">
-                        Customize and manage your website'For University Hero sections section.
+                    <Paragraph className="text-gray-500 text-sm md:text-base text-left">
+                        Customize and manage your website's "For University" hero section to highlight your main offerings, title, and description.
                     </Paragraph>
                 </div>
-
-                {/* Form Section */}
-                <div className="mx-auto">
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="bg-white rounded-xl shadow-lg p-8 space-y-8"
-                    >
-                        {/* Title Input Section */}
-                        <div className="space-y-4">
-                            <div className="relative">
-                                <InputField
-                                    label="Showcase Your Feature's Card Headline *"
-                                    placeholder="Enter a compelling title for your features section"
-                                    className="w-full transition-all duration-200"
-                                    size="lg"
-                                    {...form.register("title")}
-                                />
-                                {errorMessage.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}
-                            </div>
-
-                            {/* Description Editor Section */}
-                            <div className="space-y-2">
-                                <InputField
-                                    label="SubTitle *"
-                                    className="w-full transition-all duration-200"
-                                    size="lg"
-                                    {...form.register('subTitle')}
-                                />
-                                {errorMessage.subTitle && <ErrorMessage>{errorMessage.subTitle.message}</ErrorMessage>}
-                            </div>
-                            <div className="space-y-2 w-auto">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Feature Image *
-                                </label>
-                                <FileUploadInput
-                                    accept="image/*"
-                                    onChange={(files) => form.setValue('image', files ? files[0].id : null)}
-                                    initialFiles={image ? [{
-                                        id: image.id,
-                                        url: image.url,
-                                        originalName: image.filename
-                                    }] : []}
-                                />
-                                {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
-
-                            </div>
-
-                        </div>
-
-                        {/* Submit Button */}
-                        <div className="pt-6">
-
-                            <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
-                        </div>
-                    </form>
-                </div>
             </div>
+
+            {/* Form Section */}
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6 col-span-2 bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
+                {/* Title Input */}
+                <div className="space-y-2">
+                    <label className="block text-sm md:text-base font-semibold text-gray-700">
+                        Title <span className="text-red-500">*</span>
+                    </label>
+                    <InputField
+                        label=""
+                        variant="outlined"
+                        size="lg"
+                        placeholder="Enter a compelling title for your hero section"
+                        className="w-full"
+                        {...form.register("title", { required: "Title is required" })}
+                    />
+                    {errorMessage.title && <ErrorMessage className="text-red-500 text-xs md:text-sm">{errorMessage.title.message}</ErrorMessage>}
+                </div>
+
+                {/* SubTitle Input */}
+                <div className="space-y-2">
+                    <label className="block text-sm md:text-base font-semibold text-gray-700">
+                        SubTitle <span className="text-red-500">*</span>
+                    </label>
+                    <InputField
+                        label=""
+                        variant="outlined"
+                        size="lg"
+                        placeholder="Enter a subtitle for your hero section"
+                        className="w-full"
+                        {...form.register("subTitle", { required: "SubTitle is required" })}
+                    />
+                    {errorMessage.subTitle && <ErrorMessage className="text-red-500 text-xs md:text-sm">{errorMessage.subTitle.message}</ErrorMessage>}
+                </div>
+
+                {/* Image Upload */}
+                <div className="space-y-2">
+                    <label className="block text-sm md:text-base font-semibold text-gray-700">
+                        Feature Image <span className="text-red-500">*</span>
+                    </label>
+                    <div className="bg-gray-50 border border-gray-200 rounded-md p-3 md:p-4">
+                        <FileUploadInput
+                            accept="image/*"
+                            onChange={(files) => {
+                                form.setValue("image", files.length > 0 ? files[0].id : null);
+                            }}
+                            initialFiles={image ? [{
+                                id: image.id,
+                                url: image?.url,
+                                originalName: image.filename
+                            }] : []}
+                        />
+                    </div>
+                    {errorMessage.image && <ErrorMessage className="text-red-500 text-xs md:text-sm">{errorMessage.image.message}</ErrorMessage>}
+                </div>
+
+                {/* Submit Button */}
+                <div className="pt-4 border-t flex justify-center">
+                    <PrimaryButton
+                        type="submit"
+                        disabled={isPending}
+                        className="px-4 md:px-6 py-2"
+                    >
+                        {isPending ? <BeatLoader size={8} color="#ffffff" /> : "Save Changes"}
+                    </PrimaryButton>
+                </div>
+            </form>
         </div>
     );
 };

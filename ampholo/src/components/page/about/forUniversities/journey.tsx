@@ -8,6 +8,7 @@ import SecondaryButton from "../../../../ui/buttons/secondary-button";
 import { Textarea } from "@material-tailwind/react";
 import { UseJourneyService } from "../../../services/about/for-university/uni-journey-service";
 import { BeatLoader, PropagateLoader } from "react-spinners";
+import { MdDelete } from "react-icons/md";
 
 export const JourneyUniversity = () => {
     const { form, onSubmit, isLoading, fields, append, remove, mutation } = UseJourneyService();
@@ -16,26 +17,29 @@ export const JourneyUniversity = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-            <div className="container mx-auto px-4 py-12">
+            <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
                 {/* Header Section */}
-                <div className="max-w-2xl mx-auto text-center mb-12">
-                    <Header className="text-3xl font-bold text-gray-900 mb-4">
+                <div className="col-span-1 max-w-2xl mx-auto text-center mb-12">
+                    <Header className="text-3xl font-bold text-gray-900 text-left mb-4">
                         Our Journey and Impact
                     </Header>
-                    <Paragraph className="text-gray-600">
+                    <Paragraph className="text-gray-600 text-left">
                         Customize and manage your Our Journey and Impact section
                     </Paragraph>
                 </div>
 
                 {/* Form Section */}
-                <div className="mx-auto">
+                <div className=" col-span-2 bg-white rounded-xl shadow-lg p-8 space-y-8">
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="bg-white rounded-xl shadow-lg p-8 space-y-8"
+
                     >
                         {/* Title Input Section */}
                         <div className="space-y-4">
-                            <div className="relative">
+                            <div className="relative space-y-2">
+                                <label className="block text-sm md:text-base font-semibold text-gray-700">
+                                    Title <span className="text-red-500">*</span>
+                                </label>
                                 <InputField
                                     label="Showcase Your Feature's Headline *"
                                     placeholder="Enter a compelling title for your features section"
@@ -48,8 +52,8 @@ export const JourneyUniversity = () => {
 
                             {/* Description Editor Section */}
                             <div className="space-y-2">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Description *
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                    Description *
                                 </label>
                                 <TextEditor
                                     value={form.watch('description') ?? ''}
@@ -101,7 +105,7 @@ export const JourneyUniversity = () => {
                                         </ErrorMessage>
                                     )}
                                     {fields.length > 1 && (
-                                        <SecondaryButton onClick={() => remove(index)} className="text-sm cursor-pointer"> Delete </SecondaryButton>
+                                        <MdDelete onClick={() => remove(index)} className="text-xl cursor-pointer" />
                                     )}
                                 </div>
 
@@ -122,7 +126,7 @@ export const JourneyUniversity = () => {
                             }
                         </section>
                         {/* Submit Button */}
-                        <div className="pt-6">
+                        <div className="pt-4 border-t flex justify-center">
 
                             <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
                         </div>
