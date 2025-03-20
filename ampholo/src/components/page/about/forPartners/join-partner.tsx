@@ -23,17 +23,20 @@ export const JoinNowPartnerSection = () => {
   if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
-    <div id="hero" className="container mx-auto min-h-screen p-8 bg-gradient-to-b from-gray-50 to-white">
+    <div id="hero" className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
       {/* Header Section */}
-      <div className="text-center mb-6">
-        <Header className="text-gray-800">Partner Join Network Section</Header>
-        <Paragraph>Customize your join network section below.</Paragraph>
+      <div className="text-center mb-6 col-span-1">
+        <Header className="text-gray-800 text-left">Partner Join Network Section</Header>
+        <Paragraph className="text-left">Customize your join network section below.</Paragraph>
       </div>
 
       {/* Form Section */}
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className=" bg-white rounded-xl shadow-lg p-8 space-y-8 col-span-2">
         {/* Title Input */}
-        <div>
+        <div className=" space-y-2">
+        <label className="block text-sm md:text-base font-semibold text-gray-700">
+                                Title <span className="text-red-500">*</span>
+                            </label>
           <InputField
             label="Title *"
             variant="outlined"
@@ -46,7 +49,7 @@ export const JoinNowPartnerSection = () => {
 
         {/* Description Editor */}
         <div className="w-auto space-y-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
             Description *
           </label>
           <TextEditor
@@ -58,12 +61,13 @@ export const JoinNowPartnerSection = () => {
 
         {/* Button Configuration */}
         <div className="space-y-4">
+        <h3 className="font-semibold text-gray-800 text-sm md:text-base">Call-to-Action Buttons</h3>
           {fields.map((field, index) => (
             <div key={field.id} className="p-4 border rounded-md bg-gray-50">
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 {/* Button Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Button {index + 1}
                   </label>
                   <InputField
@@ -80,7 +84,7 @@ export const JoinNowPartnerSection = () => {
 
                 {/* Route Selector */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Select Route</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Select Route</label>
                   <select
                     value={form.watch(`buttons.${index}.route`) || ""}
                     onChange={(e) => form.setValue(`buttons.${index}.route`, e.target.value)}
@@ -119,8 +123,9 @@ export const JoinNowPartnerSection = () => {
         )}
 
         {/* Submit Button */}
-
+        <div className="pt-4 border-t flex justify-center">
         <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+        </div>
       </form>
     </div>
   );

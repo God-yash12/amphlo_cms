@@ -21,29 +21,35 @@ export const PartnersHeroSection = () => {
 
   return (
     <div id="hero" className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-12 ">
+      <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
         {/* Header Section */}
-        <div className="text-center mb-5">
-          <Header className="text-gray-800">Partner Hero Section</Header>
-          <Paragraph className="text-gray-600">Customize the Hero section below.</Paragraph>
+        <div className="text-center mb-5 col-span-1">
+          <Header className="text-gray-800 text-left">Partner Hero Section</Header>
+          <Paragraph className="text-gray-600 text-left">Customize the Hero section below.</Paragraph>
         </div>
 
         {/* Form Section */}
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 col-span-2  bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8 ">
           {/* Title Input */}
-          <InputField
-            label="Title *"
-            variant="outlined"
-            size="lg"
-            placeholder="Enter Hero Title"
-            {...form.register("title", { required: "Title is required" })}
-          />
-          {errorMessage && <ErrorMessage>{errorMessage.title?.message}</ErrorMessage>}
+          <div className="space-y-3">
+            <label className="block text-sm md:text-base font-semibold text-gray-700">
+              Title <span className="text-red-500">*</span>
+            </label>
+
+            <InputField
+              label="Title *"
+              variant="outlined"
+              size="lg"
+              placeholder="Enter Hero Title"
+              {...form.register("title", { required: "Title is required" })}
+            />
+            {errorMessage && <ErrorMessage>{errorMessage.title?.message}</ErrorMessage>}
+          </div>
 
 
           {/* Description Editor */}
           <div className="w-auto space-y-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Description *
             </label>
             <TextEditor
@@ -57,7 +63,7 @@ export const PartnersHeroSection = () => {
 
           {/* File Upload */}
           <div className="w-auto space-y-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Image *
             </label>
             <FileUploadInput
@@ -74,7 +80,7 @@ export const PartnersHeroSection = () => {
 
           {/* Button Configuration Section */}
           <div className="space-y-4">
-            <Header className="text-gray-700">Hero Buttons</Header>
+            <h3 className="font-semibold text-gray-800 text-sm md:text-base">Call-to-Action Buttons</h3>
             {fields.map((field, index) => (
               <div key={field.id} className="flex gap-4 items-center">
                 <InputField
@@ -114,7 +120,9 @@ export const PartnersHeroSection = () => {
 
           {/* Submit Button */}
 
-          <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+          <div className="pt-4 border-t flex justify-center">
+            <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+          </div>
         </form>
       </div>
     </div>

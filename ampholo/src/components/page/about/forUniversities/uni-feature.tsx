@@ -26,7 +26,7 @@ export const UniAboutFeatures = () => {
                 </div>
 
                 {/* Form Section */}
-                <div className="mx-auto col-span-2 bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
+                <div className="col-span-2 bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}  
                     >

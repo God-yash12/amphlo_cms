@@ -9,9 +9,9 @@ const ForPertners = () => {
   return (
     <div className="space-y-14">
       <PartnersHeroSection />
-      <PartnerBenefitSection />
       <JoinNowPartnerSection />
       <PartnerFeatureSection />
+      <PartnerBenefitSection />
       <PartnerGallery />
     </div>
   )

@@ -30,24 +30,27 @@ export const PartnerFeatureSection = () => {
 
     return (
         <div className=" bg-gradient-to-b from-gray-50 to-white">
-            <div className="container mx-auto px-4 py-12">
+            <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
+                {/* Header Section */}
+                <div className="col-span-1 max-w-2xl mx-auto text-center mb-12">
+                    <Header className="text-3xl font-bold text-gray-900 mb-4 text-left">
+                        Partner Feature Section
+                    </Header>
+                    <Paragraph className="text-gray-600 text-left">
+                        Customize and manage your website's partner Features section
+                    </Paragraph>
+                </div>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="bg-white rounded-xl shadow-lg p-8 space-y-8"
+                    className="bg-white rounded-xl shadow-lg p-8 space-y-8 col-span-2"
                 >
-                    {/* Header Section */}
-                    <div className="max-w-2xl mx-auto text-center mb-12">
-                        <Header className="text-3xl font-bold text-gray-900 mb-4">
-                            Partner Feature Section
-                        </Header>
-                        <Paragraph className="text-gray-600">
-                            Customize and manage your website's partner Features section
-                        </Paragraph>
-                    </div>
 
                     {/* Title Input Section */}
                     <div className="space-y-4">
-                        <div className="relative">
+                        <div className="relative space-y-2">
+                            <label className="block text-sm md:text-base font-semibold text-gray-700">
+                                Title <span className="text-red-500">*</span>
+                            </label>
                             <InputField
                                 label="Showcase Your Feature's Headline *"
                                 placeholder="Enter a compelling title for your features section"
@@ -60,7 +63,7 @@ export const PartnerFeatureSection = () => {
 
                         {/* Description Editor Section */}
                         <div className="space-y-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
                                 Feature Description *
                             </label>
                             <TextEditor
@@ -71,7 +74,7 @@ export const PartnerFeatureSection = () => {
                         </div>
 
                         <div className="w-auto space-y-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
                                 Image *
                             </label>
                             <FileUploadInput
@@ -121,7 +124,7 @@ export const PartnerFeatureSection = () => {
                                 <div className="flex flex-col space-y-2">
 
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Description *
+                                        Description *
                                     </label>
                                     <TextEditor
                                         placeholder="Describe your feature in detail..."

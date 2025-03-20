@@ -33,19 +33,19 @@ export const OurJourney = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-            <div className="container mx-auto px-4 py-12">
+            <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
                 {/* Header Section */}
-                <div className="max-w-2xl mx-auto text-center mb-12">
-                    <Header className="text-3xl font-bold text-gray-900 mb-4">
+                <div className="col-span-1 max-w-2xl mx-auto text-center mb-12">
+                    <Header className=" text-left text-3xl font-bold text-gray-900 mb-4">
                         Our Journey
                     </Header>
-                    <Paragraph className="text-gray-600">
+                    <Paragraph className="text-gray-600 text-left">
                         Customize and manage your website's Journey section
                     </Paragraph>
                 </div>
 
                 {/* Form Section */}
-                <div className="mx-auto">
+                <div className=" col-span-2">
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="bg-white rounded-xl shadow-lg p-8 space-y-8"
@@ -54,17 +54,23 @@ export const OurJourney = () => {
                             <div key={field.id} className="space-y-4 border-b pb-8 relative">
                                 {/* Title Input */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <InputField
-                                        label="Title"
-                                        placeholder="Enter feature title"
-                                        className="w-full"
-                                        {...register(`aboutMore.${index}.title`)}
-                                    />
-                                    {errors.aboutMore?.[index]?.title && (
-                                        <ErrorMessage>
-                                            {errors.aboutMore[index]?.title?.message}
-                                        </ErrorMessage>
-                                    )}
+                                    <div className="space-y-2">
+                                        <label className="block text-sm md:text-base text-gray-700 font-semibold">
+                                            Title <span className="text-red-500">*</span>
+                                        </label>
+
+                                        <InputField
+                                            label="Title"
+                                            placeholder="Enter feature title"
+                                            className="w-full"
+                                            {...register(`aboutMore.${index}.title`)}
+                                        />
+                                        {errors.aboutMore?.[index]?.title && (
+                                            <ErrorMessage>
+                                                {errors.aboutMore[index]?.title?.message}
+                                            </ErrorMessage>
+                                        )}
+                                    </div>
 
                                     {fields.length > 1 && (
                                         <button
@@ -79,7 +85,7 @@ export const OurJourney = () => {
 
                                 {/* Description Editor */}
                                 <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                                         Feature Description
                                     </label>
                                     <TextEditor
@@ -98,8 +104,8 @@ export const OurJourney = () => {
 
                                 {/* Date Picker */}
                                 <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Year
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Year *
                                     </label>
                                     <input
                                         type="date"
