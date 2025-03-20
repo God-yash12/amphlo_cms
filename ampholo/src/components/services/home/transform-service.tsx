@@ -53,6 +53,7 @@ export const TransformService = () => {
             form.reset({
                 title: data?.data?.title,
                 description: data?.data?.description,
+                imageId: data?.data?.image,
                 buttons: data?.data?.buttons?.map((button: any) => ({
                     name: button.name,
                     route: button.route,

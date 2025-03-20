@@ -14,9 +14,7 @@ export class HomeTransformService {
     private readonly homeTransformRepository: Repository<HomeTransform>,
     private readonly fileUploadService: FileUploadService,
   ) {}
-
-
-    async set(dto: CreateHomeTransformDto, file: Express.Multer.File) {
+    async set(dto: CreateHomeTransformDto) {
       let image = null;
       if (dto.imageId) {
         image = await this.fileUploadService.getAllByIds([dto.imageId]);
