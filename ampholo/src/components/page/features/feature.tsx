@@ -9,11 +9,11 @@ import { FeatureFAQs } from "./faqs"
 
 const Features = () => {
   return (
-    <div>
+    <div className="space-y-9">
       <Hero />
       <Agent />
-      <CoreFeature/>
-      <FeatureOverview/>
+      <CoreFeature />
+      <FeatureOverview />
       <FeatureFAQs />
     </div>
   )

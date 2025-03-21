@@ -24,7 +24,7 @@ export const PartnerGallery = () => {
           Partner Gallery Section
         </Header>
         <Paragraph className="text-gray-600 text-left">
-          Customize and manage your website's partner Gallery section
+          Customize and manage Gallery section, showcase your proud moment from here.
         </Paragraph>
       </div>
 

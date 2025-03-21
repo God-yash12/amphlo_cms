@@ -21,7 +21,7 @@ export const UniAboutFeatures = () => {
                         What Makes Amphlo Different
                     </Header>
                     <Paragraph className="text-gray-600 text-left">
-                        Customize and manage your website'sWhat Makes Amphlo Different section
+                        Customize and manage your website's What Makes Amphlo Different section, Showcase how Amphlo is different from others, add title, description, image.
                     </Paragraph>
                 </div>
 

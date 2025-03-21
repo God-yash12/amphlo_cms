@@ -25,77 +25,82 @@ export const UniAboutFeatureCard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div ref={formRef} className="container mx-auto px-4 py-12">
-        {/* Header Section */}
-        <div className="max-w-2xl mx-auto text-center mb-12">
+    <div>
+      <div ref={formRef} className="container mx-auto px-4 py-5">
+        <div className="container bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
 
-          <Header className="text-3xl font-bold text-gray-900 mb-4">
-            {selectedFeatureCard ? "Update Feature Card" : "About Features Cards Management"}
-          </Header>
-          <Paragraph className="text-gray-600">
-            Customize and manage your website's About Features Cards Management section Cards
-          </Paragraph>
-        </div>
 
-        {/* Form Section */}
-        <div className="mx-auto">
-          <FormProvider {...form} >
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="bg-white rounded-xl shadow-lg p-8 space-y-8"
-            >
-              {/* Title Input Section */}
-              <div className="space-y-4">
-                <div className="relative">
-                  <InputField
-                    label="Showcase Your Feature's Card Headline *"
-                    placeholder="Enter a compelling title for your features section"
-                    className="w-full transition-all duration-200"
-                    size="lg"
-                    {...form.register("title")}
-                  />
-                  {errorMessage.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}
+          {/* Header Section */}
+          <div className="col-span-1 max-w-2xl mx-auto text-left mb-12">
+            <Header className="text-3xl text-left font-bold text-gray-900 mb-4">
+              {selectedFeatureCard ? "Update Feature Card" : "About Features Cards Management"}
+            </Header>
+            <Paragraph className="text-gray-600 text-left">
+              Customize and manage your website's About Features Cards Management section Cards of Universities feature page.
+            </Paragraph>
+          </div>
+
+          {/* Form Section */}
+          <div className="col-span-2 bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
+            <FormProvider {...form} >
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
+                {/* Title Input Section */}
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="block text-sm  text-gray-700 font-semibold">
+                      Title <span className="text-red-500">*</span>
+                    </label>
+                    <InputField
+                      label="Showcase Your Feature's Card Headline *"
+                      placeholder="Enter a compelling title for your features section"
+                      className="w-full transition-all duration-200"
+                      size="lg"
+                      {...form.register("title")}
+                    />
+                    {errorMessage.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}
+                  </div>
+
+                  {/* Description Editor Section */}
+                  <div className="space-y-2">
+                    <label className="block text-sm  text-gray-700 font-semibold">
+                      Description <span className="text-red-500">*</span>
+                    </label>
+                    <TextEditor
+                      placeholder="Describe your key features in detail..."
+                      value={form.watch('description') ?? ""}
+                      onChange={(content) => {
+                        form.setValue("description", content);
+                      }}
+                    />
+                    {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
+                  </div>
+
                 </div>
 
-                {/* Description Editor Section */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Card Description *
-                  </label>
-                  <TextEditor
-                    placeholder="Describe your key features in detail..."
-                    value={form.watch('description') ?? ""}
-                    onChange={(content) => {
-                      form.setValue("description", content);
-                    }}
-                  />
-                  {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
+                {/* Submit Button */}
+                <div className="pt-5 border-t flex justify-center">
+                  <PrimaryButton
+                    type="submit"
+                    disabled={isLoading}
+                    className={`w-full px-10 text-center ${selectedFeatureCard ? "bg-blue-600 hover:bg-blue-700" : "bg-green-600 hover:bg-green-700"
+                      }`}
+                  >
+                    {isLoading ? (
+                      <div><BeatLoader /></div>
+                    ) : (
+                      <div>{selectedFeatureCard ? "UPDATE" : "SUBMIT"}</div>
+                    )}
+                  </PrimaryButton>
                 </div>
-
-              </div>
-
-              {/* Submit Button */}
-              <div className="pt-6">
-                <PrimaryButton
-                  type="submit"
-                  disabled={isLoading}
-                  className={`w-full text-center ${selectedFeatureCard ? "bg-blue-600 hover:bg-blue-700" : "bg-green-600 hover:bg-green-700"
-                    }`}
-                >
-                  {isLoading ? (
-                    <div><BeatLoader /></div>
-                  ) : (
-                    <div>{selectedFeatureCard ? "UPDATE" : "SUBMIT"}</div>
-                  )}
-                </PrimaryButton>
-              </div>
-            </form>
-          </FormProvider>
+              </form>
+            </FormProvider>
+          </div>
         </div>
 
         {/* feature card list */}
-        <div className="mt-12">
+        <div className="mt-12 p-10">
           <h2 className="text-2xl font-bold mb-4">Existing Feature Cards</h2>
 
           {loading ? (

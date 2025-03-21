@@ -25,7 +25,7 @@ export const PartnersHeroSection = () => {
         {/* Header Section */}
         <div className="text-center mb-5 col-span-1">
           <Header className="text-gray-800 text-left">Partner Hero Section</Header>
-          <Paragraph className="text-gray-600 text-left">Customize the Hero section below.</Paragraph>
+          <Paragraph className="text-gray-600 text-left">Customize For partner page Hero section. Where buttons are optional but title, description, and image are required.</Paragraph>
         </div>
 
         {/* Form Section */}

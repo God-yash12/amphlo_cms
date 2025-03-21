@@ -22,8 +22,8 @@ export const FeatureFAQs = () => {
     const formRef = useRef<HTMLDivElement>(null)
 
     const scrollTOForm = () => {
-        if(formRef.current){
-            formRef.current.scrollIntoView({behavior: "smooth", block: "start"})
+        if (formRef.current) {
+            formRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
         }
     }
 
@@ -49,75 +49,89 @@ export const FeatureFAQs = () => {
     };
 
     return (
-        <div ref={formRef} className=" container  py-8">
-            {/* Page Title Section */}
-            <div className="text-center mb-8">
-                <Header className="text-gray-800 text-3xl font-extrabold">
-                    {editingFAQ ? "Update FAQ" : "Feature FAQs Section"}
-                </Header>
-                {!editingFAQ && (
-                    <Paragraph className="text-gray-600 mt-2">
-                        Customize the FAQ section of your website with ease.
-                    </Paragraph>
-                )}
-            </div>
-
-            {/* Form Section */}
-            <form onSubmit={form.handleSubmit(handleFormSubmit)} className="rounded-xl shadow-lg p-8 space-y-8">
-                <div className="space-y-5 mb-4">
-                    <InputField label="FAQ Question *" {...form.register("question")} />
-                    {errors.question && <ErrorMessage>{errors.question.message}</ErrorMessage>}
-                    {/* @ts-ignore */}
-                    <Textarea
-                        label="FAQ Answer *"
-                        variant="outlined"
-                        {...form.register("answer")}
-                    />
-                    {errors.answer && <ErrorMessage>{errors.answer.message}</ErrorMessage>}
+        <div ref={formRef} className=" container py-8">
+            <div className="container bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
+                {/* Page Title Section */}
+                <div className="col-span-1 text-center mb-8">
+                    <Header className="text-gray-800 text-3xl font-extrabold text-left">
+                        {editingFAQ ? "Update FAQ" : "Feature FAQs Section"}
+                    </Header>
+                    {!editingFAQ && (
+                        <Paragraph className="text-gray-600 mt-2 text-left">
+                            Customize the FAQ section, add more Frequently Ask Questions with Answers.
+                        </Paragraph>
+                    )}
                 </div>
-                <PrimaryButton type="submit">{mutation.isPending ? <div><BeatLoader /></div> : editingFAQ ? "Update FAQ" : "Submit"} </PrimaryButton>
 
-            </form>
-
-            <section className="my-12 px-4">
-            <h2 className="text-gray-800 text-3xl font-extrabold mb-6 text-center">FAQs</h2>
-
-            {isLoading && <p className="text-center">Loading FAQs...</p>}
-            {isError && <p className="text-red-500 text-center">Error fetching FAQs. Please try again later.</p>}
-
-            <div className="space-y-4">
-                {faqs?.map(({ id, question, answer }) => (
-                    <div key={id} className="bg-white shadow-md p-4 rounded-lg flex items-center justify-between">
-                        <div className="flex-1">
-                            {/* @ts-ignore */}
-                            <Accordion open={open === id} animate={CUSTOM_ANIMATION}>
-                                {/* @ts-ignore */}
-                                <AccordionHeader onClick={() => handleOpen(id)} className="text-lg font-semibold">
-                                    {question}
-                                </AccordionHeader>
-                                <AccordionBody className="text-gray-600">{answer}</AccordionBody>
-                            </Accordion>
+                {/* Form Section */}
+                <form onSubmit={form.handleSubmit(handleFormSubmit)} className="rounded-xl shadow-lg p-8 space-y-8 col-span-2">
+                    <div className="space-y-5 mb-4">
+                        <div className="space-y-2">
+                            <label className="block text-sm md:text-base text-gray-700 font-semibold">
+                                Question <span className="text-red-500">*</span>
+                            </label>
+                            <InputField label="FAQ Question *" {...form.register("question")} />
+                            {errors.question && <ErrorMessage>{errors.question.message}</ErrorMessage>}
                         </div>
-                        
-                        {/* Buttons */}
-                        <div className="flex gap-4 text-xl ml-4">
-                            <button
-                                className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition"
-                                onClick={() => {handleEditClick({ id, question, answer }), scrollTOForm()}}
-                            >
-                                <FaEdit />
-                            </button>
-                            <button
-                                className="p-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
-                                onClick={() => deleteFAQ(id)}
-                            >
-                                <MdDelete />
-                            </button>
+                        <div className="space-y-2">
+                            <label className="block text-sm md:text-base text-gray-700 font-semibold">
+                                Answer <span className="text-red-500">*</span>
+                            </label>
+
+                            {/* @ts-ignore */}
+                            <Textarea
+                                label="FAQ Answer *"
+                                variant="outlined"
+                                {...form.register("answer")}
+                            />
+                            {errors.answer && <ErrorMessage>{errors.answer.message}</ErrorMessage>}
                         </div>
                     </div>
-                ))}
+                    <div className="pt-4 border-t flex justify-center">
+                    <PrimaryButton type="submit">{mutation.isPending ? <div><BeatLoader /></div> : editingFAQ ? "Update FAQ" : "Submit"} </PrimaryButton>
+                    </div>
+
+                </form>
             </div>
-        </section>
+            <section className="my-12 px-4">
+                <h2 className="text-gray-800 text-3xl font-extrabold mb-6 text-center">FAQs</h2>
+
+                {isLoading && <p className="text-center">Loading FAQs...</p>}
+                {isError && <p className="text-red-500 text-center">Error fetching FAQs. Please try again later.</p>}
+
+                <div className="space-y-4">
+                    {faqs?.map(({ id, question, answer }) => (
+                        <div key={id} className="bg-white shadow-md p-4 rounded-lg flex items-center justify-between">
+                            <div className="flex-1">
+                                {/* @ts-ignore */}
+                                <Accordion open={open === id} animate={CUSTOM_ANIMATION}>
+                                    {/* @ts-ignore */}
+                                    <AccordionHeader onClick={() => handleOpen(id)} className="text-lg font-semibold">
+                                        {question}
+                                    </AccordionHeader>
+                                    <AccordionBody className="text-gray-600">{answer}</AccordionBody>
+                                </Accordion>
+                            </div>
+
+                            {/* Buttons */}
+                            <div className="flex gap-4 text-xl ml-4">
+                                <button
+                                    className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition"
+                                    onClick={() => { handleEditClick({ id, question, answer }), scrollTOForm() }}
+                                >
+                                    <FaEdit />
+                                </button>
+                                <button
+                                    className="p-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+                                    onClick={() => deleteFAQ(id)}
+                                >
+                                    <MdDelete />
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
         </div>
     );
 };

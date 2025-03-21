@@ -6,9 +6,9 @@ import { TextEditor } from "../../../ui/editor/text-editor";
 import { ErrorMessage } from "../../../ui/typographs/error-message";
 import { UseOverviewService } from "../../services/feature/overview";
 import { FiPlus } from "react-icons/fi";
-import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { FileUploadInput } from "../../../ui/input/file-upload-input copy";
 import { BeatLoader, PropagateLoader } from "react-spinners";
+import { MdDelete } from "react-icons/md";
 
 export const FeatureOverview = () => {
     const {
@@ -25,24 +25,24 @@ export const FeatureOverview = () => {
         append({ title: "", description: "", image: 0 });
     }
 
-    if(isLoading) return <PropagateLoader className="text-center" />
+    if (isLoading) return <PropagateLoader className="text-center" />
 
 
     return (
-        <div className="bg-gradient-to-b from-gray-50 to-white">
-            <div className="container mx-auto px-4 py-12">
+        <div >
+            <div className="container bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
                 {/* Header Section */}
-                <div className="max-w-2xl mx-auto text-center mb-12">
+                <div className="col-span-1 max-w-2xl mx-auto text-left mb-12">
                     <Header className="text-3xl font-bold text-gray-900 mb-4">
                         Feature Overview
                     </Header>
-                    <Paragraph className="text-gray-600">
-                        Customize and manage your website's Features Overview section
+                    <Paragraph className="text-gray-600 text-left">
+                        Customize and manage your website's Features Overview section, add title, description and feature image are required.
                     </Paragraph>
                 </div>
 
                 {/* Form Section */}
-                <div className="mx-auto">
+                <div className="col-span-2">
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="bg-white rounded-xl shadow-lg p-8 space-y-8"
@@ -51,31 +51,37 @@ export const FeatureOverview = () => {
                             <div key={field.id} className="space-y-4 border-b pb-8 relative">
                                 {/* Title Input */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <InputField
-                                        label="Title *"
-                                        placeholder="Enter feature title"
-                                        className="w-full"
-                                        {...form.register(`overview.${index}.title`)}
-                                    />
-                                    {form.formState.errors.overview?.[index]?.title && (
-                                        <ErrorMessage>
-                                            {form.formState.errors.overview[index]?.title?.message}
-                                        </ErrorMessage>
-                                    )}
+                                    <div className="space-y-2">
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            Title <span className="text-red-500">*</span>
+                                        </label>
+                                        <InputField
+                                            label="Title *"
+                                            placeholder="Enter feature title"
+                                            className="w-full"
+                                            {...form.register(`overview.${index}.title`)}
+                                        />
+                                        {form.formState.errors.overview?.[index]?.title && (
+                                            <ErrorMessage>
+                                                {form.formState.errors.overview[index]?.title?.message}
+                                            </ErrorMessage>
+                                        )}
+                                    </div>
+
                                     {fields.length > 1 && (
                                         <button
                                             type="button"
                                             onClick={() => remove(index)}
                                             className="top-0 right-0 text-gray-600 hover:text-red-700"
                                         >
-                                            <SecondaryButton  > Delete Item </SecondaryButton>
+                                            <MdDelete className="text-2xl text-gray-800 " />
                                         </button>
                                     )}
                                 </div>
 
                                 {/* Description Editor */}
                                 <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                                         Feature Description *
                                     </label>
                                     <TextEditor
@@ -93,7 +99,10 @@ export const FeatureOverview = () => {
                                 </div>
 
                                 {/* Image Upload */}
-                                <div className="relative">
+                                <div className="space-y-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Feature Image *
+                                    </label>
                                     <FileUploadInput
                                         onChange={(files) => form.setValue(`overview.${index}.image`, files[0].id)}
                                     />

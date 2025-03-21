@@ -28,18 +28,21 @@ const Hero = () => {
   if (isLoading) return <PropagateLoader className="text-center" />
 
   return (
-    <div id="hero" className="bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-12">
+    <div id="hero">
+      <div className="container bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
         {/* Header */}
-        <div className="flex flex-col gap-3">
-          <Header className="text-center text-gray-800">Hero Section</Header>
-          <Paragraph>Customize Hero section</Paragraph>
+        <div className="col-span-1 flex flex-col gap-3">
+          <Header className=" text-gray-800 text-left">Hero Section</Header>
+          <Paragraph className="text-left">Customize Hero section of about Portal page, where Title, SubTitle and image are required, buttons are optional to add.</Paragraph>
         </div>
 
         {/* Form */}
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="col-span-2 flex flex-col gap-5  bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
           {/* Title Input */}
-          <div>
+          <div className="space-y-2">
+            <label className="block text-sm md:text-base text-gray-700 font-semibold">
+              Title <span className="text-red-500">*</span>
+            </label>
             <InputField
               label="Title *"
               variant="outlined"
@@ -53,6 +56,9 @@ const Hero = () => {
 
           {/* Description Editor */}
           <div className="w-auto">
+            <label className="block text-sm md:text-base text-gray-700 font-semibold">
+              SubTitle <span className="text-red-500">*</span>
+            </label>
             <InputField
               label="SubTitle *"
               variant="outlined"
@@ -62,20 +68,27 @@ const Hero = () => {
             />
             {errorMessage.description && <ErrorMessage>{errorMessage.description.message}</ErrorMessage>}
           </div>
-          <FileUploadInput
-            accept="image/*"
-            onChange={(files) => form.setValue('image', files[0].id)}
-            initialFiles={image ? [{
-              id: image.id,
-              url: image.url,
-              originalName: image.filename
-            }] : []}
-          />
-          {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
 
+          <div className="space-y-2">
+            <label className="block text-sm md:text-base text-gray-700 font-semibold">
+              Image <span className="text-red-500">*</span>
+            </label>
+
+            <FileUploadInput
+              accept="image/*"
+              onChange={(files) => form.setValue('image', files[0].id)}
+              initialFiles={image ? [{
+                id: image.id,
+                url: image.url,
+                originalName: image.filename
+              }] : []}
+            />
+            {errorMessage.image && <ErrorMessage>{errorMessage.image.message}</ErrorMessage>}
+          </div>
 
           {/* Button Configuration */}
           <div className="flex flex-col gap-4 ">
+          <h3 className="font-semibold text-gray-800 text-sm md:text-base">Call-to-Action Buttons</h3>
             {fields.map((field, index) => (
               <section className="space-x-5">
                 <div key={field.id} className="flex flex-col gap-2">
@@ -120,8 +133,9 @@ const Hero = () => {
             )
           }
           {/* Submit Button */}
-
+          <div className="pt-4 border-t flex justify-center">
           <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+          </div>
         </form>
       </div>
     </div>

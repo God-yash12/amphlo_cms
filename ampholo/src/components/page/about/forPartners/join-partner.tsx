@@ -27,7 +27,7 @@ export const JoinNowPartnerSection = () => {
       {/* Header Section */}
       <div className="text-center mb-6 col-span-1">
         <Header className="text-gray-800 text-left">Partner Join Network Section</Header>
-        <Paragraph className="text-left">Customize your join network section below.</Paragraph>
+        <Paragraph className="text-left">explain how someone became partner with you as agent or university. Add the process of become you partner, Add title and description.</Paragraph>
       </div>
 
       {/* Form Section */}

@@ -26,7 +26,7 @@ export const HeroUniversity = () => {
                         For University Hero Section Management
                     </Header>
                     <Paragraph className="text-gray-500 text-sm md:text-base text-left">
-                        Customize and manage your website's "For University" hero section to highlight your main offerings, title, and description.
+                        Customize and manage your website's "For University" hero section to highlight your main offerings, title, image and description.
                     </Paragraph>
                 </div>
             </div>

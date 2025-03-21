@@ -24,7 +24,7 @@ export const JourneyUniversity = () => {
                         Our Journey and Impact
                     </Header>
                     <Paragraph className="text-gray-600 text-left">
-                        Customize and manage your Our Journey and Impact section
+                        Customize and manage your Our Journey and Impact section.
                     </Paragraph>
                 </div>
 
@@ -67,8 +67,9 @@ export const JourneyUniversity = () => {
                         </div>
 
                         {/* Journey Details */}
-                        <section className="space-y-5">
-                            <Header>Journey Details</Header>
+                        <section className="space-y-5 mt-7">
+
+                            <h3 className="font-semibold text-gray-800 text-sm md:text-base">Journey Details</h3>
                             {fields.map((field, index) => (
                                 <div key={field.id} className="space-y-5">
 

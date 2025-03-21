@@ -27,7 +27,7 @@ export const JoinNow = () => {
       {/* Header Section */}
       <div className="col-span-1 text-center mb-6">
         <Header className="text-gray-800 text-left">University Join Network Section</Header>
-        <Paragraph className="text-left">Customize your join network section below.</Paragraph>
+        <Paragraph className="text-left">Customize how university can join with AMPHLO, with title and description.</Paragraph>
       </div>
 
       {/* Form Section */}

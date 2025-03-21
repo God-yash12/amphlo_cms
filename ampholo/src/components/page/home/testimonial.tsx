@@ -158,10 +158,12 @@ export const Testimonials = () => {
                         </div>
 
                         {/* Submit Button */}
-                        <PrimaryButton type="submit" className="w-full text-center">
-                            {mutation.isPending ? <div><BeatLoader /></div> :
-                                <div>{selectedTestimonial ? "Update" : "Submit"}</div>}
-                        </PrimaryButton>
+                        <div className="pt-4 border-t flex justify-center">
+                            <PrimaryButton type="submit" className="w-full text-center p-5">
+                                {mutation.isPending ? <div><BeatLoader /></div> :
+                                    <div>{selectedTestimonial ? "Update" : "Submit"}</div>}
+                            </PrimaryButton>
+                        </div>
                     </form>
                 </FormProvider>
             </div>

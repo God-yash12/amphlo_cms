@@ -46,7 +46,7 @@ export const PartnerBenefitSection = () => {
                         {selectedItem ? "Update Item" : "Partner Benefit Cards Management"}
                     </Header>
                     <Paragraph className="text-gray-600 text-left">
-                        Customize and manage your website's Partners Benefit Cards Management section Cards
+                        Customize and manage for Partners page, Benefit of became a partner section. Add title, description and image.
                     </Paragraph>
                 </div>
 
@@ -59,9 +59,9 @@ export const PartnerBenefitSection = () => {
                         {/* Title Input Section */}
                         <div className="space-y-4">
                             <div className="space-y-2">
-                            <label className="block text-sm md:text-base font-semibold text-gray-700">
-              Title <span className="text-red-500">*</span>
-            </label>
+                                <label className="block text-sm md:text-base font-semibold text-gray-700">
+                                    Title <span className="text-red-500">*</span>
+                                </label>
                                 <InputField
                                     label="Showcase Your Feature's Card Headline *"
                                     placeholder="Enter a compelling title for your features section"
@@ -118,7 +118,7 @@ export const PartnerBenefitSection = () => {
             </div>
 
             {/* Data Section */}
-            <div className="max-w-4xl mx-auto p-4">
+            <div className="p-4 ">
                 {data?.map((item: any) => (
                     <div
                         key={item.id}

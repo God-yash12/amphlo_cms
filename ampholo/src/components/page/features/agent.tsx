@@ -10,6 +10,7 @@ import SecondaryButton from "../../../ui/buttons/secondary-button";
 import { Textarea } from "@material-tailwind/react";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { BeatLoader } from "react-spinners";
+import { MdDelete } from "react-icons/md";
 
 export const Agent = () => {
     const { form, onSubmit, isLoading, mutation } = UseAgentService();
@@ -22,29 +23,32 @@ export const Agent = () => {
     if (isLoading) return <PropagateLoader className="text-center" />
 
     return (
-        <div className="bg-gradient-to-b from-gray-50 to-white">
-            <div className="container mx-auto px-4 py-12">
+        <div>
+            <div className="container bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
                 {/* Header Section */}
-                <div className="max-w-2xl mx-auto text-center mb-12">
-                    <Header className="text-3xl font-bold text-gray-900 mb-4">
+                <div className="col-span-1 max-w-2xl mx-auto text-center mb-12">
+                    <Header className="text-3xl font-bold text-gray-900 text-left mb-4">
                         Agent Proces Management
                     </Header>
-                    <Paragraph className="text-gray-600">
-                        Customize and manage your website's Agent section
+                    <Paragraph className="text-gray-600 text-left">
+                        Customize and manage how agent can get connect with you, where title, description, and process how someone became agent with process number like 1, 2, 3, with title, and short description.
                     </Paragraph>
                 </div>
 
                 {/* Form Section */}
-                <div className="mx-auto">
+                <div className="col-span-2  bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="bg-white rounded-xl shadow-lg p-8 space-y-8"
+                        className=""
                     >
                         {/* Title Input Section */}
                         <div className="space-y-4">
-                            <div className="relative">
+                            <div className="space-y-2">
+                                <label className="block text-sm md:text-base text-gray-700 font-semibold">
+                                    Title <span className="text-red-500">*</span>
+                                </label>
                                 <InputField
-                                    label="Headline *"
+                                    label="Title *"
                                     placeholder="Enter a compelling title for your features section"
                                     className="w-full transition-all duration-200"
                                     size="lg"
@@ -55,7 +59,7 @@ export const Agent = () => {
 
                             {/* Description Editor Section */}
                             <div className="space-y-2">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Feature Description *
                                 </label>
                                 <TextEditor
@@ -71,8 +75,8 @@ export const Agent = () => {
                         </div>
 
                         {/* Agent Process */}
-                        <section className="space-y-5">
-                            <Header>Agent Process</Header>
+                        <section className="space-y-5 mt-5">
+                        <h3 className="font-semibold text-gray-800 text-sm md:text-base">Add how to became a Agent </h3>
                             {fields.map((field, index) => (
                                 <div key={field.id} className="space-y-5">
 
@@ -94,7 +98,7 @@ export const Agent = () => {
                                         {...form.register(`process.${index}.processDescription`)}
                                     />
                                     {fields.length > 1 && (
-                                        <SecondaryButton onClick={() => remove(index)} className="text-xl cursor-pointer"> Delete </SecondaryButton>
+                                        <MdDelete onClick={() => remove(index)} className="text-xl cursor-pointer mb-10" />
                                     )}
                                 </div>
 
@@ -115,8 +119,7 @@ export const Agent = () => {
                             }
                         </section>
                         {/* Submit Button */}
-                        <div className="pt-6">
-
+                        <div className="pt-4 border-t flex justify-center">
                             <PrimaryButton type="submit" className="w-full text-center">{mutation.isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
                         </div>
                     </form>

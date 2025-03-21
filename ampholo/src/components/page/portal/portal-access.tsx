@@ -8,6 +8,7 @@ import SecondaryButton from "../../../ui/buttons/secondary-button"
 import { Textarea } from "@material-tailwind/react"
 import { PortalAccessService } from "../../services/portal/portal-access-service"
 import { BeatLoader, PropagateLoader } from "react-spinners"
+import { MdDelete } from "react-icons/md";
 
 
 export const PortalAccessProcess = () => {
@@ -18,13 +19,16 @@ export const PortalAccessProcess = () => {
 
 
     return (
-        <div className="p-6  bg-white rounded-lg shadow-md">
-            <div className="text-center mb-6">
-                <Header className="text-2xl font-bold text-gray-800">Portal Access Process</Header>
-                <Paragraph className="text-gray-600">Customize the Portal Access Process section.</Paragraph>
+        <div className="container bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
+            <div className="text-left col-span-1 mb-6">
+                <Header className="text-2xl font-bold text-left text-gray-800">Portal Access Process</Header>
+                <Paragraph className="text-gray-600 text-left">Customize the Portal Access Process section. How agent or university can access the portal. where all fields are required to submit.</Paragraph>
             </div>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <div>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 col-span-2 bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
+                <div className="space-y-2">
+                    <label className="block text-sm  text-gray-700 font-semibold">
+                        Title  <span className="text-red-500">*</span>
+                    </label>
                     <InputField
                         label="Title *"
                         placeholder="Title of Portal Access Porcess"
@@ -36,7 +40,7 @@ export const PortalAccessProcess = () => {
 
                 </div>
                 <div className="w-auto space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Feature Description *
                     </label>
                     <TextEditor
@@ -51,7 +55,8 @@ export const PortalAccessProcess = () => {
 
                 {/* List Item Process */}
                 <section className="space-y-5">
-                    <Header>Add Portal Access Process</Header>
+                    <h3 className="font-semibold text-gray-800 text-sm md:text-base mt-5">Add Portal Access Process</h3>
+
                     {fields.map((field, index) => (
                         <div key={field.id} className="space-y-5">
                             <InputField
@@ -90,7 +95,8 @@ export const PortalAccessProcess = () => {
                             )}
 
                             {fields.length > 1 && (
-                                <SecondaryButton onClick={() => remove(index)} className="text-sm space-x-3 cursor-pointer"> Delete </SecondaryButton>
+                            
+                                <MdDelete onClick={() => remove(index)} className="text-2xl space-x-3 mb-5 cursor-pointer" />
                             )}
                         </div>
 
@@ -110,9 +116,9 @@ export const PortalAccessProcess = () => {
                         )
                     }
                 </section>
-
-
-                <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+                <div className="pt-4 border-t flex justify-center">
+                    <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+                </div>
             </form>
         </div>
     )

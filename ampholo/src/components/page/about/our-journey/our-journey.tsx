@@ -40,7 +40,7 @@ export const OurJourney = () => {
                         Our Journey
                     </Header>
                     <Paragraph className="text-gray-600 text-left">
-                        Customize and manage your website's Journey section
+                        Customize and manage AMPLHLO journey from founding to till date, by adding title, description, year, and image. 
                     </Paragraph>
                 </div>
 

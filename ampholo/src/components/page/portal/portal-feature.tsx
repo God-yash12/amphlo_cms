@@ -12,34 +12,40 @@ import { BeatLoader, PropagateLoader } from "react-spinners";
 
 export const PortalFeature = () => {
   const { form, onSubmit, append, remove, fields, image, isLoading, isPending } = UsePortalFeatureServices();
-   const errorMessage = form.formState.errors ;
+  const errorMessage = form.formState.errors;
   if (isLoading) return <PropagateLoader className="text-center" />
 
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
+    <div className="container bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
       {/* Header */}
-      <div className="flex flex-col gap-3 mb-6">
-        <Header className="text-center text-gray-800 text-2xl font-bold">
+      <div className="col-span-1 flex flex-col gap-3 mb-6">
+        <Header className="text-left text-gray-800 text-2xl font-bold">
           Portal Fearure Section
         </Header>
-        <Paragraph className="text-center text-gray-600">
-          Customize the Portal Feature section of your website.
+        <Paragraph className="text-left text-gray-600">
+          Customize Portal Feature section, where Main title, subtitle, description and image, also Feature title and lists are required.
         </Paragraph>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 col-span-2 bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8">
+        <div className="space-y-2" >
+          <label className="block text-sm  text-gray-700 font-semibold">
+            SubTitle  <span className="text-red-500">*</span>
+          </label>
           {/* Title and Main Title */}
           <InputField
-            label="Portal Feature Title *"
+            label="Portal Feature SubTitle *"
             placeholder="Enter Portal Feature Title"
             className="w-full"
             {...form.register("title")}
           />
           {errorMessage.title && <ErrorMessage>{errorMessage.title.message}</ErrorMessage>}
         </div>
-        <div>
+        <div className="space-y-2">
+          <label className="block text-sm  text-gray-700 font-semibold">
+            Main Title <span className="text-red-500">*</span>
+          </label>
           {/* Main Title */}
           <InputField
             label="Portal Feature Main Title *"
@@ -52,7 +58,7 @@ export const PortalFeature = () => {
 
         {/* Description */}
         <div className="w-auto space-y-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
             Feature Description *
           </label>
           <TextEditor
@@ -66,7 +72,7 @@ export const PortalFeature = () => {
 
         {/* File Upload */}
         <div className="w-auto space-y-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
             Feature Image *
           </label>
           <FileUploadInput
@@ -79,6 +85,7 @@ export const PortalFeature = () => {
           />
         </div>
         {/* List Title and List Items */}
+        <h3 className="font-semibold text-gray-800 text-sm md:text-base mt-9">Add Feature Title and Lists </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-6">
           <InputField
             label="Title of List"
@@ -107,13 +114,14 @@ export const PortalFeature = () => {
             />
             <MdDelete
               onClick={() => remove(index)}
-              className="cursor-pointer text-3xl text-red-500 hover:text-red-700"
+              className="cursor-pointer text-3xl text-gray-800 hover:text-red-700"
             />
           </div>
         ))}
 
-
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+        <div className="pt-4 border-t flex justify-center">
+          <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+        </div>
       </form>
     </div>
   );

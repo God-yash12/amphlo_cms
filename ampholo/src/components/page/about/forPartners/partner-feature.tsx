@@ -37,7 +37,7 @@ export const PartnerFeatureSection = () => {
                         Partner Feature Section
                     </Header>
                     <Paragraph className="text-gray-600 text-left">
-                        Customize and manage your website's partner Features section
+                        Customize and manage for partner page, feature section. Add the features and benefits for partners, where title, description and image are required.
                     </Paragraph>
                 </div>
                 <form
