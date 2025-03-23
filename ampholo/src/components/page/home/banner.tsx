@@ -94,7 +94,7 @@ export const Banner = () => {
                   </SecondaryButton>
                 )}
               </div>
-
+                      
               {/* Button Configuration */}
               <div className="space-y-3 md:space-y-4">
                 {fields.map((field, index) => (
@@ -150,7 +150,7 @@ export const Banner = () => {
 
             {/* Submit Button */}
             <div className="pt-4 border-t flex justify-center">
-              <PrimaryButton type="submit" disabled={isPending}>
+              <PrimaryButton className="px-4 md:px-6 py-3" type="submit" disabled={isPending}>
                 {isPending ? <BeatLoader size={8} color="#ffffff" /> : "Save Changes"}
               </PrimaryButton>
             </div>

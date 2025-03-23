@@ -34,9 +34,9 @@ export const JoinNowPartnerSection = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className=" bg-white rounded-xl shadow-lg p-8 space-y-8 col-span-2">
         {/* Title Input */}
         <div className=" space-y-2">
-        <label className="block text-sm md:text-base font-semibold text-gray-700">
-                                Title <span className="text-red-500">*</span>
-                            </label>
+          <label className="block text-sm md:text-base font-semibold text-gray-700">
+            Title <span className="text-red-500">*</span>
+          </label>
           <InputField
             label="Title *"
             variant="outlined"
@@ -61,7 +61,7 @@ export const JoinNowPartnerSection = () => {
 
         {/* Button Configuration */}
         <div className="space-y-4">
-        <h3 className="font-semibold text-gray-800 text-sm md:text-base">Call-to-Action Buttons</h3>
+          <h3 className="font-semibold text-gray-800 text-sm md:text-base">Call-to-Action Buttons</h3>
           {fields.map((field, index) => (
             <div key={field.id} className="p-4 border rounded-md bg-gray-50">
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -124,7 +124,7 @@ export const JoinNowPartnerSection = () => {
 
         {/* Submit Button */}
         <div className="pt-4 border-t flex justify-center">
-        <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
+          <PrimaryButton type="submit" className="w-full text-center">{isPending ? <div><BeatLoader /></div> : <div>Save Changes</div>}</PrimaryButton>
         </div>
       </form>
     </div>

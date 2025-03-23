@@ -33,14 +33,15 @@ export const Testimonials = () => {
             }, 500);
         }
     }, [selectedTestimonial]);
-
+                
     const scrollToForm = () => {
         if (formRef.current) {
             formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-    };
+    };  
 
-    return (
+       
+    return (  
         <div>
             <div ref={formRef} className="bg-white rounded-lg shadow-sm p-4 md:p-6 lg:p-8 border-1 border-blue-gray-800 grid lg:grid-cols-3 gap-6">
                 {/* Header Section */}
@@ -49,15 +50,15 @@ export const Testimonials = () => {
                         {selectedTestimonial ? "Update Testimonial" : " Share Your Experience"}
                     </Header>
                     <Paragraph className="text-gray-600 text-left">
-                        We value your feedback! Help us improve by sharing your testimonial.
+                        We value your feedback! Help us to improve by sharing your Experience.  
                     </Paragraph>
                 </div>
 
                 {/* Form Section */}
-                <FormProvider {...form}>
+                <FormProvider {...form}>     
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 col-span-2 bg-white rounded-lg shadow-lg p-4 md:p-6 lg:p-8 ">
                         {/* Person Name Field */}
-                        <div className="space-y-2">
+                        <div className="space-y-2"> 
                             <label className="block text-sm font-semibold text-gray-700 mb-2">
                                 Person Name *
                             </label>
@@ -72,7 +73,7 @@ export const Testimonials = () => {
                                 </ErrorMessage>
                             )}
                         </div>
-
+ 
                         {/* Workplace Field */}
                         <div className="space-y-2">
                             <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -130,7 +131,7 @@ export const Testimonials = () => {
 
                             </div>
                         </div>
-
+ 
                         {/* Rating Section */}
                         <div className="space-y-2">
                             <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -150,6 +151,7 @@ export const Testimonials = () => {
                                     activeColor="#fbbf24"
                                 />
                             )}
+                             
                             {errorMessage.ratings && (
                                 <ErrorMessage className="text-red-500 text-sm">
                                     {errorMessage.ratings.message}
@@ -159,7 +161,7 @@ export const Testimonials = () => {
 
                         {/* Submit Button */}
                         <div className="pt-4 border-t flex justify-center">
-                            <PrimaryButton type="submit" className="w-full text-center p-5">
+                            <PrimaryButton type="submit" className="w-full text-center px-9">
                                 {mutation.isPending ? <div><BeatLoader /></div> :
                                     <div>{selectedTestimonial ? "Update" : "Submit"}</div>}
                             </PrimaryButton>

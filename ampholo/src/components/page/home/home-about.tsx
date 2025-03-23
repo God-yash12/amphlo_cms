@@ -130,7 +130,7 @@ const HomeAbout = () => {
           <PrimaryButton
             type="submit"
             disabled={isPending}
-            className="px-4 md:px-6 py-2"
+            className="px-4 md:px-6 py-3"
           >
             {isPending ? <BeatLoader size={8} color="#ffffff" /> : "Save Changes"}
           </PrimaryButton>
